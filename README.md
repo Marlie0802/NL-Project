@@ -1,6 +1,6 @@
 # ChallengeLab – pre-DB01 snapshot
 
-Dit repository bevat de ChallengeLab-configuratie van **WEB01 (192.168.10.22)** en **DOCKER01 (192.168.10.23)** zoals die werkte **voordat DB01/PostgreSQL werd toegevoegd**.
+Dit repository documenteert de ChallengeLab-configuratie van **WEB01 (192.168.10.22)** en **DOCKER01 (192.168.10.23)** zoals die werkte **vóór DB01/PostgreSQL werd toegevoegd**.
 
 ## Architectuur
 
@@ -29,14 +29,28 @@ Challenge-routes lopen via WEB01:
 /c/<instance-id>/
 ```
 
-Nginx op WEB01 stuurt deze door naar Traefik op DOCKER01. Traefik ontdekt dynamisch de actieve challengecontainer via Docker-labels.
+Nginx stuurt deze door naar Traefik op DOCKER01. Traefik ontdekt actieve challengecontainers automatisch via Docker-labels.
 
-## Mappen
+## Documentatie
 
-- `web01/` – FastAPI, Nginx, systemd en portal.
-- `docker01/` – Traefik-configuratie en challenge-images.
-- `ansible/` – basis deployment-notities.
-- `docs/` – aanvullende configuratie-informatie.
+- [Architectuur](docs/architecture.md)
+- [WEB01 configuratie](docs/web01.md)
+- [DOCKER01 configuratie](docs/docker01.md)
+- [API en sessieflow](docs/api.md)
+- [Alle 10 challenges](docs/challenges.md)
+- [Dagelijks beheer](docs/operations.md)
+- [Testen en troubleshooting](docs/testing.md)
+- [HTTPS-plan](docs/https.md)
+- [Traefik](docker01/traefik/README.md)
+- [Challenge image-opbouw](docker01/challenges/README.md)
+
+## Configuratiebestanden
+
+- `web01/app/main.py` – FastAPI pre-DB01 backend
+- `web01/systemd/challengelab.service` – systemd service
+- `web01/nginx/challenges` – Nginx reverse proxy
+- `docker01/challenges/*/Dockerfile` – challenge images
+- `ansible/inventory.example.ini` – voorbeeld inventory
 
 ## Challenges
 
@@ -60,16 +74,22 @@ Bewust **niet** opgenomen:
 - `.env`-bestanden
 - databasecredentials
 - live sessiedata
+- SQLite databasebestand
 
-Deze snapshot gebruikt nog de oorspronkelijke SQLite-sessieopslag in `/opt/challengelab/challengelab.db`.
+Deze snapshot gebruikt nog SQLite voor sessies:
 
-## Belangrijke paden
+```text
+/opt/challengelab/challengelab.db
+```
+
+## Belangrijke serverpaden
 
 ### WEB01
 
 ```text
 /opt/challengelab/main.py
 /opt/challengelab/venv/
+/opt/challengelab/challengelab.db
 /etc/systemd/system/challengelab.service
 /etc/nginx/sites-available/challenges
 /var/www/challenges/index.html
@@ -85,4 +105,8 @@ Docker network: challenge-net
 Traefik container: challengelab-proxy
 ```
 
-> Dit is een reconstructie van de werkende configuratie uit de bouwsessie vóór de DB01-migratie.
+## Status van deze snapshot
+
+Dit is een **gereconstrueerde technische snapshot** uit de werkende configuratie die we samen hebben gebouwd vóór de DB01-migratie. De serverarchitectuur, API-flow, Nginx, systemd, Traefik, challenge-opbouw, antwoorden, testprocedures en bekende fouten/fixes zijn vastgelegd.
+
+De exacte actuele HTML-bestanden van alle challengepagina's kunnen alleen 1-op-1 uit DOCKER01 worden overgenomen als die serverbestanden rechtstreeks beschikbaar worden gemaakt; de documentatie beschrijft wel volledig hun werking en inhoud.
