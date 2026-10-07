@@ -1,0 +1,28 @@
+# Secrets
+*.env
+.env
+*.key
+*.pem
+id_rsa
+id_ed25519
+challengelab_docker
+challengelab_docker.pub
+
+# Runtime/database
+*.db
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Logs
+*.log
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
