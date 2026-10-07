@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ChallengeLab</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(rgba(0,255,140,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,140,.035) 1px,transparent 1px),radial-gradient(circle at top,#062218 0%,#08120f 45%,#050807 100%);background-size:40px 40px,40px 40px,auto;color:#f5f7f6;min-height:100vh}
+header,.page,footer{max-width:1200px;margin:auto}header{padding:28px 24px;display:flex;justify-content:space-between}.logo{font-size:22px;font-weight:700}.logo span{color:#36f39a}.page{padding:40px 24px 80px}.hero{max-width:800px;padding:55px 0}.hero h1{font-size:clamp(46px,7vw,78px);line-height:1;margin:0}.hero h1 span{color:#36f39a}.hero p{color:#8d9993;font-size:18px;line-height:1.6}.card,.row{background:#0e1712;border:1px solid #20392b;border-radius:14px}.card{padding:26px;margin-bottom:50px}.btn{border:0;border-radius:8px;padding:13px 18px;font-weight:700;cursor:pointer}.primary{background:#36f39a;color:#04100a}.danger{background:#251314;color:#ff9696;border:1px solid #472326}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.stat{background:#0a120e;border-radius:10px;padding:16px}.label{display:block;color:#65716c;font-size:11px;text-transform:uppercase;margin-bottom:8px}.progress{height:9px;background:#131c17;border-radius:99px;overflow:hidden;margin-top:18px}.progress>div{height:100%;background:#36f39a;width:0}.list{display:grid;gap:10px}.row{padding:18px;display:grid;grid-template-columns:60px 1fr 170px 130px;gap:14px}.muted{color:#748078}.hidden{display:none}footer{padding:30px 24px 50px;color:#4e5853}@media(max-width:800px){.row{grid-template-columns:50px 1fr}.extra{display:none}}
+</style>
+</head>
+<body>
+<header><div class="logo">Challenge<span>Lab</span></div></header>
+<main class="page">
+<section class="hero"><h1>Eén sessie.<br><span>Alle challenges.</span></h1><p>Start één labsessie en werk automatisch door alle challenges heen.</p></section>
+<section id="start" class="card"><h2>Nieuwe sessie</h2><p class="muted">Je voortgang wordt tijdens de sessie bijgehouden.</p><button id="startBtn" class="btn primary" onclick="startSession()">Start sessie</button></section>
+<section id="active" class="card hidden">
+<h2>Actieve sessie</h2>
+<div class="grid"><div class="stat"><span class="label">Challenge</span><span id="challenge">-</span></div><div class="stat"><span class="label">Voortgang</span><span id="progressText">-</span></div><div class="stat"><span class="label">Status</span><span id="status">-</span></div></div>
+<div class="progress"><div id="progressFill"></div></div>
+<p><button class="btn primary" onclick="openChallenge()">Open huidige challenge</button> <button class="btn danger" onclick="stopSession()">Sessie stoppen</button></p>
+</section>
+<h2>Challenge overzicht</h2><p id="count" class="muted">Laden...</p><div id="list" class="list"></div>
+</main>
+<footer>ChallengeLab · pre-DB01 snapshot</footer>
+<script>
+let current=null;
+async function api(url,options={}){const r=await fetch(url,options);const t=await r.text();let d={};try{d=t?JSON.parse(t):{}}catch{throw new Error(t||"Ongeldige serverresponse")}if(!r.ok)throw new Error(d.detail||"Er ging iets mis");return d}
+async function loadCatalog(){const d=await api("/api/catalog");count.textContent=d.total+" challenges";list.innerHTML="";for(const c of d.challenges){const e=document.createElement("div");e.className="row";e.innerHTML=`<div style="color:#36f39a">#${c.number}</div><div><b>${c.name}</b><div class="muted">${c.description}</div></div><div class="extra">${c.category}</div><div class="extra">${c.difficulty}</div>`;list.appendChild(e)}}
+function render(){if(!current)return;start.classList.add("hidden");active.classList.remove("hidden");challenge.textContent=current.status==="completed"?"Voltooid":(current.challenge?.name||"-");status.textContent=current.status;progressText.textContent=current.current+" / "+current.total;progressFill.style.width=Math.round(((current.status==="completed"?current.total:current.current-1)/current.total)*100)+"%"}
+async function startSession(){startBtn.disabled=true;current=await api("/api/session/start",{method:"POST"});localStorage.setItem("challengelab_session",current.session_id);render();setTimeout(openChallenge,300)}
+function openChallenge(){if(current?.url)location.href=current.url}
+async function restore(){const id=localStorage.getItem("challengelab_session");if(!id)return;try{current={session_id:id,...await api("/api/session/"+id)};render()}catch{localStorage.removeItem("challengelab_session")}}
+async function stopSession(){if(!current?.session_id)return;if(!confirm("Sessie stoppen?"))return;await api("/api/session/"+current.session_id,{method:"DELETE"});localStorage.removeItem("challengelab_session");location.reload()}
+loadCatalog();restore();
+</script>
+</body></html>
