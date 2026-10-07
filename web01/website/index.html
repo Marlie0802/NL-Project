@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChallengeLab</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(0,255,140,.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,140,.035) 1px, transparent 1px),
+                radial-gradient(circle at top, #062218 0%, #08120f 45%, #050807 100%);
+            background-size: 40px 40px, 40px 40px, auto;
+            color: #f5f7f6;
+            min-height: 100vh;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: auto;
+            padding: 28px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #36f39a;
+        }
+
+        nav {
+            display: flex;
+            gap: 24px;
+        }
+
+        nav a {
+            color: #89968f;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 24px 80px;
+        }
+
+        .hero {
+            max-width: 760px;
+            padding: 65px 0 65px;
+        }
+
+        .eyebrow {
+            color: #36f39a;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: clamp(48px, 7vw, 82px);
+            letter-spacing: -3px;
+            line-height: 1;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        h1 span {
+            color: #36f39a;
+        }
+
+        .hero p {
+            max-width: 620px;
+            color: #8d9993;
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 24px 0 0;
+        }
+
+        .session-card {
+            background: rgba(8,18,15,.88);
+            border: 1px solid rgba(54,243,154,.15);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 60px;
+        }
+
+        .session-card h2 {
+            margin: 0 0 10px;
+        }
+
+        .session-card p {
+            color: #839087;
+            line-height: 1.6;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 13px 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #36f39a;
+            color: #04100a;
+        }
+
+        .btn-primary:hover {
+            background: #67ffb4;
+        }
+
+        .btn-secondary {
+            background: #121b17;
+            color: #e3e9e5;
+            border: 1px solid #26342d;
+        }
+
+        .btn-danger {
+            background: #251314;
+            color: #ff9696;
+            border: 1px solid #472326;
+        }
+
+        .btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .status-item {
+            background: rgba(255,255,255,.025);
+            border: 1px solid rgba(255,255,255,.05);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .status-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #65716c;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .status-value {
+            font-size: 16px;
+        }
+
+        .progress-wrap {
+            margin-top: 22px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            color: #8e9a94;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 9px;
+            background: #131c17;
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #36f39a;
+            transition: width .3s ease;
+        }
+
+        .actions {
+            margin-top: 22px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .section-header span {
+            color: #66736d;
+            font-size: 13px;
+        }
+
+        .challenge-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .challenge-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 170px 130px;
+            gap: 16px;
+            align-items: center;
+            background: rgba(8,18,15,.75);
+            border: 1px solid rgba(54,243,154,.09);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .challenge-number {
+            font-size: 13px;
+            color: #36f39a;
+        }
+
+        .challenge-name {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .challenge-description {
+            color: #748078;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .pill {
+            color: #9ca8a2;
+            font-size: 13px;
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 8px;
+        }
+
+        .error {
+            color: #ff9a9a;
+            background: rgba(255,70,70,.08);
+        }
+
+        .success {
+            color: #72ffb8;
+            background: rgba(54,243,154,.08);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 24px 50px;
+            color: #4e5853;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .challenge-row {
+                grid-template-columns: 50px 1fr;
+            }
+
+            .pill {
+                display: none;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Challenge<span>Lab</span></div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="#session">Sessie</a>
+        <a href="#challenges">Challenges</a>
+    </nav>
+</header>
+
+<main class="page">
+
+    <section class="hero">
+        <div class="eyebrow">Interactive Learning Platform</div>
+
+        <h1>
+            Eén sessie.<br>
+            <span>Alle challenges.</span>
+        </h1>
+
+        <p>
+            Start één labsessie en werk automatisch door alle challenges heen.
+            Iedere voltooide challenge brengt je direct naar de volgende.
+        </p>
+    </section>
+
+    <section id="session">
+
+        <div id="startSessionCard" class="session-card">
+            <h2>Start een nieuwe sessie</h2>
+
+            <p>
+                Je voortgang wordt tijdens de sessie bijgehouden.
+                Na een correct antwoord start automatisch de volgende challenge.
+            </p>
+
+            <button
+                id="startSessionButton"
+                class="btn btn-primary"
+                onclick="startSession()">
+                Start sessie
+            </button>
+
+            <div id="startMessage" class="message hidden"></div>
+        </div>
+
+
+        <div id="activeSessionCard" class="session-card hidden">
+            <h2>Actieve sessie</h2>
+
+            <div class="status-grid">
+
+                <div class="status-item">
+                    <span class="status-label">Challenge</span>
+                    <span id="currentChallenge" class="status-value">-</span>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-label">Voortgang</span>
+                    <span id="progressText" class="status-value">-</span>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-label">Status</span>
+                    <span id="sessionStatus" class="status-value">Actief</span>
+                </div>
+
+            </div>
+
+            <div class="progress-wrap">
+                <div class="progress-header">
+                    <span>Voortgang</span>
+                    <span id="progressPercentage">0%</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button
+                    class="btn btn-primary"
+                    onclick="openCurrentChallenge()">
+                    Open huidige challenge
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="refreshSession()">
+                    Vernieuwen
+                </button>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="stopSession()">
+                    Sessie stoppen
+                </button>
+            </div>
+
+            <div id="sessionMessage" class="message hidden"></div>
+
+        </div>
+
+    </section>
+
+
+    <section id="challenges">
+        <div class="section-header">
+            <h2>Challenge overzicht</h2>
+            <span id="catalogCount">Laden...</span>
+        </div>
+
+        <div id="challengeList" class="challenge-list"></div>
+    </section>
+
+</main>
+
+<footer>
+    ChallengeLab · Interactive Learning Platform
+</footer>
+
+
+<script>
+    let currentSession = null;
+
+
+    async function apiRequest(url, options = {}) {
+        const response = await fetch(url, options);
+        const raw = await response.text();
+
+        let data = {};
+
+        try {
+            data = raw ? JSON.parse(raw) : {};
+        } catch {
+            throw new Error(raw || "Ongeldige serverresponse");
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail || "Er ging iets mis"
+            );
+        }
+
+        return data;
+    }
+
+
+    async function loadCatalog() {
+        const list = document.getElementById("challengeList");
+
+        try {
+            const data = await apiRequest("/api/catalog");
+
+            document.getElementById("catalogCount").textContent =
+                data.total + " challenge(s)";
+
+            list.innerHTML = "";
+
+            data.challenges.forEach(challenge => {
+                const row = document.createElement("div");
+
+                row.className = "challenge-row";
+
+                row.innerHTML = `
+                    <div class="challenge-number">
+                        #${challenge.number}
+                    </div>
+
+                    <div>
+                        <div class="challenge-name">
+                            ${challenge.name}
+                        </div>
+
+                        <div class="challenge-description">
+                            ${challenge.description}
+                        </div>
+                    </div>
+
+                    <div class="pill">
+                        ${challenge.category}
+                    </div>
+
+                    <div class="pill">
+                        ${challenge.difficulty}
+                    </div>
+                `;
+
+                list.appendChild(row);
+            });
+
+        } catch (error) {
+            list.innerHTML =
+                "<div class='message error'>" +
+                error.message +
+                "</div>";
+        }
+    }
+
+
+    async function startSession() {
+        const button =
+            document.getElementById("startSessionButton");
+
+        button.disabled = true;
+        button.textContent = "Sessie starten...";
+
+        try {
+            const data = await apiRequest(
+                "/api/session/start",
+                {
+                    method: "POST"
+                }
+            );
+
+            currentSession = data;
+
+            saveSession();
+
+            showActiveSession();
+
+            setTimeout(() => {
+                openCurrentChallenge();
+            }, 500);
+
+        } catch (error) {
+            showStartMessage(
+                error.message,
+                "error"
+            );
+        }
+
+        button.disabled = false;
+        button.textContent = "Start sessie";
+    }
+
+
+    async function refreshSession() {
+        if (!currentSession?.session_id) {
+            return;
+        }
+
+        try {
+            const data = await apiRequest(
+                "/api/session/" +
+                currentSession.session_id
+            );
+
+            currentSession = {
+                ...currentSession,
+                ...data
+            };
+
+            saveSession();
+
+            showActiveSession();
+
+        } catch (error) {
+            showSessionMessage(
+                error.message,
+                "error"
+            );
+        }
+    }
+
+
+    function showActiveSession() {
+        if (!currentSession) {
+            return;
+        }
+
+        document
+            .getElementById("startSessionCard")
+            .classList.add("hidden");
+
+        document
+            .getElementById("activeSessionCard")
+            .classList.remove("hidden");
+
+
+        if (currentSession.status === "completed") {
+
+            document.getElementById("currentChallenge")
+                .textContent = "Voltooid";
+
+            document.getElementById("sessionStatus")
+                .textContent = "Voltooid";
+
+            document.getElementById("progressText")
+                .textContent =
+                    currentSession.total +
+                    " / " +
+                    currentSession.total;
+
+            setProgress(
+                currentSession.total,
+                currentSession.total
+            );
+
+            showSessionMessage(
+                "Alle challenges zijn voltooid 🎉",
+                "success"
+            );
+
+            return;
+        }
+
+
+        document.getElementById("currentChallenge")
+            .textContent =
+                currentSession.challenge?.name || "-";
+
+        document.getElementById("sessionStatus")
+            .textContent =
+                currentSession.status || "active";
+
+        document.getElementById("progressText")
+            .textContent =
+                currentSession.current +
+                " / " +
+                currentSession.total;
+
+        setProgress(
+            currentSession.current - 1,
+            currentSession.total
+        );
+    }
+
+
+    function setProgress(completed, total) {
+        const percentage =
+            total > 0
+                ? Math.round(
+                    (completed / total) * 100
+                )
+                : 0;
+
+        document.getElementById("progressFill")
+            .style.width =
+                percentage + "%";
+
+        document.getElementById("progressPercentage")
+            .textContent =
+                percentage + "%";
+    }
+
+
+    function openCurrentChallenge() {
+        if (!currentSession?.url) {
+            return;
+        }
+
+        window.location.href =
+            currentSession.url;
+    }
+
+
+    async function stopSession() {
+        if (!currentSession?.session_id) {
+            return;
+        }
+
+        if (!confirm(
+            "Weet je zeker dat je deze sessie wilt stoppen?"
+        )) {
+            return;
+        }
+
+        try {
+            await apiRequest(
+                "/api/session/" +
+                currentSession.session_id,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            currentSession = null;
+
+            localStorage.removeItem(
+                "challengelab_session"
+            );
+
+            document
+                .getElementById("activeSessionCard")
+                .classList.add("hidden");
+
+            document
+                .getElementById("startSessionCard")
+                .classList.remove("hidden");
+
+        } catch (error) {
+            showSessionMessage(
+                error.message,
+                "error"
+            );
+        }
+    }
+
+
+    function saveSession() {
+        if (!currentSession?.session_id) {
+            return;
+        }
+
+        localStorage.setItem(
+            "challengelab_session",
+            currentSession.session_id
+        );
+    }
+
+
+    async function restoreSession() {
+        const sessionId =
+            localStorage.getItem(
+                "challengelab_session"
+            );
+
+        if (!sessionId) {
+            return;
+        }
+
+        try {
+            const data = await apiRequest(
+                "/api/session/" + sessionId
+            );
+
+            currentSession = {
+                session_id: sessionId,
+                ...data
+            };
+
+            showActiveSession();
+
+        } catch {
+            localStorage.removeItem(
+                "challengelab_session"
+            );
+        }
+    }
+
+
+    function showStartMessage(text, type) {
+        const element =
+            document.getElementById("startMessage");
+
+        element.textContent = text;
+        element.className =
+            "message " + type;
+    }
+
+
+    function showSessionMessage(text, type) {
+        const element =
+            document.getElementById("sessionMessage");
+
+        element.textContent = text;
+        element.className =
+            "message " + type;
+    }
+
+
+    loadCatalog();
+    restoreSession();
+</script>
+
+</body>
+</html>

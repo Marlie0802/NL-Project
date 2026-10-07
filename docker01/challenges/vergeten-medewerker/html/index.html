@@ -1,12 +1,420 @@
-<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>De vergeten medewerker</title>
-<style>*{box-sizing:border-box}body{margin:0;background:#08100c;color:#e9f2ed;font-family:Arial,sans-serif}.container{width:1050px;max-width:94%;margin:40px auto 70px}h1,th{color:#35f29a}.panel{background:#0e1712;border:1px solid #20392b;padding:24px;border-radius:12px;margin-bottom:20px}.log,.mail{background:#07100b;border:1px solid #1c3024;border-radius:8px;padding:14px;margin:10px 0;line-height:1.6}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.cards>div{background:#0a120e;border:1px solid #1e3026;padding:16px;border-radius:9px}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:12px;border-bottom:1px solid #223128}.muted{color:#839087}.cipher{font-family:monospace;font-size:26px;letter-spacing:3px;text-align:center;background:#07100b;padding:24px;border-radius:10px;color:#35f29a}input,select{width:360px;max-width:100%;padding:12px;background:#07100b;color:#fff;border:1px solid #355443;border-radius:7px}button{padding:12px 18px;background:#35f29a;color:#04100a;border:0;border-radius:7px;font-weight:700;cursor:pointer;margin-left:6px}#result{margin-top:16px;font-weight:700}.success{color:#35f29a}.error{color:#ff7d7d}</style></head>
-<body><div class="container"><h1>De vergeten medewerker</h1><div class="panel"><h2>Situatie</h2><p>Een oud-medewerker lijkt nog toegang te hebben. Combineer HR-mutaties en loginlogs.</p>
-<table><tr><th>Account</th><th>Naam</th><th>Status</th></tr><tr><td>ljansen</td><td>Lisa Jansen</td><td>Actief</td></tr><tr><td>mdeboer</td><td>Mark de Boer</td><td>Actief</td></tr><tr><td>tvos</td><td>Thomas Vos</td><td>Actief</td></tr><tr><td>esmit</td><td>Emma Smit</td><td>Actief</td></tr></table>
-<h3>HR-mutaties</h3><div class="log">Thomas Vos — Sales — Uit dienst sinds 14-09-2026</div>
-<h3>Security log</h3><div class="log">02-10-2026 08:14 SUCCESS LOGIN account=tvos source=10.20.30.44</div></div><div class="panel"><h2>Opdracht</h2><p>Welk account vormt het beveiligingsrisico?</p><input id="answer" placeholder="gebruikersnaam" autocomplete="off"><button onclick="checkAnswer()">Controleer</button><div id="result"></div></div></div>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Internal Access Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #08100c;
+            color: #e9f2ed;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 1100px;
+            max-width: 94%;
+            margin: 40px auto 70px;
+        }
+
+        h1 {
+            color: #35f29a;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .panel {
+            background: #0e1712;
+            border: 1px solid #20392b;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #223128;
+        }
+
+        th {
+            color: #35f29a;
+        }
+
+        .muted {
+            color: #839087;
+        }
+
+        .log {
+            font-family: monospace;
+            background: #07100b;
+            border: 1px solid #1a3023;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .warning {
+            color: #f7c86a;
+        }
+
+        input {
+            padding: 12px;
+            width: 280px;
+            background: #07100b;
+            border: 1px solid #355443;
+            color: white;
+            border-radius: 7px;
+        }
+
+        button {
+            padding: 12px 18px;
+            background: #35f29a;
+            color: #04100a;
+            border: 0;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #65ffb4;
+        }
+
+        #result {
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #35f29a;
+        }
+
+        .error {
+            color: #ff7d7d;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Internal Access Portal</h1>
+
+    <div class="panel">
+        <h2>Situatie</h2>
+
+        <p>
+            Tijdens een periodieke toegangscontrole is mogelijk
+            ongewenste activiteit gevonden.
+        </p>
+
+        <p>
+            Onderzoek de accountgegevens, HR-mutaties en beveiligingslogs.
+            Bepaal welk account niet meer actief hoort te zijn,
+            maar recent nog is gebruikt.
+        </p>
+    </div>
+
+
+    <div class="panel">
+        <h2>Gebruikersaccounts</h2>
+
+        <table>
+            <tr>
+                <th>Account</th>
+                <th>Naam</th>
+                <th>Afdeling</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>ljansen</td>
+                <td>Lisa Jansen</td>
+                <td>Finance</td>
+                <td>Actief</td>
+            </tr>
+
+            <tr>
+                <td>mdeboer</td>
+                <td>Mark de Boer</td>
+                <td>IT</td>
+                <td>Actief</td>
+            </tr>
+
+            <tr>
+                <td>speters</td>
+                <td>Sven Peters</td>
+                <td>Support</td>
+                <td>Actief</td>
+            </tr>
+
+            <tr>
+                <td>tvos</td>
+                <td>Terry Vos</td>
+                <td>Sales</td>
+                <td>Actief</td>
+            </tr>
+
+            <tr>
+                <td>esmit</td>
+                <td>Emma Smit</td>
+                <td>HR</td>
+                <td>Actief</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="panel">
+            <h2>HR-mutaties</h2>
+
+            <p>
+                <strong>Lisa Jansen</strong><br>
+                Finance<br>
+                Status: In dienst
+            </p>
+
+            <hr>
+
+            <p>
+                <strong>Terry Vos</strong><br>
+                Sales<br>
+                Status:
+                <span class="warning">Uit dienst</span><br>
+                Uit dienst sinds: 14-09-2026
+            </p>
+
+            <hr>
+
+            <p>
+                <strong>Emma Smit</strong><br>
+                HR<br>
+                Status: In dienst
+            </p>
+
+            <p class="muted">
+                Alleen recente wijzigingen worden hier weergegeven.
+            </p>
+        </div>
+
+
+        <div class="panel">
+            <h2>Security log</h2>
+
+            <div class="log">
+                01-10-2026 09:12<br>
+                SUCCESS LOGIN<br>
+                account: ljansen<br>
+                source: 10.20.10.14
+            </div>
+
+            <div class="log">
+                01-10-2026 13:42<br>
+                SUCCESS LOGIN<br>
+                account: esmit<br>
+                source: 10.20.50.21
+            </div>
+
+            <div class="log">
+                02-10-2026 08:14<br>
+                SUCCESS LOGIN<br>
+                account: tvos<br>
+                source: 10.20.30.44
+            </div>
+
+            <div class="log">
+                02-10-2026 08:22<br>
+                SUCCESS LOGIN<br>
+                account: mdeboer<br>
+                source: 10.20.20.11
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+        <h2>Opdracht</h2>
+
+        <p>
+            Welk account vormt het beveiligingsrisico?
+        </p>
+
+        <p class="muted">
+            Vul alleen de gebruikersnaam in.
+        </p>
+
+        <input
+            id="answer"
+            placeholder="bijvoorbeeld: ljansen"
+            autocomplete="off"
+        >
+
+        <button onclick="checkAnswer()">
+            Controleer
+        </button>
+
+        <div id="result"></div>
+    </div>
+
+</div>
+
 <script>
-const sessionId=new URLSearchParams(location.search).get("session");
-async function waitForChallenge(url){for(let i=0;i<20;i++){try{const r=await fetch(url,{cache:"no-store"});if(r.ok){location.href=url;return}}catch(e){}await new Promise(r=>setTimeout(r,500))}location.href=url}
-async function checkAnswer(){const answer=document.getElementById("answer").value.trim().toLowerCase();const result=document.getElementById("result");if(!sessionId){result.className="error";result.textContent="Geen geldige ChallengeLab-sessie gevonden.";return}if(!answer){result.className="error";result.textContent="Vul of kies eerst een antwoord.";return}try{const r=await fetch("/api/session/"+sessionId+"/answer",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({answer})});const d=await r.json();if(!r.ok)throw new Error(d.detail||"Antwoord kon niet gecontroleerd worden.");if(!d.correct){result.className="error";result.textContent="✗ Niet correct. Bekijk de informatie nog eens.";return}if(d.completed){result.className="success";result.textContent="✓ Correct! Alle challenges zijn voltooid.";setTimeout(()=>location.href="/",1500);return}result.className="success";result.textContent="✓ Correct! Volgende challenge wordt gestart...";waitForChallenge(d.url)}catch(e){result.className="error";result.textContent="Fout: "+e.message}}
-document.getElementById("answer").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});
-</script></body></html>
+const params = new URLSearchParams(
+    window.location.search
+);
+
+const sessionId = params.get("session");
+
+
+async function checkAnswer() {
+    const input = document.getElementById("answer");
+
+    const answer = input.value.trim();
+
+    const result = document.getElementById("result");
+
+
+    if (!sessionId) {
+        result.className = "error";
+        result.textContent =
+            "Geen geldige ChallengeLab-sessie gevonden.";
+
+        return;
+    }
+
+
+    if (!answer) {
+        result.className = "error";
+        result.textContent =
+            "Vul eerst een antwoord in.";
+
+        return;
+    }
+
+
+    try {
+        const response = await fetch(
+            "/api/session/" +
+            sessionId +
+            "/answer",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    answer: answer
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+
+        if (!data.correct) {
+            result.className = "error";
+
+            result.textContent =
+                "✗ Niet correct. Bekijk de gegevens nog eens.";
+
+            return;
+        }
+
+
+        if (data.completed) {
+            result.className = "success";
+
+            result.textContent =
+                "✓ Correct! Je hebt alle challenges voltooid.";
+
+            return;
+        }
+
+
+        result.className = "success";
+
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt geladen...";
+
+
+        async function waitForChallenge(url) {
+	    for (let i = 0; i < 20; i++) {
+        	try {
+            		const response = await fetch(url, {
+                		method: "GET",
+                		cache: "no-store"
+            		});
+
+            		if (response.ok) {
+                		window.location.href = url;
+        	  		return;
+    			}
+        	} catch (error) {
+            		// challenge is nog niet klaar
+        	}
+
+          	await new Promise(resolve => setTimeout(resolve, 500));
+    		}
+
+    		window.location.href = url;
+	}
+
+	waitForChallenge(data.url);
+
+    } catch (error) {
+        result.className = "error";
+        result.textContent =
+            "Fout: " + error.message;
+    }
+}
+
+
+document
+    .getElementById("answer")
+    .addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        }
+    );
+</script>
+
+</body>
+</html>

@@ -1,13 +1,467 @@
-<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wie was het?</title>
-<style>*{box-sizing:border-box}body{margin:0;background:#08100c;color:#e9f2ed;font-family:Arial,sans-serif}.container{width:1050px;max-width:94%;margin:40px auto 70px}h1,th{color:#35f29a}.panel{background:#0e1712;border:1px solid #20392b;padding:24px;border-radius:12px;margin-bottom:20px}.log,.mail{background:#07100b;border:1px solid #1c3024;border-radius:8px;padding:14px;margin:10px 0;line-height:1.6}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.cards>div{background:#0a120e;border:1px solid #1e3026;padding:16px;border-radius:9px}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:12px;border-bottom:1px solid #223128}.muted{color:#839087}.cipher{font-family:monospace;font-size:26px;letter-spacing:3px;text-align:center;background:#07100b;padding:24px;border-radius:10px;color:#35f29a}input,select{width:360px;max-width:100%;padding:12px;background:#07100b;color:#fff;border:1px solid #355443;border-radius:7px}button{padding:12px 18px;background:#35f29a;color:#04100a;border:0;border-radius:7px;font-weight:700;cursor:pointer;margin-left:6px}#result{margin-top:16px;font-weight:700}.success{color:#35f29a}.error{color:#ff7d7d}</style></head>
-<body><div class="container"><h1>Wie was het?</h1><div class="panel"><h2>Situatie</h2><p>Om 16:24 is overname-plan.pdf naar USB gekopieerd. Combineer de sporen.</p>
-<div class="log">16:04 LOGIN user=rkuiper workstation=WS-17</div>
-<table><tr><th>Werkstation</th><th>IP</th></tr><tr><td>WS-12</td><td>10.10.50.31</td></tr><tr><td>WS-17</td><td>10.10.50.77</td></tr><tr><td>WS-21</td><td>10.10.50.44</td></tr></table>
-<div class="log">16:18 OPEN /directie/overname-plan.pdf source=10.10.50.77</div>
-<div class="log">16:23 USB STORAGE ATTACHED workstation=WS-17</div><div class="log">16:24 FILE COPY workstation=WS-17 filename=overname-plan.pdf destination=USB</div></div><div class="panel"><h2>Opdracht</h2><p>Welke medewerker heeft het bestand waarschijnlijk gekopieerd?</p><select id="answer"><option value="">Kies</option><option value="ljansen">Lisa Jansen</option><option value="rkuiper">Robin Kuiper</option><option value="esmit">Eva Smit</option></select><button onclick="checkAnswer()">Controleer</button><div id="result"></div></div></div>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wie was het?</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #08100c;
+            color: #e9f2ed;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 1100px;
+            max-width: 94%;
+            margin: 40px auto 70px;
+        }
+
+        h1 {
+            color: #35f29a;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .panel {
+            background: #0e1712;
+            border: 1px solid #20392b;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .log {
+            background: #07100b;
+            border: 1px solid #1c3024;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            font-family: monospace;
+            line-height: 1.6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #223128;
+        }
+
+        th {
+            color: #35f29a;
+        }
+
+        .muted {
+            color: #839087;
+        }
+
+        select {
+            width: 360px;
+            max-width: 100%;
+            padding: 12px;
+            background: #07100b;
+            color: white;
+            border: 1px solid #355443;
+            border-radius: 7px;
+        }
+
+        button {
+            padding: 12px 18px;
+            background: #35f29a;
+            color: #04100a;
+            border: 0;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 6px;
+        }
+
+        button:hover {
+            background: #65ffb4;
+        }
+
+        #result {
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #35f29a;
+        }
+
+        .error {
+            color: #ff7d7d;
+        }
+
+        @media (max-width: 650px) {
+            select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            button {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Wie was het?</h1>
+
+    <div class="panel">
+        <h2>Situatie</h2>
+
+        <p>
+            Om <strong>16:24</strong> is ontdekt dat het vertrouwelijke bestand
+            <strong>overname-plan.pdf</strong> naar een USB-opslagapparaat
+            is gekopieerd.
+        </p>
+
+        <p>
+            Er waren op dat moment meerdere medewerkers aanwezig.
+            Gebruik de verschillende logbronnen om te bepalen wie
+            waarschijnlijk verantwoordelijk was.
+        </p>
+
+        <p class="muted">
+            Let goed op tijden, gebruikersaccounts, werkstations en IP-adressen.
+        </p>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="panel">
+            <h2>Toegangscontrole</h2>
+
+            <div class="log">
+                15:54:11<br>
+                BADGE ACCEPTED<br>
+                naam=Lisa Jansen<br>
+                deur=Kantoor Noord
+            </div>
+
+            <div class="log">
+                16:02:47<br>
+                BADGE ACCEPTED<br>
+                naam=Robin Kuiper<br>
+                deur=Kantoor Noord
+            </div>
+
+            <div class="log">
+                16:08:22<br>
+                BADGE ACCEPTED<br>
+                naam=Eva Smit<br>
+                deur=Kantoor Zuid
+            </div>
+        </div>
+
+
+        <div class="panel">
+            <h2>Werkstation logins</h2>
+
+            <div class="log">
+                15:56:04 LOGIN SUCCESS<br>
+                user=ljansen<br>
+                workstation=WS-12
+            </div>
+
+            <div class="log">
+                16:04:16 LOGIN SUCCESS<br>
+                user=rkuiper<br>
+                workstation=WS-17
+            </div>
+
+            <div class="log">
+                16:10:51 LOGIN SUCCESS<br>
+                user=esmit<br>
+                workstation=WS-21
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+        <h2>DHCP / apparaatregistratie</h2>
+
+        <table>
+            <tr>
+                <th>Werkstation</th>
+                <th>IP-adres</th>
+                <th>Lease actief sinds</th>
+            </tr>
+
+            <tr>
+                <td>WS-12</td>
+                <td>10.10.50.31</td>
+                <td>15:55</td>
+            </tr>
+
+            <tr>
+                <td>WS-17</td>
+                <td>10.10.50.77</td>
+                <td>16:03</td>
+            </tr>
+
+            <tr>
+                <td>WS-21</td>
+                <td>10.10.50.44</td>
+                <td>16:09</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="panel">
+            <h2>Fileserver log</h2>
+
+            <div class="log">
+                16:18:02<br>
+                OPEN<br>
+                file=/directie/overname-plan.pdf<br>
+                source=10.10.50.77
+            </div>
+
+            <div class="log">
+                16:21:36<br>
+                READ COMPLETE<br>
+                file=/directie/overname-plan.pdf<br>
+                source=10.10.50.77
+            </div>
+
+            <div class="log">
+                16:25:10<br>
+                CLOSE<br>
+                file=/directie/overname-plan.pdf<br>
+                source=10.10.50.77
+            </div>
+        </div>
+
+
+        <div class="panel">
+            <h2>USB audit</h2>
+
+            <div class="log">
+                16:23:48<br>
+                USB STORAGE ATTACHED<br>
+                workstation=WS-17<br>
+                device=Kingston DataTraveler
+            </div>
+
+            <div class="log">
+                16:24:13<br>
+                FILE COPY<br>
+                workstation=WS-17<br>
+                filename=overname-plan.pdf<br>
+                destination=USB
+            </div>
+
+            <div class="log">
+                16:26:02<br>
+                USB STORAGE REMOVED<br>
+                workstation=WS-17
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+        <h2>Medewerkers</h2>
+
+        <table>
+            <tr>
+                <th>Naam</th>
+                <th>Account</th>
+                <th>Afdeling</th>
+            </tr>
+
+            <tr>
+                <td>Lisa Jansen</td>
+                <td>ljansen</td>
+                <td>Finance</td>
+            </tr>
+
+            <tr>
+                <td>Robin Kuiper</td>
+                <td>rkuiper</td>
+                <td>Projectmanagement</td>
+            </tr>
+
+            <tr>
+                <td>Eva Smit</td>
+                <td>esmit</td>
+                <td>HR</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class="panel">
+        <h2>Opdracht</h2>
+
+        <p>
+            Welke medewerker heeft waarschijnlijk
+            <strong>overname-plan.pdf</strong> naar USB gekopieerd?
+        </p>
+
+        <p class="muted">
+            Combineer alle bewijsbronnen voordat je antwoord geeft.
+        </p>
+
+        <select id="answer">
+            <option value="">Kies een medewerker</option>
+            <option value="ljansen">Lisa Jansen</option>
+            <option value="rkuiper">Robin Kuiper</option>
+            <option value="esmit">Eva Smit</option>
+        </select>
+
+        <button onclick="checkAnswer()">
+            Controleer
+        </button>
+
+        <div id="result"></div>
+    </div>
+
+</div>
+
+
 <script>
-const sessionId=new URLSearchParams(location.search).get("session");
-async function waitForChallenge(url){for(let i=0;i<20;i++){try{const r=await fetch(url,{cache:"no-store"});if(r.ok){location.href=url;return}}catch(e){}await new Promise(r=>setTimeout(r,500))}location.href=url}
-async function checkAnswer(){const answer=document.getElementById("answer").value.trim().toLowerCase();const result=document.getElementById("result");if(!sessionId){result.className="error";result.textContent="Geen geldige ChallengeLab-sessie gevonden.";return}if(!answer){result.className="error";result.textContent="Vul of kies eerst een antwoord.";return}try{const r=await fetch("/api/session/"+sessionId+"/answer",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({answer})});const d=await r.json();if(!r.ok)throw new Error(d.detail||"Antwoord kon niet gecontroleerd worden.");if(!d.correct){result.className="error";result.textContent="✗ Niet correct. Bekijk de informatie nog eens.";return}if(d.completed){result.className="success";result.textContent="✓ Correct! Alle challenges zijn voltooid.";setTimeout(()=>location.href="/",1500);return}result.className="success";result.textContent="✓ Correct! Volgende challenge wordt gestart...";waitForChallenge(d.url)}catch(e){result.className="error";result.textContent="Fout: "+e.message}}
-document.getElementById("answer").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});
-</script></body></html>
+const params = new URLSearchParams(window.location.search);
+const sessionId = params.get("session");
+
+
+async function waitForChallenge(url) {
+    for (let i = 0; i < 20; i++) {
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                cache: "no-store"
+            });
+
+            if (response.ok) {
+                window.location.href = url;
+                return;
+            }
+        } catch (error) {}
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    window.location.href = url;
+}
+
+
+async function checkAnswer() {
+    const answer =
+        document.getElementById("answer").value;
+
+    const result =
+        document.getElementById("result");
+
+    if (!sessionId) {
+        result.className = "error";
+        result.textContent =
+            "Geen geldige ChallengeLab-sessie gevonden.";
+        return;
+    }
+
+    if (!answer) {
+        result.className = "error";
+        result.textContent =
+            "Kies eerst een medewerker.";
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            "/api/session/" +
+            sessionId +
+            "/answer",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    answer: answer
+                })
+            }
+        );
+
+        const data =
+            await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+        if (!data.correct) {
+            result.className = "error";
+
+            result.textContent =
+                "✗ Niet correct. Koppel het IP-adres aan het werkstation en daarna aan de gebruiker.";
+
+            return;
+        }
+
+        if (data.completed) {
+            result.className = "success";
+
+            result.textContent =
+                "✓ Correct! Alle beschikbare challenges zijn voltooid.";
+
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1500);
+
+            return;
+        }
+
+        result.className = "success";
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt gestart...";
+
+        waitForChallenge(data.url);
+
+    } catch (error) {
+        result.className = "error";
+
+        result.textContent =
+            "Fout: " + error.message;
+    }
+}
+</script>
+
+</body>
+</html>

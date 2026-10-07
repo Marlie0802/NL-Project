@@ -6,8 +6,12 @@ After=network.target
 User=team
 Group=team
 WorkingDirectory=/opt/challengelab
+
+EnvironmentFile=/etc/challengelab.env
 Environment="PATH=/opt/challengelab/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
 ExecStart=/opt/challengelab/venv/bin/uvicorn main:app --host 127.0.0.1 --port 8000
+
 Restart=always
 RestartSec=3
 

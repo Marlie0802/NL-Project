@@ -1,13 +1,425 @@
-<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>De gebroken toegangscode</title>
-<style>*{box-sizing:border-box}body{margin:0;background:#08100c;color:#e9f2ed;font-family:Arial,sans-serif}.container{width:1050px;max-width:94%;margin:40px auto 70px}h1,th{color:#35f29a}.panel{background:#0e1712;border:1px solid #20392b;padding:24px;border-radius:12px;margin-bottom:20px}.log,.mail{background:#07100b;border:1px solid #1c3024;border-radius:8px;padding:14px;margin:10px 0;line-height:1.6}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.cards>div{background:#0a120e;border:1px solid #1e3026;padding:16px;border-radius:9px}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:12px;border-bottom:1px solid #223128}.muted{color:#839087}.cipher{font-family:monospace;font-size:26px;letter-spacing:3px;text-align:center;background:#07100b;padding:24px;border-radius:10px;color:#35f29a}input,select{width:360px;max-width:100%;padding:12px;background:#07100b;color:#fff;border:1px solid #355443;border-radius:7px}button{padding:12px 18px;background:#35f29a;color:#04100a;border:0;border-radius:7px;font-weight:700;cursor:pointer;margin-left:6px}#result{margin-top:16px;font-weight:700}.success{color:#35f29a}.error{color:#ff7d7d}</style></head>
-<body><div class="container"><h1>De gebroken toegangscode</h1><div class="panel"><h2>Situatie</h2><p>Eva de Wit heeft haar telefoon vervangen. Reconstrueer de 8-cijferige herstelcode.</p>
-<div class="log">Ticket #4812 — Eva de Wit — account=edewit — request=REC-8821</div>
-<div class="log">09:41:18 user=edewit request=REC-8821 code_part_A=4721</div>
-<table><tr><th>Request</th><th>Token fragment</th></tr><tr><td>REC-8819</td><td>7742</td></tr><tr><td>REC-8821</td><td>8396</td></tr><tr><td>REC-8822</td><td>1107</td></tr></table>
-<p class="muted">De code bestaat uit code_part_A gevolgd door het tokenfragment van dezelfde request-ID.</p></div><div class="panel"><h2>Opdracht</h2><p>Wat is de volledige herstelcode?</p><input id="answer" maxlength="8" inputmode="numeric" placeholder="00000000"><button onclick="checkAnswer()">Controleer</button><div id="result"></div></div></div>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>SecureAuth Recovery Console</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #08100c;
+            color: #e9f2ed;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 1100px;
+            max-width: 94%;
+            margin: 40px auto 70px;
+        }
+
+        h1 {
+            color: #35f29a;
+        }
+
+        .panel {
+            background: #0e1712;
+            border: 1px solid #20392b;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 11px;
+            border-bottom: 1px solid #223128;
+        }
+
+        th {
+            color: #35f29a;
+        }
+
+        .log {
+            background: #07100b;
+            border: 1px solid #1a3023;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            font-family: monospace;
+            line-height: 1.6;
+        }
+
+        .ticket {
+            background: #101a14;
+            border-left: 3px solid #35f29a;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .muted {
+            color: #839087;
+        }
+
+        .warning {
+            color: #f7c86a;
+        }
+
+        input {
+            width: 280px;
+            padding: 12px;
+            background: #07100b;
+            border: 1px solid #355443;
+            color: white;
+            border-radius: 7px;
+        }
+
+        button {
+            padding: 12px 18px;
+            background: #35f29a;
+            color: #04100a;
+            border: 0;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #65ffb4;
+        }
+
+        #result {
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #35f29a;
+        }
+
+        .error {
+            color: #ff7d7d;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>SecureAuth Recovery Console</h1>
+
+    <div class="panel">
+        <h2>Situatie</h2>
+
+        <p>
+            Medewerker <strong>Eva de Wit</strong> heeft haar telefoon
+            vervangen en kan daardoor haar MFA-code niet meer genereren.
+        </p>
+
+        <p>
+            De helpdesk heeft een tijdelijke herstelcode aangemaakt,
+            maar door een fout is de code verdeeld geraakt over meerdere logs.
+        </p>
+
+        <p>
+            Onderzoek de gegevens en reconstrueer de volledige
+            <strong>8-cijferige herstelcode</strong>.
+        </p>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="panel">
+
+            <h2>Helpdesk tickets</h2>
+
+            <div class="ticket">
+                <strong>Ticket #4812</strong><br><br>
+
+                Gebruiker: Eva de Wit<br>
+                Account: edewit<br>
+                Probleem: Nieuwe telefoon / MFA reset<br>
+                Tijd: 02-10-2026 09:41<br><br>
+
+                Recovery request-ID:
+                <strong>REC-8821</strong>
+            </div>
+
+
+            <div class="ticket">
+                <strong>Ticket #4813</strong><br><br>
+
+                Gebruiker: Mark de Boer<br>
+                Account: mdeboer<br>
+                Probleem: Wachtwoord vergeten<br>
+                Tijd: 02-10-2026 09:45<br><br>
+
+                Recovery request-ID:
+                <strong>REC-8822</strong>
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>Authentication log</h2>
+
+            <div class="log">
+                09:41:18<br>
+                user=edewit<br>
+                request=REC-8821<br>
+                action=MFA_RECOVERY_CREATED<br>
+                code_part_A=4721
+            </div>
+
+            <div class="log">
+                09:45:07<br>
+                user=mdeboer<br>
+                request=REC-8822<br>
+                action=PASSWORD_RESET<br>
+                code_part_A=9154
+            </div>
+
+            <div class="log">
+                09:47:55<br>
+                user=kjansen<br>
+                request=REC-8819<br>
+                action=MFA_RECOVERY_CREATED<br>
+                code_part_A=3018
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>Secure token gateway</h2>
+
+        <table>
+            <tr>
+                <th>Tijd</th>
+                <th>Request-ID</th>
+                <th>Token fragment</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>09:40:02</td>
+                <td>REC-8819</td>
+                <td>7742</td>
+                <td>Issued</td>
+            </tr>
+
+            <tr>
+                <td>09:41:19</td>
+                <td>REC-8821</td>
+                <td>8396</td>
+                <td>Issued</td>
+            </tr>
+
+            <tr>
+                <td>09:45:09</td>
+                <td>REC-8822</td>
+                <td>1107</td>
+                <td>Issued</td>
+            </tr>
+
+            <tr>
+                <td>09:48:01</td>
+                <td>REC-8824</td>
+                <td>5530</td>
+                <td>Expired</td>
+            </tr>
+        </table>
+
+        <p class="muted">
+            Recovery codes bestaan uit code_part_A gevolgd door het
+            tokenfragment uit dezelfde request-ID.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>Opdracht</h2>
+
+        <p>
+            Wat is de volledige herstelcode voor Eva de Wit?
+        </p>
+
+        <p class="muted">
+            Vul alleen de 8 cijfers in.
+        </p>
+
+        <input
+            id="answer"
+            maxlength="8"
+            inputmode="numeric"
+            placeholder="00000000"
+            autocomplete="off"
+        >
+
+        <button onclick="checkAnswer()">
+            Controleer
+        </button>
+
+        <div id="result"></div>
+
+    </div>
+
+</div>
+
+
 <script>
-const sessionId=new URLSearchParams(location.search).get("session");
-async function waitForChallenge(url){for(let i=0;i<20;i++){try{const r=await fetch(url,{cache:"no-store"});if(r.ok){location.href=url;return}}catch(e){}await new Promise(r=>setTimeout(r,500))}location.href=url}
-async function checkAnswer(){const answer=document.getElementById("answer").value.trim().toLowerCase();const result=document.getElementById("result");if(!sessionId){result.className="error";result.textContent="Geen geldige ChallengeLab-sessie gevonden.";return}if(!answer){result.className="error";result.textContent="Vul of kies eerst een antwoord.";return}try{const r=await fetch("/api/session/"+sessionId+"/answer",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({answer})});const d=await r.json();if(!r.ok)throw new Error(d.detail||"Antwoord kon niet gecontroleerd worden.");if(!d.correct){result.className="error";result.textContent="✗ Niet correct. Bekijk de informatie nog eens.";return}if(d.completed){result.className="success";result.textContent="✓ Correct! Alle challenges zijn voltooid.";setTimeout(()=>location.href="/",1500);return}result.className="success";result.textContent="✓ Correct! Volgende challenge wordt gestart...";waitForChallenge(d.url)}catch(e){result.className="error";result.textContent="Fout: "+e.message}}
-document.getElementById("answer").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});
-</script></body></html>
+const params = new URLSearchParams(window.location.search);
+const sessionId = params.get("session");
+
+
+async function checkAnswer() {
+    const answer = document
+        .getElementById("answer")
+        .value
+        .trim();
+
+    const result =
+        document.getElementById("result");
+
+
+    if (!sessionId) {
+        result.className = "error";
+        result.textContent =
+            "Geen geldige ChallengeLab-sessie gevonden.";
+        return;
+    }
+
+
+    if (!answer) {
+        result.className = "error";
+        result.textContent =
+            "Vul eerst een antwoord in.";
+        return;
+    }
+
+
+    try {
+        const response = await fetch(
+            "/api/session/" +
+            sessionId +
+            "/answer",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    answer: answer
+                })
+            }
+        );
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+
+        if (!data.correct) {
+            result.className = "error";
+            result.textContent =
+                "✗ Niet correct. Controleer de request-ID en beide codefragmenten.";
+            return;
+        }
+
+
+        if (data.completed) {
+            result.className = "success";
+            result.textContent =
+                "✓ Correct! Alle beschikbare challenges zijn voltooid.";
+
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1500);
+
+            return;
+        }
+
+
+        result.className = "success";
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt gestart...";
+
+	async function waitForChallenge(url) {
+	    for (let i = 0; i < 20; i++) {
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                cache: "no-store"
+            });
+
+            if (response.ok) {
+                window.location.href = url;
+                return;
+            }
+        } catch (error) {
+            // challenge is nog niet klaar
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+    	}
+
+    	window.location.href = url;
+	}
+	
+	waitForChallenge(data.url);
+		
+
+    } catch (error) {
+        result.className = "error";
+        result.textContent =
+            "Fout: " + error.message;
+    }
+}
+
+
+document
+    .getElementById("answer")
+    .addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        }
+    );
+</script>
+
+</body>
+</html>

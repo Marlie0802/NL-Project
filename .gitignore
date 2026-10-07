@@ -8,21 +8,21 @@ id_ed25519
 challengelab_docker
 challengelab_docker.pub
 
-# Runtime/database
+# Databases / runtime
 *.db
 *.sqlite
 *.sqlite3
 
 # Python
-__pycache__/
-*.pyc
 venv/
 .venv/
+__pycache__/
+*.pyc
 
 # Logs
 *.log
 
-# Editor/OS
+# Editor
 .vscode/
 .idea/
 .DS_Store

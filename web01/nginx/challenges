@@ -1,8 +1,30 @@
 server {
     listen 80;
     listen [::]:80;
-
     server_name _;
+
+    return 301 https://challenges.ms-dev.nl$request_uri;
+}
+
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    server_name _;
+
+    ssl_certificate     /etc/ssl/web01/web01.crt;
+    ssl_certificate_key /etc/ssl/web01/web01.key;
+
+    return 301 https://challenges.ms-dev.nl$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name challenges.ms-dev.nl;
+
+    ssl_certificate     /etc/letsencrypt/live/challenges.ms-dev.nl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/challenges.ms-dev.nl/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
 
     root /var/www/challenges;
     index index.html;
@@ -13,6 +35,7 @@ server {
 
     location /api/ {
         proxy_pass http://127.0.0.1:8000/;
+
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -22,11 +45,13 @@ server {
 
     location /c/ {
         proxy_pass http://192.168.10.23:8081;
+
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
     }
