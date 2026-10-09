@@ -1,36 +1,1457 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ChallengeLab</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(rgba(0,255,140,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,140,.035) 1px,transparent 1px),radial-gradient(circle at top,#062218 0%,#08120f 45%,#050807 100%);background-size:40px 40px,40px 40px,auto;color:#f5f7f6;min-height:100vh}
-header,.page,footer{max-width:1200px;margin:auto}header{padding:28px 24px;display:flex;justify-content:space-between}.logo{font-size:22px;font-weight:700}.logo span{color:#36f39a}.page{padding:40px 24px 80px}.hero{max-width:800px;padding:55px 0}.hero h1{font-size:clamp(46px,7vw,78px);line-height:1;margin:0}.hero h1 span{color:#36f39a}.hero p{color:#8d9993;font-size:18px;line-height:1.6}.card,.row{background:#0e1712;border:1px solid #20392b;border-radius:14px}.card{padding:26px;margin-bottom:50px}.btn{border:0;border-radius:8px;padding:13px 18px;font-weight:700;cursor:pointer}.primary{background:#36f39a;color:#04100a}.danger{background:#251314;color:#ff9696;border:1px solid #472326}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.stat{background:#0a120e;border-radius:10px;padding:16px}.label{display:block;color:#65716c;font-size:11px;text-transform:uppercase;margin-bottom:8px}.progress{height:9px;background:#131c17;border-radius:99px;overflow:hidden;margin-top:18px}.progress>div{height:100%;background:#36f39a;width:0}.list{display:grid;gap:10px}.row{padding:18px;display:grid;grid-template-columns:60px 1fr 170px 130px;gap:14px}.muted{color:#748078}.hidden{display:none}footer{padding:30px 24px 50px;color:#4e5853}@media(max-width:800px){.row{grid-template-columns:50px 1fr}.extra{display:none}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ChallengeLab</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(0,255,140,.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,140,.03) 1px, transparent 1px),
+                radial-gradient(circle at top, #062218 0%, #08120f 45%, #050807 100%);
+            background-size: 40px 40px, 40px 40px, auto;
+            color: #f5f7f6;
+            min-height: 100vh;
+        }
+
+        *::selection {
+            background: #35f29a;
+            color: #04100a;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* LOGIN */
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .login-box {
+            width: 430px;
+            max-width: 100%;
+            background: rgba(8,18,15,.94);
+            border: 1px solid rgba(53,242,154,.20);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #35f29a;
+        }
+
+        .login-subtitle {
+            color: #79877f;
+            margin: 8px 0 28px;
+            line-height: 1.5;
+        }
+
+        label {
+            color: #9ba8a1;
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            background: #07100b;
+            border: 1px solid #294235;
+            color: white;
+            border-radius: 8px;
+            outline: none;
+            margin-bottom: 17px;
+        }
+
+        input:focus {
+            border-color: #35f29a;
+        }
+
+        .login-button {
+            width: 100%;
+            border: 0;
+            padding: 13px;
+            border-radius: 8px;
+            background: #35f29a;
+            color: #04100a;
+            font-weight: bold;
+        }
+
+        .login-button:hover {
+            background: #65ffb4;
+        }
+
+        .error-box {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255,80,80,.08);
+            color: #ff9b9b;
+            border: 1px solid rgba(255,80,80,.20);
+        }
+
+        /* PORTAL */
+
+        header {
+            max-width: 1200px;
+            margin: auto;
+            padding: 26px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .team-name {
+            color: #87958d;
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            color: #ff9d9d;
+            border: 1px solid #4a2929;
+            padding: 8px 12px;
+            border-radius: 7px;
+        }
+
+        .admin-link {
+            color: #738078;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .page {
+            width: 1200px;
+            max-width: calc(100% - 48px);
+            margin: auto;
+            padding-bottom: 80px;
+        }
+
+        .hero {
+            max-width: 800px;
+            padding: 80px 0 65px;
+        }
+
+        .eyebrow {
+            color: #35f29a;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            margin-bottom: 17px;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 7vw, 82px);
+            line-height: .98;
+            letter-spacing: -3px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .hero h1 span {
+            color: #35f29a;
+        }
+
+        .hero p {
+            color: #87958f;
+            font-size: 18px;
+            line-height: 1.65;
+            max-width: 650px;
+            margin-top: 25px;
+        }
+
+        .session-card {
+            background: rgba(8,18,15,.90);
+            border: 1px solid rgba(53,242,154,.14);
+            border-radius: 15px;
+            padding: 26px;
+            margin-bottom: 65px;
+        }
+
+        .session-card h2 {
+            margin-top: 0;
+        }
+
+        .session-card p {
+            color: #839087;
+            line-height: 1.6;
+        }
+
+        .btn-primary {
+            background: #35f29a;
+            color: #04100a;
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .btn-secondary {
+            background: #121b17;
+            color: white;
+            border: 1px solid #293b31;
+            padding: 12px 18px;
+            border-radius: 8px;
+        }
+
+        .btn-danger {
+            background: #241314;
+            color: #ff9999;
+            border: 1px solid #492527;
+            padding: 12px 18px;
+            border-radius: 8px;
+        }
+
+        .btn-primary:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .status-item {
+            background: rgba(255,255,255,.025);
+            border: 1px solid rgba(255,255,255,.05);
+            border-radius: 9px;
+            padding: 16px;
+        }
+
+        .status-label {
+            display: block;
+            color: #66746c;
+            text-transform: uppercase;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .progress-wrapper {
+            margin-top: 22px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            color: #7d8b83;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 9px;
+            border-radius: 20px;
+            background: #121c16;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: #35f29a;
+            transition: width .3s ease;
+        }
+
+        .actions {
+            margin-top: 22px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 8px;
+        }
+
+        .message-success {
+            color: #79ffbd;
+            background: rgba(53,242,154,.08);
+        }
+
+        .message-error {
+            color: #ff9e9e;
+            background: rgba(255,70,70,.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .section-header span {
+            color: #67756d;
+            font-size: 13px;
+        }
+
+        .challenge-list {
+            display: grid;
+            gap: 11px;
+        }
+
+        .challenge-row {
+            display: grid;
+            grid-template-columns: 55px 1fr 180px 120px;
+            gap: 15px;
+            align-items: center;
+            background: rgba(8,18,15,.78);
+            border: 1px solid rgba(53,242,154,.08);
+            border-radius: 11px;
+            padding: 17px;
+        }
+
+        .challenge-number {
+            color: #35f29a;
+            font-size: 13px;
+        }
+
+        .challenge-name {
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        .challenge-description {
+            color: #728078;
+            font-size: 13px;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .meta {
+            color: #89968f;
+            font-size: 13px;
+        }
+
+        footer {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 24px 50px;
+            color: #4e5953;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .challenge-row {
+                grid-template-columns: 45px 1fr;
+            }
+
+            .meta {
+                display: none;
+            }
+
+            .header-right .admin-link {
+                display: none;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header><div class="logo">Challenge<span>Lab</span></div></header>
-<main class="page">
-<section class="hero"><h1>Eén sessie.<br><span>Alle challenges.</span></h1><p>Start één labsessie en werk automatisch door alle challenges heen.</p></section>
-<section id="start" class="card"><h2>Nieuwe sessie</h2><p class="muted">Je voortgang wordt tijdens de sessie bijgehouden.</p><button id="startBtn" class="btn primary" onclick="startSession()">Start sessie</button></section>
-<section id="active" class="card hidden">
-<h2>Actieve sessie</h2>
-<div class="grid"><div class="stat"><span class="label">Challenge</span><span id="challenge">-</span></div><div class="stat"><span class="label">Voortgang</span><span id="progressText">-</span></div><div class="stat"><span class="label">Status</span><span id="status">-</span></div></div>
-<div class="progress"><div id="progressFill"></div></div>
-<p><button class="btn primary" onclick="openChallenge()">Open huidige challenge</button> <button class="btn danger" onclick="stopSession()">Sessie stoppen</button></p>
+
+<!-- TEAM LOGIN -->
+
+<section id="loginPage" class="login-page">
+
+    <div class="login-box">
+
+        <div class="logo">
+            Challenge<span>Lab</span>
+        </div>
+
+        <div class="login-subtitle">
+            Log in met het account van je team om een challengesessie te starten.
+        </div>
+
+        <form id="loginForm">
+
+            <label>Gebruikersnaam</label>
+
+            <input
+                id="username"
+                autocomplete="username"
+                required
+            >
+
+            <label>Wachtwoord</label>
+
+            <input
+                id="password"
+                type="password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button class="login-button">
+                Inloggen
+            </button>
+
+        </form>
+
+        <div
+            id="loginError"
+            class="error-box hidden">
+        </div>
+
+    </div>
+
 </section>
-<h2>Challenge overzicht</h2><p id="count" class="muted">Laden...</p><div id="list" class="list"></div>
-</main>
-<footer>ChallengeLab · pre-DB01 snapshot</footer>
+
+
+<!-- CHALLENGELAB PORTAL -->
+
+<section id="portal" class="hidden">
+
+    <header>
+
+        <div class="logo">
+            Challenge<span>Lab</span>
+        </div>
+
+        <div class="header-right">
+
+            <a
+                href="/admin/"
+                class="admin-link">
+                Beheer
+            </a>
+
+            <span
+                id="teamName"
+                class="team-name">
+            </span>
+
+            <button
+                class="logout-button"
+                onclick="logout()">
+                Uitloggen
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="page">
+
+        <section class="hero">
+
+            <div class="eyebrow">
+                Interactive Learning Platform
+            </div>
+
+            <h1>
+                Eén sessie.<br>
+                <span>Alle challenges.</span>
+            </h1>
+
+            <p>
+                Werk als team door alle cybersecurity-challenges.
+                Je voortgang en score worden automatisch opgeslagen.
+            </p>
+
+        </section>
+
+
+        <!-- NIEUWE SESSIE -->
+
+        <section
+            id="startSessionCard"
+            class="session-card">
+
+            <h2>
+                Start een nieuwe sessie
+            </h2>
+
+            <p>
+                Je voortgang wordt tijdens de sessie bijgehouden.
+                Na een correct antwoord start automatisch de volgende challenge.
+            </p>
+
+            <button
+                id="startSessionButton"
+                class="btn-primary"
+                onclick="startSession()">
+                Start sessie
+            </button>
+
+            <div
+                id="startMessage"
+                class="message hidden">
+            </div>
+
+        </section>
+
+
+        <!-- ACTIEVE SESSIE -->
+
+        <section
+            id="activeSessionCard"
+            class="session-card hidden">
+
+            <h2>
+                Actieve sessie
+            </h2>
+
+            <div class="status-grid">
+
+                <div class="status-item">
+                    <span class="status-label">
+                        Challenge
+                    </span>
+
+                    <span id="currentChallenge">
+                        -
+                    </span>
+                </div>
+
+
+                <div class="status-item">
+                    <span class="status-label">
+                        Voortgang
+                    </span>
+
+                    <span id="progressText">
+                        -
+                    </span>
+                </div>
+
+
+                <div class="status-item">
+                    <span class="status-label">
+                        Status
+                    </span>
+
+                    <span id="sessionStatus">
+                        -
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="progress-wrapper">
+
+                <div class="progress-info">
+                    <span>Voortgang</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div
+                        id="progressFill"
+                        class="progress-fill">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    id="openChallengeButton"
+                    class="btn-primary"
+                    onclick="openCurrentChallenge()">
+                    Open huidige challenge
+                </button>
+
+                <button
+                    class="btn-secondary"
+                    onclick="refreshSession()">
+                    Vernieuwen
+                </button>
+
+                <button
+                    class="btn-danger"
+                    onclick="stopSession()">
+                    Sessie stoppen
+                </button>
+
+            </div>
+
+            <div
+                id="sessionMessage"
+                class="message hidden">
+            </div>
+
+        </section>
+
+
+        <!-- CHALLENGES -->
+
+        <section>
+
+            <div class="section-header">
+
+                <h2>
+                    Challenge overzicht
+                </h2>
+
+                <span id="catalogCount">
+                    Laden...
+                </span>
+
+            </div>
+
+            <div
+                id="challengeList"
+                class="challenge-list">
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        ChallengeLab · Interactive Learning Platform
+    </footer>
+
+</section>
+
+
 <script>
-let current=null;
-async function api(url,options={}){const r=await fetch(url,options);const t=await r.text();let d={};try{d=t?JSON.parse(t):{}}catch{throw new Error(t||"Ongeldige serverresponse")}if(!r.ok)throw new Error(d.detail||"Er ging iets mis");return d}
-async function loadCatalog(){const d=await api("/api/catalog");count.textContent=d.total+" challenges";list.innerHTML="";for(const c of d.challenges){const e=document.createElement("div");e.className="row";e.innerHTML=`<div style="color:#36f39a">#${c.number}</div><div><b>${c.name}</b><div class="muted">${c.description}</div></div><div class="extra">${c.category}</div><div class="extra">${c.difficulty}</div>`;list.appendChild(e)}}
-function render(){if(!current)return;start.classList.add("hidden");active.classList.remove("hidden");challenge.textContent=current.status==="completed"?"Voltooid":(current.challenge?.name||"-");status.textContent=current.status;progressText.textContent=current.current+" / "+current.total;progressFill.style.width=Math.round(((current.status==="completed"?current.total:current.current-1)/current.total)*100)+"%"}
-async function startSession(){startBtn.disabled=true;current=await api("/api/session/start",{method:"POST"});localStorage.setItem("challengelab_session",current.session_id);render();setTimeout(openChallenge,300)}
-function openChallenge(){if(current?.url)location.href=current.url}
-async function restore(){const id=localStorage.getItem("challengelab_session");if(!id)return;try{current={session_id:id,...await api("/api/session/"+id)};render()}catch{localStorage.removeItem("challengelab_session")}}
-async function stopSession(){if(!current?.session_id)return;if(!confirm("Sessie stoppen?"))return;await api("/api/session/"+current.session_id,{method:"DELETE"});localStorage.removeItem("challengelab_session");location.reload()}
-loadCatalog();restore();
+
+let currentTeam = null;
+let currentSession = null;
+
+
+/* =========================================
+   API
+========================================= */
+
+async function api(url, options = {}) {
+
+    const response = await fetch(
+        url,
+        {
+            credentials: "same-origin",
+            ...options
+        }
+    );
+
+    const raw = await response.text();
+
+    let data = {};
+
+    try {
+        data = raw
+            ? JSON.parse(raw)
+            : {};
+    } catch {
+        throw new Error(
+            raw || "Ongeldige serverresponse"
+        );
+    }
+
+    if (!response.ok) {
+
+        const error = new Error(
+            data.detail ||
+            "Er ging iets mis"
+        );
+
+        error.status = response.status;
+
+        throw error;
+    }
+
+    return data;
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const errorBox =
+                document.getElementById(
+                    "loginError"
+                );
+
+            errorBox.classList.add("hidden");
+
+
+            try {
+
+                const data = await api(
+                    "/api/team/login",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            username:
+                                document
+                                    .getElementById(
+                                        "username"
+                                    )
+                                    .value,
+
+                            password:
+                                document
+                                    .getElementById(
+                                        "password"
+                                    )
+                                    .value
+                        })
+                    }
+                );
+
+
+                currentTeam =
+                    data.user;
+
+
+                await openPortal();
+
+            } catch (error) {
+
+                errorBox.textContent =
+                    error.message;
+
+                errorBox.classList.remove(
+                    "hidden"
+                );
+            }
+        }
+    );
+
+
+async function checkLogin() {
+
+    try {
+
+        currentTeam =
+            await api(
+                "/api/team/me"
+            );
+
+        await openPortal();
+
+    } catch {
+
+        showLogin();
+    }
+}
+
+
+function showLogin() {
+
+    document
+        .getElementById("portal")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loginPage")
+        .classList.remove("hidden");
+}
+
+
+async function openPortal() {
+
+    document
+        .getElementById("loginPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("portal")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("teamName")
+        .textContent =
+            currentTeam.display_name;
+
+
+    await loadCatalog();
+
+    await restoreSession();
+}
+
+
+async function logout() {
+
+    try {
+
+        await api(
+            "/api/team/logout",
+            {
+                method: "POST"
+            }
+        );
+
+    } finally {
+
+        localStorage.removeItem(
+            "challengelab_session"
+        );
+
+        currentTeam = null;
+        currentSession = null;
+
+        location.reload();
+    }
+}
+
+
+/* =========================================
+   CATALOG
+========================================= */
+
+async function loadCatalog() {
+
+    const data =
+        await api(
+            "/api/catalog"
+        );
+
+
+    document
+        .getElementById("catalogCount")
+        .textContent =
+            data.total +
+            " challenges";
+
+
+    const list =
+        document.getElementById(
+            "challengeList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    data.challenges.forEach(
+        challenge => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "challenge-row";
+
+
+            row.innerHTML = `
+                <div class="challenge-number">
+                    #${challenge.number}
+                </div>
+
+                <div>
+                    <div class="challenge-name">
+                        ${escapeHtml(
+                            challenge.name
+                        )}
+                    </div>
+
+                    <div class="challenge-description">
+                        ${escapeHtml(
+                            challenge.description
+                        )}
+                    </div>
+                </div>
+
+                <div class="meta">
+                    ${escapeHtml(
+                        challenge.category
+                    )}
+                </div>
+
+                <div class="meta">
+                    ${escapeHtml(
+                        challenge.difficulty
+                    )}
+                </div>
+            `;
+
+
+            list.appendChild(row);
+        }
+    );
+}
+
+
+/* =========================================
+   SESSIE STARTEN
+========================================= */
+
+async function startSession() {
+
+    const button =
+        document.getElementById(
+            "startSessionButton"
+        );
+
+
+    button.disabled = true;
+    button.textContent =
+        "Sessie starten...";
+
+
+    hideMessage(
+        "startMessage"
+    );
+
+
+    try {
+
+        const data =
+            await api(
+                "/api/session/start",
+                {
+                    method: "POST"
+                }
+            );
+
+
+        currentSession =
+            data;
+
+
+        saveSession();
+
+        showActiveSession();
+
+
+        setTimeout(
+            openCurrentChallenge,
+            400
+        );
+
+
+    } catch (error) {
+
+    if (
+        error.status === 409 &&
+        error.message.includes("actieve sessie")
+    ) {
+
+        await restoreSession();
+
+        return;
+    }
+
+
+    showMessage(
+        "startMessage",
+        error.message,
+        "error"
+    );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Start sessie";
+    }
+}
+
+
+/* =========================================
+   SESSIE HERSTELLEN
+========================================= */
+
+async function restoreSession() {
+
+    /*
+     * Eerst proberen we de lokale sessie-ID.
+     */
+    const localSessionId =
+        localStorage.getItem(
+            "challengelab_session"
+        );
+
+
+    if (localSessionId) {
+
+        try {
+
+            const data = await api(
+                "/api/session/" +
+                localSessionId
+            );
+
+
+            currentSession = {
+                session_id: localSessionId,
+                ...data
+            };
+
+
+            showActiveSession();
+
+            return;
+
+        } catch (error) {
+
+            localStorage.removeItem(
+                "challengelab_session"
+            );
+        }
+    }
+
+
+    /*
+     * Geen lokale sessie?
+     * Vraag dan de database of het team
+     * nog een actieve sessie heeft.
+     */
+    try {
+
+        const data = await api(
+            "/api/session/active"
+        );
+
+
+        if (!data.active) {
+
+            currentSession = null;
+
+            showStartSession();
+
+            return;
+        }
+
+
+        currentSession = data;
+
+
+        localStorage.setItem(
+            "challengelab_session",
+            data.session_id
+        );
+
+
+        showActiveSession();
+
+
+    } catch (error) {
+
+        currentSession = null;
+
+        showStartSession();
+    }
+}
+
+/* =========================================
+   SESSIE STATUS
+========================================= */
+
+async function refreshSession() {
+
+    if (!currentSession?.session_id) {
+        return;
+    }
+
+
+    try {
+
+        const data =
+            await api(
+                "/api/session/" +
+                currentSession.session_id
+            );
+
+
+        currentSession = {
+            ...currentSession,
+            ...data
+        };
+
+
+        showActiveSession();
+
+
+    } catch (error) {
+
+        showMessage(
+            "sessionMessage",
+            error.message,
+            "error"
+        );
+    }
+}
+
+function showActiveSession() {
+
+    if (!currentSession) {
+        showStartSession();
+        return;
+    }
+
+
+    /*
+     * Een geannuleerde sessie hoort niet meer
+     * als actieve sessie in de portal te staan.
+     */
+    if (currentSession.status === "cancelled") {
+
+        localStorage.removeItem(
+            "challengelab_session"
+        );
+
+        currentSession = null;
+
+        showStartSession();
+
+        showMessage(
+            "startMessage",
+            "De vorige sessie is gestopt. Je kunt een nieuwe sessie starten.",
+            "success"
+        );
+
+        return;
+    }
+
+
+    document
+        .getElementById("startSessionCard")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("activeSessionCard")
+        .classList.remove("hidden");
+
+
+    /*
+     * Voltooide sessie
+     */
+    if (currentSession.status === "completed") {
+
+        document
+            .getElementById("currentChallenge")
+            .textContent =
+                "Alle challenges voltooid";
+
+
+        document
+            .getElementById("sessionStatus")
+            .textContent =
+                "Voltooid";
+
+
+        document
+            .getElementById("progressText")
+            .textContent =
+                currentSession.total +
+                " / " +
+                currentSession.total;
+
+
+        setProgress(
+            currentSession.total,
+            currentSession.total
+        );
+
+
+        document
+            .getElementById("openChallengeButton")
+            .classList.add("hidden");
+
+
+        showMessage(
+            "sessionMessage",
+            "Gefeliciteerd! Alle challenges zijn voltooid.",
+            "success"
+        );
+
+        return;
+    }
+
+
+    /*
+     * Actieve sessie
+     */
+    document
+        .getElementById("openChallengeButton")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("currentChallenge")
+        .textContent =
+            currentSession.challenge?.name
+            || "-";
+
+
+    document
+        .getElementById("sessionStatus")
+        .textContent =
+            currentSession.status;
+
+
+    document
+        .getElementById("progressText")
+        .textContent =
+            currentSession.current +
+            " / " +
+            currentSession.total;
+
+
+    setProgress(
+        currentSession.current - 1,
+        currentSession.total
+    );
+}
+
+
+function showStartSession() {
+
+    document
+        .getElementById(
+            "activeSessionCard"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "startSessionCard"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+/* =========================================
+   OPEN CHALLENGE
+========================================= */
+
+function openCurrentChallenge() {
+
+    if (!currentSession?.url) {
+        return;
+    }
+
+
+    window.location.href =
+        currentSession.url;
+}
+
+
+/* =========================================
+   SESSIE STOPPEN
+========================================= */
+
+async function stopSession() {
+
+    if (!currentSession?.session_id) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Weet je zeker dat je deze sessie wilt stoppen?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await api(
+            "/api/session/" +
+            currentSession.session_id,
+            {
+                method: "DELETE"
+            }
+        );
+
+
+        localStorage.removeItem(
+            "challengelab_session"
+        );
+
+
+        currentSession = null;
+
+
+        showStartSession();
+
+
+    } catch (error) {
+
+        showMessage(
+            "sessionMessage",
+            error.message,
+            "error"
+        );
+    }
+}
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function saveSession() {
+
+    if (!currentSession?.session_id) {
+        return;
+    }
+
+
+    localStorage.setItem(
+        "challengelab_session",
+        currentSession.session_id
+    );
+}
+
+
+function setProgress(
+    completed,
+    total
+) {
+
+    const percentage =
+        total > 0
+        ? Math.round(
+            completed / total * 100
+        )
+        : 0;
+
+
+    document
+        .getElementById(
+            "progressFill"
+        )
+        .style.width =
+            percentage + "%";
+
+
+    document
+        .getElementById(
+            "progressPercent"
+        )
+        .textContent =
+            percentage + "%";
+}
+
+
+function showMessage(
+    id,
+    text,
+    type
+) {
+
+    const element =
+        document.getElementById(id);
+
+
+    element.textContent =
+        text;
+
+
+    element.className =
+        "message " +
+        (
+            type === "success"
+            ? "message-success"
+            : "message-error"
+        );
+}
+
+
+function hideMessage(id) {
+
+    document
+        .getElementById(id)
+        .classList.add(
+            "hidden"
+        );
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* START */
+
+checkLogin();
+
 </script>
-</body></html>
+
+</body>
+</html>

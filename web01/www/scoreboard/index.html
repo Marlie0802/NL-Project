@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ChallengeLab Scoreboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            min-height: 100vh;
+
+            color: #eef5f1;
+
+            background:
+                linear-gradient(
+                    rgba(0,255,140,.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0,255,140,.025) 1px,
+                    transparent 1px
+                ),
+                #050b08;
+
+            background-size:
+                40px 40px;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: auto;
+
+            padding:
+                30px 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #35f29a;
+        }
+
+        .back {
+            color: #819087;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        main {
+            width: 1150px;
+            max-width: calc(100% - 40px);
+
+            margin: auto;
+
+            padding:
+                40px 0
+                80px;
+        }
+
+        .hero {
+            margin-bottom: 45px;
+        }
+
+        .eyebrow {
+            color: #35f29a;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+            letter-spacing: 2px;
+
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            margin: 0;
+
+            font-size:
+                clamp(
+                    42px,
+                    6vw,
+                    70px
+                );
+
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            color: #7e8c84;
+
+            margin-top: 14px;
+
+            font-size: 17px;
+        }
+
+        .podium {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap: 16px;
+
+            margin-bottom: 35px;
+        }
+
+        .podium-card {
+            background: #0a1510;
+
+            border:
+                1px solid
+                #1b3526;
+
+            border-radius: 14px;
+
+            padding: 24px;
+        }
+
+        .position {
+            color: #35f29a;
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+        }
+
+        .team {
+            font-size: 22px;
+            font-weight: bold;
+
+            margin-bottom: 18px;
+        }
+
+        .podium-score {
+            font-size: 38px;
+            color: #35f29a;
+            font-weight: bold;
+        }
+
+        .podium-progress {
+            color: #7e8b84;
+
+            margin-top: 7px;
+        }
+
+        .panel {
+            background: #08120d;
+
+            border:
+                1px solid
+                #193123;
+
+            border-radius: 14px;
+
+            padding: 25px;
+        }
+
+        .panel-header {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+        }
+
+        .updated {
+            color: #708078;
+            font-size: 13px;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse:
+                collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+
+            padding:
+                15px 12px;
+
+            border-bottom:
+                1px solid
+                #172a20;
+        }
+
+        th {
+            color: #718179;
+
+            text-transform:
+                uppercase;
+
+            font-size: 12px;
+        }
+
+        td {
+            font-size: 16px;
+        }
+
+        .score {
+            color: #35f29a;
+
+            font-weight: bold;
+
+            font-size: 18px;
+        }
+
+        .empty {
+            padding: 40px;
+
+            text-align: center;
+
+            color: #718078;
+        }
+
+        @media (
+            max-width: 750px
+        ) {
+
+            .podium {
+                grid-template-columns:
+                    1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Challenge<span>Lab</span>
+    </div>
+
+    <a
+        href="/"
+        class="back">
+        Terug naar ChallengeLab
+    </a>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="eyebrow">
+            Live ranking
+        </div>
+
+        <h1>
+            Scoreboard
+        </h1>
+
+        <div class="subtitle">
+            De actuele stand van ChallengeLab.
+        </div>
+
+    </section>
+
+
+    <div
+        id="podium"
+        class="podium">
+    </div>
+
+
+    <section class="panel">
+
+        <div class="panel-header">
+
+            <h2>
+                Alle teams
+            </h2>
+
+            <span
+                id="updated"
+                class="updated">
+                Laden...
+            </span>
+
+        </div>
+
+
+        <div id="scoreboard">
+            Laden...
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+async function loadScoreboard() {
+
+    try {
+
+        const response = await fetch(
+            "/api/public/scoreboard",
+            {
+                cache: "no-store"
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                "Scoreboard kon niet worden geladen."
+            );
+        }
+
+
+        renderPodium(
+            data.scoreboard
+                .slice(0, 3)
+        );
+
+
+        renderScoreboard(
+            data.scoreboard
+        );
+
+
+        document
+            .getElementById(
+                "updated"
+            )
+            .textContent =
+                "Bijgewerkt: " +
+                new Date()
+                    .toLocaleTimeString(
+                        "nl-NL",
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit"
+                        }
+                    );
+
+
+    } catch (error) {
+
+        document
+            .getElementById(
+                "scoreboard"
+            )
+            .innerHTML =
+                `
+                <div class="empty">
+                    Scoreboard kon niet worden geladen.
+                </div>
+                `;
+    }
+}
+
+
+function renderPodium(teams) {
+
+    const podium =
+        document.getElementById(
+            "podium"
+        );
+
+
+    if (!teams.length) {
+
+        podium.innerHTML = "";
+
+        return;
+    }
+
+
+    podium.innerHTML =
+        teams.map(team => `
+
+            <div class="podium-card">
+
+                <div class="position">
+                    #${team.position}
+                </div>
+
+                <div class="team">
+                    ${escapeHtml(
+                        team.team
+                    )}
+                </div>
+
+                <div class="podium-score">
+                    ${team.score}
+                </div>
+
+                <div class="podium-progress">
+                    ${team.completed}
+                    /
+                    ${team.total}
+                    challenges
+                </div>
+
+            </div>
+
+        `).join("");
+}
+
+
+function renderScoreboard(teams) {
+
+    const container =
+        document.getElementById(
+            "scoreboard"
+        );
+
+
+    if (!teams.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                Nog geen teams in het scoreboard.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Team</th>
+                    <th>Voortgang</th>
+                    <th>Punten</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${teams.map(team => `
+
+                    <tr>
+
+                        <td>
+                            ${team.position}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                team.team
+                            )}
+                        </td>
+
+                        <td>
+                            ${team.completed}
+                            /
+                            ${team.total}
+                        </td>
+
+                        <td class="score">
+                            ${team.score}
+                        </td>
+
+                    </tr>
+
+                `).join("")}
+
+            </tbody>
+
+        </table>
+    `;
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+loadScoreboard();
+
+setInterval(
+    loadScoreboard,
+    10000
+);
+
+</script>
+
+</body>
+</html>
