@@ -2,25 +2,63 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ChallengeLab Beheer</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BreachOut Beheer</title>
 
     <style>
         * {
             box-sizing: border-box;
         }
 
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --bg: #050b08;
+            --panel: #0a140f;
+            --panel-2: #0d1812;
+            --border: #1b3225;
+            --border-light: #294235;
+            --text: #edf5f0;
+            --muted: #7d8c83;
+            --danger: #ff9292;
+            --warning: #ffd071;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background:
-                linear-gradient(rgba(0,255,140,.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,255,140,.025) 1px, transparent 1px),
-                #050b08;
-            background-size: 40px 40px;
-            color: #edf5f0;
+
             min-height: 100vh;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            color: var(--text);
+
+            background:
+                linear-gradient(
+                    rgba(0,255,140,.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0,255,140,.025) 1px,
+                    transparent 1px
+                ),
+                var(--bg);
+
+            background-size:
+                40px 40px;
+        }
+
+        *::selection {
+            color: #04100a;
+            background: var(--green);
         }
 
         .hidden {
@@ -28,7 +66,8 @@
         }
 
         button,
-        input {
+        input,
+        select {
             font: inherit;
         }
 
@@ -36,377 +75,884 @@
             cursor: pointer;
         }
 
-        /* LOGIN */
+        /* =========================================
+           ALGEMEEN
+        ========================================= */
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .logo span {
+            color: var(--green);
+        }
+
+        .product-tag {
+            margin-top: 4px;
+
+            color: #59685f;
+
+            font-size: 10px;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .empty {
+            padding: 34px;
+
+            color: #66756c;
+
+            text-align: center;
+        }
+
+        /* =========================================
+           LOGIN
+        ========================================= */
 
         .login-page {
             min-height: 100vh;
+
             display: flex;
+
             align-items: center;
             justify-content: center;
-            padding: 20px;
+
+            padding: 24px;
         }
 
         .login-box {
             width: 420px;
             max-width: 100%;
-            background: #0b1510;
-            border: 1px solid #1d3829;
-            border-radius: 16px;
+
             padding: 32px;
+
+            border: 1px solid var(--border);
+            border-radius: 16px;
+
+            background: #0b1510;
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,.35);
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 6px;
+        .login-box h1 {
+            margin:
+                28px 0
+                7px;
+
+            font-size: 25px;
         }
 
-        .logo span {
-            color: #35f29a;
-        }
+        .login-box p {
+            margin:
+                0 0
+                26px;
 
-        .subtitle {
-            color: #78877e;
-            margin-bottom: 28px;
+            color: var(--muted);
+
+            line-height: 1.5;
         }
 
         label {
             display: block;
+
             margin-bottom: 7px;
+
             color: #aab6af;
+
             font-size: 13px;
         }
 
-        input {
+        input,
+        select {
             width: 100%;
-            padding: 13px;
+
+            padding: 12px 13px;
+
+            border: 1px solid var(--border-light);
             border-radius: 8px;
-            border: 1px solid #294235;
-            background: #07100b;
-            color: white;
-            margin-bottom: 16px;
+
             outline: none;
+
+            color: white;
+
+            background: #07100b;
         }
 
-        input:focus {
-            border-color: #35f29a;
+        input:focus,
+        select:focus {
+            border-color: var(--green);
         }
 
-        .btn-primary {
-            border: 0;
-            border-radius: 8px;
-            background: #35f29a;
-            color: #031109;
-            padding: 12px 18px;
-            font-weight: 700;
-        }
-
-        .btn-primary:hover {
-            background: #68ffb5;
-        }
-
-        .login-box .btn-primary {
-            width: 100%;
+        .form-group {
+            margin-bottom: 17px;
         }
 
         .error-message {
+            margin-top: 14px;
+
             color: #ff9e9e;
-            margin-top: 15px;
-            font-size: 14px;
+
+            font-size: 13px;
         }
 
-        /* ADMIN */
+        /* =========================================
+           BUTTONS
+        ========================================= */
+
+        .btn-primary,
+        .btn-secondary,
+        .btn-danger,
+        .btn-warning,
+        .btn-small {
+            border-radius: 8px;
+
+            transition:
+                border-color .15s,
+                background .15s;
+        }
+
+        .btn-primary {
+            padding: 11px 16px;
+
+            border: 0;
+
+            color: #031109;
+
+            font-weight: 700;
+
+            background: var(--green);
+        }
+
+        .btn-primary:hover {
+            background: var(--green-light);
+        }
+
+        .btn-secondary {
+            padding: 10px 14px;
+
+            border: 1px solid #2b4034;
+
+            color: white;
+
+            background: #111b15;
+        }
+
+        .btn-danger {
+            padding: 10px 14px;
+
+            border: 1px solid #4b292a;
+
+            color: var(--danger);
+
+            background: #1b1112;
+        }
+
+        .btn-warning {
+            padding: 10px 14px;
+
+            border: 1px solid #554723;
+
+            color: var(--warning);
+
+            background: #18150c;
+        }
+
+        .btn-small {
+            padding: 7px 10px;
+
+            border: 1px solid #2b4135;
+
+            color: #d6dfda;
+
+            background: #101a14;
+
+            font-size: 12px;
+        }
+
+        .btn-small:hover {
+            border-color: var(--green);
+        }
+
+        .btn-small.danger {
+            color: var(--danger);
+        }
+
+        .btn-small.warning {
+            color: var(--warning);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* =========================================
+           LAYOUT
+        ========================================= */
 
         .admin-layout {
             display: grid;
-            grid-template-columns: 230px 1fr;
+
+            grid-template-columns:
+                240px
+                1fr;
+
             min-height: 100vh;
         }
 
         aside {
+            position: sticky;
+            top: 0;
+
+            height: 100vh;
+
+            padding: 26px 18px;
+
+            border-right:
+                1px solid
+                #172a20;
+
             background: #08110c;
-            border-right: 1px solid #172a20;
-            padding: 25px 18px;
         }
 
-        aside .logo {
-            margin: 0 10px 35px;
+        .aside-brand {
+            margin:
+                0 10px
+                34px;
+        }
+
+        nav {
+            display: grid;
+            gap: 5px;
         }
 
         .nav-button {
-            display: block;
             width: 100%;
-            text-align: left;
-            background: transparent;
-            color: #87958d;
+
+            padding: 12px 14px;
+
             border: 0;
             border-radius: 8px;
-            padding: 12px 14px;
-            margin-bottom: 5px;
+
+            color: #84928a;
+
+            text-align: left;
+
+            background: transparent;
         }
 
         .nav-button:hover {
-            background: #101c15;
             color: white;
+
+            background: #101c15;
         }
 
         .nav-button.active {
-            background: rgba(53,242,154,.10);
-            color: #35f29a;
+            color: var(--green);
+
+            background:
+                rgba(
+                    53,
+                    242,
+                    154,
+                    .10
+                );
         }
 
-        .logout {
-            margin-top: 30px;
-            color: #ff9696;
+        .nav-button.logout {
+            margin-top: 25px;
+
+            color: var(--danger);
         }
 
         main {
-            padding: 35px;
-            overflow-x: auto;
+            min-width: 0;
+
+            padding: 34px;
         }
 
         .topbar {
             display: flex;
-            justify-content: space-between;
-            gap: 20px;
+
             align-items: center;
-            margin-bottom: 35px;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 31px;
         }
 
         .topbar h1 {
             margin: 0;
+
             font-size: 30px;
         }
 
         .admin-name {
-            color: #86938c;
-            font-size: 14px;
+            color: var(--muted);
+
+            font-size: 13px;
         }
 
-        /* DASHBOARD */
+        /* =========================================
+           PANELS
+        ========================================= */
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 28px;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(165px, 1fr)
+                );
+
+            gap: 14px;
+
+            margin-bottom: 25px;
         }
 
         .stat-card,
         .panel {
-            background: rgba(10,20,15,.92);
-            border: 1px solid #1b3225;
+            border:
+                1px solid
+                var(--border);
+
             border-radius: 12px;
+
+            background:
+                rgba(
+                    10,
+                    20,
+                    15,
+                    .94
+                );
         }
 
         .stat-card {
-            padding: 20px;
+            padding: 19px;
         }
 
         .stat-label {
-            color: #78877e;
-            font-size: 12px;
+            margin-bottom: 9px;
+
+            color: #718078;
+
+            font-size: 11px;
+
             text-transform: uppercase;
-            margin-bottom: 10px;
         }
 
         .stat-number {
-            font-size: 32px;
+            color: var(--green);
+
+            font-size: 30px;
+
             font-weight: 700;
-            color: #35f29a;
         }
 
         .panel {
-            padding: 24px;
             margin-bottom: 22px;
+
+            padding: 23px;
         }
 
         .panel-header {
             display: flex;
-            justify-content: space-between;
+
             align-items: center;
+            justify-content: space-between;
+
             gap: 15px;
+
             margin-bottom: 20px;
         }
 
         .panel-header h2 {
             margin: 0;
+
             font-size: 21px;
         }
 
-        /* TABLE */
+        .panel-actions {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+        /* =========================================
+           TABLES
+        ========================================= */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
 
         table {
             width: 100%;
+
             border-collapse: collapse;
         }
 
         th,
         td {
+            padding: 12px 10px;
+
+            border-bottom:
+                1px solid
+                #172a20;
+
             text-align: left;
-            padding: 13px 10px;
-            border-bottom: 1px solid #172a20;
+
+            vertical-align: middle;
         }
 
         th {
             color: #6f8076;
-            font-size: 12px;
+
+            font-size: 11px;
+
             text-transform: uppercase;
         }
 
         td {
             color: #dce5df;
+
+            font-size: 14px;
         }
 
         .score {
-            color: #35f29a;
-            font-weight: bold;
+            color: var(--green);
+
+            font-weight: 700;
         }
+
+        .actions-cell {
+            min-width: 230px;
+        }
+
+        .actions-cell button {
+            margin:
+                2px 3px
+                2px 0;
+        }
+
+        /* =========================================
+           BADGES
+        ========================================= */
 
         .badge {
             display: inline-block;
+
             padding: 5px 9px;
+
             border-radius: 20px;
-            font-size: 12px;
+
+            font-size: 11px;
         }
 
         .badge-active {
-            background: rgba(53,242,154,.10);
-            color: #35f29a;
+            color: var(--green);
+
+            background:
+                rgba(
+                    53,
+                    242,
+                    154,
+                    .10
+                );
         }
 
         .badge-disabled {
-            background: rgba(255,100,100,.10);
-            color: #ff8e8e;
-        }
-
-        /* BUTTONS */
-
-        .btn-small {
-            padding: 7px 10px;
-            border-radius: 7px;
-            border: 1px solid #2b4135;
-            background: #101a14;
-            color: #d6dfda;
-            margin-right: 5px;
-        }
-
-        .btn-small:hover {
-            border-color: #35f29a;
-        }
-
-        .btn-danger {
             color: #ff9696;
+
+            background:
+                rgba(
+                    255,
+                    100,
+                    100,
+                    .10
+                );
         }
 
-        /* MODAL */
+        .badge-warning {
+            color: var(--warning);
+
+            background:
+                rgba(
+                    255,
+                    208,
+                    113,
+                    .09
+                );
+        }
+
+        .badge-neutral {
+            color: #b0bbb4;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .06
+                );
+        }
+
+        /* =========================================
+           FILTERS
+        ========================================= */
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-bottom: 19px;
+        }
+
+        .filter-button.active {
+            color: var(--green);
+
+            border-color: var(--green);
+
+            background:
+                rgba(
+                    53,
+                    242,
+                    154,
+                    .08
+                );
+        }
+
+        /* =========================================
+           CHALLENGES
+        ========================================= */
+
+        .challenge-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(260px, 1fr)
+                );
+
+            gap: 13px;
+        }
+
+        .challenge-card {
+            padding: 17px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 10px;
+
+            background:
+                #0a1510;
+        }
+
+        .challenge-card.disabled {
+            opacity: .55;
+        }
+
+        .challenge-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 10px;
+        }
+
+        .challenge-card h3 {
+            margin: 0;
+
+            font-size: 16px;
+        }
+
+        .challenge-card p {
+            margin:
+                8px 0
+                13px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.45;
+        }
+
+        .challenge-meta {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 7px;
+        }
+
+        /* =========================================
+           MODALS
+        ========================================= */
 
         .modal-backdrop {
             position: fixed;
+
             inset: 0;
-            background: rgba(0,0,0,.72);
+
+            z-index: 100;
+
             display: flex;
+
             align-items: center;
             justify-content: center;
+
             padding: 20px;
-            z-index: 50;
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .76
+                );
         }
 
         .modal {
-            width: 450px;
+            width: 520px;
             max-width: 100%;
-            background: #0b1510;
-            border: 1px solid #294235;
-            border-radius: 14px;
+            max-height: 90vh;
+
+            overflow-y: auto;
+
             padding: 25px;
+
+            border:
+                1px solid
+                var(--border-light);
+
+            border-radius: 14px;
+
+            background: #0b1510;
+        }
+
+        .modal.large {
+            width: 760px;
         }
 
         .modal h2 {
-            margin-top: 0;
+            margin:
+                0 0
+                20px;
         }
 
         .modal-actions {
             display: flex;
+
             justify-content: flex-end;
-            gap: 10px;
+
+            gap: 9px;
+
+            margin-top: 22px;
         }
 
-        .btn-cancel {
-            background: #162019;
-            color: white;
-            border: 1px solid #2b4034;
-            padding: 11px 16px;
+        .radio-row {
+            display: flex;
+            gap: 17px;
+
+            margin:
+                5px 0
+                19px;
+        }
+
+        .radio-row label {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            margin: 0;
+        }
+
+        .radio-row input {
+            width: auto;
+            margin: 0;
+        }
+
+        .checkbox-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+
+            gap: 9px;
+
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+
+            gap: 9px;
+
+            padding: 10px;
+
+            border:
+                1px solid
+                #20382a;
+
             border-radius: 8px;
+
+            background: #09130e;
         }
 
-        .empty {
-            color: #738078;
-            text-align: center;
-            padding: 30px;
+        .checkbox-item input {
+            width: auto;
+            margin: 2px 0 0;
         }
 
-	.session-filters {
-  	  display: flex;
-  	  gap: 8px;
-  	  flex-wrap: wrap;
-  	  margin-bottom: 20px;
-	}
+        .checkbox-item label {
+            margin: 0;
 
-	.session-filter.active {
-  	  border-color: #35f29a;
-  	  color: #35f29a;
-  	  background: rgba(53,242,154,.08);
-	}
+            cursor: pointer;
+        }
 
-        @media (max-width: 800px) {
+        .checkbox-title {
+            display: block;
+
+            color: white;
+
+            font-size: 13px;
+        }
+
+        .checkbox-meta {
+            display: block;
+
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        @media (max-width: 850px) {
             .admin-layout {
                 grid-template-columns: 1fr;
             }
 
             aside {
+                position: static;
+
+                height: auto;
+
                 border-right: 0;
-                border-bottom: 1px solid #172a20;
+                border-bottom:
+                    1px solid
+                    #172a20;
+            }
+
+            nav {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(0, 1fr)
+                    );
+            }
+
+            main {
+                padding: 22px;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="/assets/breachout-favicon.png?v=3"
+    >
+
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- =========================================
+     LOGIN
+========================================= -->
 
-<section id="loginPage" class="login-page">
-
+<section
+    id="loginPage"
+    class="login-page"
+>
     <div class="login-box">
 
         <div class="logo">
-            Challenge<span>Lab</span>
+            Breach<span>Out</span>
         </div>
 
-        <div class="subtitle">
+        <div class="product-tag">
             Beheeromgeving
         </div>
 
+        <h1>
+            Beheerder
+        </h1>
+
+        <p>
+            Meld je aan om BreachOut, bedrijven,
+            Spelleiders en teams te beheren.
+        </p>
+
         <form id="loginForm">
 
-            <label>Gebruikersnaam</label>
+            <div class="form-group">
+                <label>
+                    Gebruikersnaam
+                </label>
 
-            <input
-                id="loginUsername"
-                autocomplete="username"
-                required
+                <input
+                    id="loginUsername"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Wachtwoord
+                </label>
+
+                <input
+                    id="loginPassword"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button
+                class="btn-primary btn-full"
+                type="submit"
             >
-
-            <label>Wachtwoord</label>
-
-            <input
-                id="loginPassword"
-                type="password"
-                autocomplete="current-password"
-                required
-            >
-
-            <button class="btn-primary">
                 Inloggen
             </button>
 
@@ -414,59 +960,102 @@
 
         <div
             id="loginError"
-            class="error-message hidden">
-        </div>
+            class="error-message hidden"
+        ></div>
 
     </div>
-
 </section>
 
 
-<!-- ADMIN -->
+<!-- =========================================
+     ADMIN
+========================================= -->
 
 <section
     id="adminPage"
-    class="admin-layout hidden">
+    class="admin-layout hidden"
+>
 
     <aside>
 
-        <div class="logo">
-            Challenge<span>Lab</span>
+        <div class="aside-brand">
+
+            <div class="logo">
+                Breach<span>Out</span>
+            </div>
+
+            <div class="product-tag">
+                Beheer
+            </div>
+
         </div>
 
-        <button
-            class="nav-button active"
-            data-page="dashboard"
-            onclick="showPage('dashboard')">
-            Dashboard
-        </button>
+        <nav>
 
-        <button
-            class="nav-button"
-            data-page="scoreboard"
-            onclick="showPage('scoreboard')">
-            Scoreboard
-        </button>
+            <button
+                class="nav-button active"
+                data-page="dashboard"
+                onclick="showPage('dashboard')"
+            >
+                Dashboard
+            </button>
 
-        <button
-            class="nav-button"
-            data-page="teams"
-            onclick="showPage('teams')">
-            Teams
-        </button>
-	
-	<button
-    class="nav-button"
-    data-page="sessions"
-    onclick="showPage('sessions')">
-    Sessies
-	</button>
+            <button
+                class="nav-button"
+                data-page="organizations"
+                onclick="showPage('organizations')"
+            >
+                Bedrijven
+            </button>
 
-        <button
-            class="nav-button logout"
-            onclick="logout()">
-            Uitloggen
-        </button>
+            <button
+                class="nav-button"
+                data-page="gameleaders"
+                onclick="showPage('gameleaders')"
+            >
+                Spelleiders
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="teams"
+                onclick="showPage('teams')"
+            >
+                Teams
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="challenges"
+                onclick="showPage('challenges')"
+            >
+                Challenges
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="sessions"
+                onclick="showPage('sessions')"
+            >
+                Sessies
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="scoreboard"
+                onclick="showPage('scoreboard')"
+            >
+                Scoreboard
+            </button>
+
+            <button
+                class="nav-button logout"
+                onclick="logout()"
+            >
+                Uitloggen
+            </button>
+
+        </nav>
 
     </aside>
 
@@ -474,12 +1063,16 @@
     <main>
 
         <div class="topbar">
-            <h1 id="pageTitle">Dashboard</h1>
+
+            <h1 id="pageTitle">
+                Dashboard
+            </h1>
 
             <div
                 id="adminName"
-                class="admin-name">
-            </div>
+                class="admin-name"
+            ></div>
+
         </div>
 
 
@@ -487,124 +1080,179 @@
 
         <section id="page-dashboard">
 
-    <div class="stats">
+            <div class="stats">
 
-        <div class="stat-card">
-            <div class="stat-label">
-                Teams
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Bedrijven
+                    </div>
+
+                    <div
+                        id="statOrganizations"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Spelleiders
+                    </div>
+
+                    <div
+                        id="statGameleaders"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Teams
+                    </div>
+
+                    <div
+                        id="statTeams"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Actieve sessies
+                    </div>
+
+                    <div
+                        id="statSessions"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Actieve challenges
+                    </div>
+
+                    <div
+                        id="statChallenges"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Hoogste score
+                    </div>
+
+                    <div
+                        id="statHighscore"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+                </div>
+
             </div>
 
-            <div
-                id="statTeams"
-                class="stat-number">
-                0
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-label">
-                Actieve teams
-            </div>
-
-            <div
-                id="statActiveTeams"
-                class="stat-number">
-                0
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-label">
-                Voltooide teams
-            </div>
-
-            <div
-                id="statCompletedTeams"
-                class="stat-number">
-                0
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-label">
-                Gem. voortgang
-            </div>
-
-            <div
-                id="statAverageProgress"
-                class="stat-number">
-                0%
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-label">
-                Foute antwoorden
-            </div>
-
-            <div
-                id="statWrongAnswers"
-                class="stat-number">
-                0
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-label">
-                Hoogste score
-            </div>
-
-            <div
-                id="statHighscore"
-                class="stat-number">
-                0
-            </div>
-        </div>
-
-    </div>
-
-
-    <div class="panel">
-
-        <div class="panel-header">
-
-            <h2>Actuele top 3</h2>
-
-            <span
-                id="dashboardUpdated"
-                class="admin-name">
-                Nog niet bijgewerkt
-            </span>
-
-        </div>
-
-        <div id="dashboardScoreboard">
-            Laden...
-        </div>
-
-    </div>
-
-</section>
-
-        <!-- SCOREBOARD -->
-
-        <section
-            id="page-scoreboard"
-            class="hidden">
 
             <div class="panel">
 
                 <div class="panel-header">
-                    <h2>Scoreboard</h2>
 
-                    <button
-                        class="btn-small"
-                        onclick="loadScoreboard()">
-                        Vernieuwen
-                    </button>
+                    <h2>
+                        Actuele top 3
+                    </h2>
+
+                    <span
+                        id="dashboardUpdated"
+                        class="admin-name"
+                    >
+                        -
+                    </span>
+
                 </div>
 
-                <div id="scoreboardContainer">
+                <div id="dashboardScoreboard">
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BEDRIJVEN -->
+
+        <section
+            id="page-organizations"
+            class="hidden"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Bedrijven
+                    </h2>
+
+                    <button
+                        class="btn-primary"
+                        onclick="openOrganizationModal()"
+                    >
+                        + Bedrijf
+                    </button>
+
+                </div>
+
+                <div
+                    id="organizationsContainer"
+                    class="table-wrap"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SPELLEIDERS -->
+
+        <section
+            id="page-gameleaders"
+            class="hidden"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Spelleiders
+                    </h2>
+
+                    <button
+                        class="btn-primary"
+                        onclick="openGameleaderModal()"
+                    >
+                        + Spelleider
+                    </button>
+
+                </div>
+
+                <div
+                    id="gameleadersContainer"
+                    class="table-wrap"
+                >
                     Laden...
                 </div>
 
@@ -617,23 +1265,30 @@
 
         <section
             id="page-teams"
-            class="hidden">
+            class="hidden"
+        >
 
             <div class="panel">
 
                 <div class="panel-header">
 
-                    <h2>Teams</h2>
+                    <h2>
+                        Teams
+                    </h2>
 
                     <button
                         class="btn-primary"
-                        onclick="openTeamModal()">
-                        + Team toevoegen
+                        onclick="openTeamModal()"
+                    >
+                        + Team
                     </button>
 
                 </div>
 
-                <div id="teamsContainer">
+                <div
+                    id="teamsContainer"
+                    class="table-wrap"
+                >
                     Laden...
                 </div>
 
@@ -641,105 +1296,200 @@
 
         </section>
 
-	<!-- SESSIES -->
 
-	<section
-	    id="page-sessions"
-    	class="hidden">
+        <!-- CHALLENGES -->
 
-    <div class="panel">
+        <section
+            id="page-challenges"
+            class="hidden"
+        >
 
-        <div class="panel-header">
+            <div class="panel">
 
-            <h2>Sessies</h2>
+                <div class="panel-header">
 
-            <button
-                class="btn-small"
-                onclick="loadSessions()">
-                Vernieuwen
-            </button>
+                    <h2>
+                        Challengecatalogus
+                    </h2>
 
-        </div>
+                    <button
+                        class="btn-small"
+                        onclick="loadChallenges()"
+                    >
+                        Vernieuwen
+                    </button>
+
+                </div>
+
+                <div
+                    id="challengeStats"
+                    class="muted"
+                    style="margin-bottom:20px"
+                ></div>
+
+                <div
+                    id="challengesContainer"
+                    class="challenge-grid"
+                ></div>
+
+            </div>
+
+        </section>
 
 
-<div class="session-filters">
+        <!-- SESSIES -->
 
-    <button
-        class="btn-small session-filter active"
-        data-filter="all"
-        onclick="setSessionFilter('all')">
-        Alles
-    </button>
+        <section
+            id="page-sessions"
+            class="hidden"
+        >
 
-    <button
-        class="btn-small session-filter"
-        data-filter="active"
-        onclick="setSessionFilter('active')">
-        Actief
-    </button>
+            <div class="panel">
 
-    <button
-        class="btn-small session-filter"
-        data-filter="completed"
-        onclick="setSessionFilter('completed')">
-        Voltooid
-    </button>
+                <div class="panel-header">
 
-    <button
-        class="btn-small session-filter"
-        data-filter="cancelled"
-        onclick="setSessionFilter('cancelled')">
-        Geannuleerd
-    </button>
+                    <h2>
+                        Sessies
+                    </h2>
 
-</div>
+                    <button
+                        class="btn-small"
+                        onclick="loadSessions()"
+                    >
+                        Vernieuwen
+                    </button>
 
-        <div id="sessionsContainer">
-            Laden...
-        </div>
+                </div>
 
-    </div>
+                <div class="filters">
 
-</section>
+                    <button
+                        class="btn-small filter-button active"
+                        data-filter="all"
+                        onclick="setSessionFilter('all')"
+                    >
+                        Alles
+                    </button>
+
+                    <button
+                        class="btn-small filter-button"
+                        data-filter="active"
+                        onclick="setSessionFilter('active')"
+                    >
+                        Actief
+                    </button>
+
+                    <button
+                        class="btn-small filter-button"
+                        data-filter="completed"
+                        onclick="setSessionFilter('completed')"
+                    >
+                        Voltooid
+                    </button>
+
+                    <button
+                        class="btn-small filter-button"
+                        data-filter="cancelled"
+                        onclick="setSessionFilter('cancelled')"
+                    >
+                        Geannuleerd
+                    </button>
+
+                </div>
+
+                <div
+                    id="sessionsContainer"
+                    class="table-wrap"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SCOREBOARD -->
+
+        <section
+            id="page-scoreboard"
+            class="hidden"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Scoreboard
+                    </h2>
+
+                    <button
+                        class="btn-small"
+                        onclick="loadScoreboard()"
+                    >
+                        Vernieuwen
+                    </button>
+
+                </div>
+
+                <div
+                    id="scoreboardContainer"
+                    class="table-wrap"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
     </main>
 
-<!-- TEAM MODAL -->
+</section>
+
+
+<!-- =========================================
+     BEDRIJF MODAL
+========================================= -->
 
 <div
-    id="teamModal"
-    class="modal-backdrop hidden">
+    id="organizationModal"
+    class="modal-backdrop hidden"
+>
 
     <div class="modal">
 
-        <h2>Nieuw team</h2>
+        <h2>
+            Nieuw bedrijf
+        </h2>
 
-        <label>Gebruikersnaam</label>
-        <input id="newUsername">
+        <div class="form-group">
+            <label>
+                Bedrijfsnaam
+            </label>
 
-        <label>Teamnaam</label>
-        <input id="newDisplayName">
-
-        <label>Wachtwoord</label>
-        <input
-            id="newPassword"
-            type="password">
+            <input id="newOrganizationName">
+        </div>
 
         <div
-            id="teamModalError"
-            class="error-message hidden">
-        </div>
+            id="organizationModalError"
+            class="error-message hidden"
+        ></div>
 
         <div class="modal-actions">
 
             <button
-                class="btn-cancel"
-                onclick="closeTeamModal()">
+                class="btn-secondary"
+                onclick="closeModal('organizationModal')"
+            >
                 Annuleren
             </button>
 
             <button
                 class="btn-primary"
-                onclick="createTeam()">
+                onclick="createOrganization()"
+            >
                 Aanmaken
             </button>
 
@@ -750,50 +1500,427 @@
 </div>
 
 
+<!-- =========================================
+     SPELLEIDER MODAL
+========================================= -->
+
+<div
+    id="gameleaderModal"
+    class="modal-backdrop hidden"
+>
+
+    <div class="modal">
+
+        <h2>
+            Nieuwe Spelleider
+        </h2>
+
+        <div class="form-group">
+            <label>
+                Gebruikersnaam
+            </label>
+
+            <input id="newGameleaderUsername">
+        </div>
+
+        <div class="form-group">
+            <label>
+                Naam
+            </label>
+
+            <input id="newGameleaderDisplayName">
+        </div>
+
+        <div class="form-group">
+            <label>
+                Wachtwoord
+            </label>
+
+            <input
+                id="newGameleaderPassword"
+                type="password"
+            >
+        </div>
+
+        <div class="form-group">
+            <label>
+                Bedrijf
+            </label>
+
+            <select
+                id="newGameleaderOrganization"
+            ></select>
+        </div>
+
+        <div
+            id="gameleaderModalError"
+            class="error-message hidden"
+        ></div>
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-secondary"
+                onclick="closeModal('gameleaderModal')"
+            >
+                Annuleren
+            </button>
+
+            <button
+                class="btn-primary"
+                onclick="createGameleader()"
+            >
+                Aanmaken
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     TEAM MODAL
+========================================= -->
+
+<div
+    id="teamModal"
+    class="modal-backdrop hidden"
+>
+
+    <div class="modal">
+
+        <h2>
+            Nieuw team
+        </h2>
+
+        <div class="form-group">
+            <label>
+                Gebruikersnaam
+            </label>
+
+            <input id="newTeamUsername">
+        </div>
+
+        <div class="form-group">
+            <label>
+                Teamnaam
+            </label>
+
+            <input id="newTeamDisplayName">
+        </div>
+
+        <div class="form-group">
+            <label>
+                Wachtwoord
+            </label>
+
+            <input
+                id="newTeamPassword"
+                type="password"
+            >
+        </div>
+
+        <div class="form-group">
+            <label>
+                Bedrijf
+            </label>
+
+            <select id="newTeamOrganization">
+                <option value="">
+                    Geen bedrijf
+                </option>
+            </select>
+        </div>
+
+        <div
+            id="teamModalError"
+            class="error-message hidden"
+        ></div>
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-secondary"
+                onclick="closeModal('teamModal')"
+            >
+                Annuleren
+            </button>
+
+            <button
+                class="btn-primary"
+                onclick="createTeam()"
+            >
+                Aanmaken
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     START SESSIE MODAL
+========================================= -->
+
+<div
+    id="startSessionModal"
+    class="modal-backdrop hidden"
+>
+
+    <div class="modal large">
+
+        <h2 id="startSessionTitle">
+            Sessie starten
+        </h2>
+
+        <input
+            id="startSessionTeamId"
+            type="hidden"
+        >
+
+        <div class="radio-row">
+
+            <label>
+                <input
+                    type="radio"
+                    name="sessionMode"
+                    value="package"
+                    checked
+                    onchange="updateSessionMode()"
+                >
+                Pakket van 10
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="sessionMode"
+                    value="single"
+                    onchange="updateSessionMode()"
+                >
+                Losse challenge
+            </label>
+
+        </div>
+
+
+        <div id="packageStartOptions">
+
+            <p class="muted">
+                BreachOut gebruikt het opgeslagen
+                teampakket. Is er geen pakket ingesteld,
+                dan wordt automatisch een pakket gekozen.
+            </p>
+
+        </div>
+
+
+        <div
+            id="singleStartOptions"
+            class="hidden"
+        >
+
+            <div class="form-group">
+
+                <label>
+                    Challenge
+                </label>
+
+                <select
+                    id="singleChallengeSelect"
+                ></select>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="startSessionError"
+            class="error-message hidden"
+        ></div>
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-secondary"
+                onclick="closeModal('startSessionModal')"
+            >
+                Annuleren
+            </button>
+
+            <button
+                class="btn-primary"
+                onclick="startTeamSession()"
+            >
+                Starten
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     PAKKET MODAL
+========================================= -->
+
+<div
+    id="assignmentModal"
+    class="modal-backdrop hidden"
+>
+
+    <div class="modal large">
+
+        <h2 id="assignmentTitle">
+            Challengepakket
+        </h2>
+
+        <input
+            id="assignmentTeamId"
+            type="hidden"
+        >
+
+        <p class="muted">
+            Selecteer exact 10 actieve challenges.
+            BreachOut sorteert ze automatisch van
+            makkelijk naar moeilijk.
+        </p>
+
+        <div
+            id="assignmentCount"
+            class="muted"
+            style="margin:15px 0"
+        >
+            0 / 10 geselecteerd
+        </div>
+
+        <div
+            id="assignmentChallengeList"
+            class="checkbox-grid"
+        ></div>
+
+        <div
+            id="assignmentError"
+            class="error-message hidden"
+        ></div>
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-warning"
+                onclick="clearAssignments()"
+            >
+                Automatisch
+            </button>
+
+            <button
+                class="btn-secondary"
+                onclick="closeModal('assignmentModal')"
+            >
+                Annuleren
+            </button>
+
+            <button
+                class="btn-primary"
+                onclick="saveAssignments()"
+            >
+                Opslaan
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
+"use strict";
 
-async function api(url, options = {}) {
 
+let currentAdmin = null;
+
+let organizations = [];
+let gameleaders = [];
+let teams = [];
+let challenges = [];
+let sessions = [];
+let scoreboard = [];
+
+let sessionFilter = "all";
+
+let dashboardTimer = null;
+
+
+/* =========================================
+   API
+========================================= */
+
+async function api(
+    url,
+    options = {}
+) {
     const response =
-        await fetch(url, {
-            credentials: "same-origin",
-            ...options
-        });
+        await fetch(
+            url,
+            {
+                credentials:
+                    "same-origin",
+                ...options
+            }
+        );
 
     const raw =
         await response.text();
 
     let data = {};
 
-    try {
-        data =
-            raw
-                ? JSON.parse(raw)
-                : {};
-    } catch {
-        throw new Error(
-            raw || "Ongeldige serverresponse"
-        );
+    if (raw) {
+        try {
+            data =
+                JSON.parse(raw);
+        } catch {
+            throw new Error(
+                "Ongeldige serverresponse"
+            );
+        }
     }
 
     if (!response.ok) {
-        throw new Error(
-            data.detail ||
-            "Er ging iets mis"
-        );
+        const error =
+            new Error(
+                data.detail ||
+                "Er ging iets mis"
+            );
+
+        error.status =
+            response.status;
+
+        throw error;
     }
 
     return data;
 }
 
 
-/* LOGIN */
+/* =========================================
+   LOGIN
+========================================= */
 
 document
-    .getElementById("loginForm")
+    .getElementById(
+        "loginForm"
+    )
     .addEventListener(
         "submit",
-        async function(event) {
+        async event => {
 
             event.preventDefault();
 
@@ -802,10 +1929,11 @@ document
                     "loginError"
                 );
 
-            error.classList.add("hidden");
+            error.classList.add(
+                "hidden"
+            );
 
             try {
-
                 await api(
                     "/api/admin/login",
                     {
@@ -836,10 +1964,9 @@ document
 
                 await loadAdmin();
 
-            } catch (e) {
-
+            } catch (err) {
                 error.textContent =
-                    e.message;
+                    err.message;
 
                 error.classList.remove(
                     "hidden"
@@ -850,59 +1977,65 @@ document
 
 
 async function loadAdmin() {
-
     try {
-
-        // Alleen de loginstatus bepaalt
-        // of we naar de beheeromgeving mogen.
-        const me = await api(
-            "/api/admin/me"
-        );
+        currentAdmin =
+            await api(
+                "/api/admin/me"
+            );
 
         document
-            .getElementById("loginPage")
-            .classList.add("hidden");
+            .getElementById(
+                "loginPage"
+            )
+            .classList.add(
+                "hidden"
+            );
 
         document
-            .getElementById("adminPage")
-            .classList.remove("hidden");
+            .getElementById(
+                "adminPage"
+            )
+            .classList.remove(
+                "hidden"
+            );
 
         document
-            .getElementById("adminName")
+            .getElementById(
+                "adminName"
+            )
             .textContent =
-                me.display_name;
+                currentAdmin.display_name;
 
+        await refreshEverything();
 
-        // Een fout in één onderdeel mag
-        // niet de volledige adminlogin breken.
-        await Promise.allSettled([
-            loadScoreboard(),
-            loadTeams(),
-            loadSessions()
-        ]);
+        startDashboardRefresh();
 
-	startDashboardRefresh();
-    } catch (error) {
+    } catch {
+        document
+            .getElementById(
+                "adminPage"
+            )
+            .classList.add(
+                "hidden"
+            );
 
         document
-            .getElementById("adminPage")
-            .classList.add("hidden");
-
-        document
-            .getElementById("loginPage")
-            .classList.remove("hidden");
+            .getElementById(
+                "loginPage"
+            )
+            .classList.remove(
+                "hidden"
+            );
     }
 }
 
+
 async function logout() {
-
-   if (dashboardTimer) {
-    clearInterval(
-        dashboardTimer
-    );
-
-    dashboardTimer = null;
-}
+    if (dashboardTimer) {
+        clearInterval(
+            dashboardTimer
+        );
+    }
 
     await api(
         "/api/admin/logout",
@@ -915,132 +2048,1942 @@ async function logout() {
 }
 
 
-/* NAVIGATION */
-
-/* NAVIGATION */
+/* =========================================
+   NAVIGATIE
+========================================= */
 
 function showPage(page) {
-
     const pages = [
         "dashboard",
-        "scoreboard",
+        "organizations",
+        "gameleaders",
         "teams",
-        "sessions"
+        "challenges",
+        "sessions",
+        "scoreboard"
     ];
 
     pages.forEach(name => {
-
-        const element =
-            document.getElementById(
+        document
+            .getElementById(
                 "page-" + name
-            );
-
-        if (element) {
-            element.classList.toggle(
+            )
+            ?.classList
+            .toggle(
                 "hidden",
                 name !== page
             );
-        }
-
-	if (page === "sessions") {
- 	    loadSessions();
-	}
-
-	if (page === "dashboard") {
-  	    refreshDashboard();
-	}
     });
 
-
     document
-        .querySelectorAll(".nav-button")
+        .querySelectorAll(
+            ".nav-button"
+        )
         .forEach(button => {
-
             button.classList.toggle(
                 "active",
-                button.dataset.page === page
+                button.dataset.page
+                === page
             );
         });
 
-
     const titles = {
-        dashboard: "Dashboard",
-        scoreboard: "Scoreboard",
-        teams: "Teams",
-        sessions: "Sessies"
+        dashboard:
+            "Dashboard",
+
+        organizations:
+            "Bedrijven",
+
+        gameleaders:
+            "Spelleiders",
+
+        teams:
+            "Teams",
+
+        challenges:
+            "Challenges",
+
+        sessions:
+            "Sessies",
+
+        scoreboard:
+            "Scoreboard"
     };
 
-
-    const title =
-        document.getElementById(
+    document
+        .getElementById(
             "pageTitle"
-        );
+        )
+        .textContent =
+            titles[page]
+            || "BreachOut";
 
-    if (title) {
-        title.textContent =
-            titles[page] || "ChallengeLab";
+    if (page === "dashboard") {
+        refreshDashboard();
     }
-
 
     if (page === "sessions") {
         loadSessions();
     }
 }
 
-/* SCOREBOARD */
 
-async function loadScoreboard() {
+/* =========================================
+   ALLES LADEN
+========================================= */
 
-    const data =
-        await api(
-            "/api/admin/scoreboard"
-        );
+async function refreshEverything() {
+    await Promise.allSettled([
+        loadOrganizations(),
+        loadGameleaders(),
+        loadTeams(),
+        loadChallenges(),
+        loadSessions(),
+        loadScoreboard()
+    ]);
 
-    const scores =
-        data.scoreboard;
+    refreshDashboard();
+}
 
+
+/* =========================================
+   BEDRIJVEN
+========================================= */
+
+async function loadOrganizations() {
+    const data = await api(
+        "/api/admin/organizations"
+    );
+
+    organizations =
+        data.organizations || [];
 
     document
-        .getElementById("statHighscore")
+        .getElementById(
+            "statOrganizations"
+        )
         .textContent =
-            scores.length
-                ? scores[0].score
-                : 0;
+            organizations.length;
+
+    renderOrganizations();
+
+    populateOrganizationSelects();
+}
 
 
-    const table =
-        renderScoreboard(scores);
+function renderOrganizations() {
+    const container =
+        document.getElementById(
+            "organizationsContainer"
+        );
 
+    if (!organizations.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Nog geen bedrijven aangemaakt.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Bedrijf</th>
+                    <th>Teams</th>
+                    <th>Spelleiders</th>
+                    <th>Status</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${organizations.map(org => `
+                    <tr>
+                        <td>
+                            ${escapeHtml(
+                                org.name
+                            )}
+                        </td>
+
+                        <td>
+                            ${org.teams}
+                        </td>
+
+                        <td>
+                            ${org.gameleaders}
+                        </td>
+
+                        <td>
+                            ${
+                                org.active
+                                ? badge(
+                                    "Actief",
+                                    "active"
+                                )
+                                : badge(
+                                    "Uitgeschakeld",
+                                    "disabled"
+                                )
+                            }
+                        </td>
+
+                        <td class="actions-cell">
+
+                            <button
+                                class="btn-small"
+                                onclick="renameOrganization(
+                                    ${org.id}
+                                )"
+                            >
+                                Naam
+                            </button>
+
+                            <button
+                                class="btn-small ${
+                                    org.active
+                                    ? "danger"
+                                    : ""
+                                }"
+                                onclick="toggleOrganization(
+                                    ${org.id},
+                                    ${!org.active}
+                                )"
+                            >
+                                ${
+                                    org.active
+                                    ? "Uitschakelen"
+                                    : "Inschakelen"
+                                }
+                            </button>
+
+                        </td>
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>
+    `;
+}
+
+
+function openOrganizationModal() {
+    document
+        .getElementById(
+            "organizationModal"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+async function createOrganization() {
+    const error =
+        modalError(
+            "organizationModalError"
+        );
+
+    try {
+        await api(
+            "/api/admin/organizations",
+            {
+                method: "POST",
+
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    name:
+                        document
+                            .getElementById(
+                                "newOrganizationName"
+                            )
+                            .value
+                })
+            }
+        );
+
+        document
+            .getElementById(
+                "newOrganizationName"
+            )
+            .value = "";
+
+        closeModal(
+            "organizationModal"
+        );
+
+        await Promise.all([
+            loadOrganizations(),
+            loadTeams(),
+            loadGameleaders()
+        ]);
+
+    } catch (err) {
+        showModalError(
+            error,
+            err.message
+        );
+    }
+}
+
+
+async function renameOrganization(
+    organizationId
+) {
+    const org =
+        organizations.find(
+            item =>
+                item.id
+                === organizationId
+        );
+
+    if (!org) {
+        return;
+    }
+
+    const name = prompt(
+        "Nieuwe bedrijfsnaam:",
+        org.name
+    );
+
+    if (!name) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/organizations/${organizationId}`,
+            {
+                method: "PATCH",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    name
+                })
+            }
+        );
+
+        await loadOrganizations();
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+async function toggleOrganization(
+    organizationId,
+    active
+) {
+    try {
+        await api(
+            `/api/admin/organizations/${organizationId}`,
+            {
+                method: "PATCH",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    active
+                })
+            }
+        );
+
+        await loadOrganizations();
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+/* =========================================
+   SPELLEIDERS
+========================================= */
+
+async function loadGameleaders() {
+    const data = await api(
+        "/api/admin/gameleaders"
+    );
+
+    gameleaders =
+        data.gameleaders || [];
+
+    document
+        .getElementById(
+            "statGameleaders"
+        )
+        .textContent =
+            gameleaders.length;
+
+    renderGameleaders();
+}
+
+
+function renderGameleaders() {
+    const container =
+        document.getElementById(
+            "gameleadersContainer"
+        );
+
+    if (!gameleaders.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Nog geen Spelleiders aangemaakt.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Naam</th>
+                    <th>Gebruikersnaam</th>
+                    <th>Bedrijf</th>
+                    <th>Status</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${gameleaders.map(user => `
+                    <tr>
+                        <td>
+                            ${escapeHtml(
+                                user.display_name
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                user.username
+                            )}
+                        </td>
+
+                        <td>
+                            ${
+                                user.organization
+                                ? escapeHtml(
+                                    user.organization
+                                )
+                                : "-"
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                user.active
+                                ? badge(
+                                    "Actief",
+                                    "active"
+                                )
+                                : badge(
+                                    "Uitgeschakeld",
+                                    "disabled"
+                                )
+                            }
+                        </td>
+
+                        <td class="actions-cell">
+
+                            <button
+                                class="btn-small"
+                                onclick="changeGameleaderOrganization(
+                                    ${user.id}
+                                )"
+                            >
+                                Bedrijf
+                            </button>
+
+                            <button
+                                class="btn-small"
+                                onclick="resetGameleaderPassword(
+                                    ${user.id}
+                                )"
+                            >
+                                Wachtwoord
+                            </button>
+
+                            <button
+                                class="btn-small ${
+                                    user.active
+                                    ? "danger"
+                                    : ""
+                                }"
+                                onclick="toggleGameleader(
+                                    ${user.id},
+                                    ${!user.active}
+                                )"
+                            >
+                                ${
+                                    user.active
+                                    ? "Uitschakelen"
+                                    : "Inschakelen"
+                                }
+                            </button>
+
+                        </td>
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>
+    `;
+}
+
+
+function openGameleaderModal() {
+    populateOrganizationSelects();
+
+    document
+        .getElementById(
+            "gameleaderModal"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+async function createGameleader() {
+    const error =
+        modalError(
+            "gameleaderModalError"
+        );
+
+    try {
+        const organizationId =
+            Number(
+                document
+                    .getElementById(
+                        "newGameleaderOrganization"
+                    )
+                    .value
+            );
+
+        await api(
+            "/api/admin/gameleaders",
+            {
+                method: "POST",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    username:
+                        value(
+                            "newGameleaderUsername"
+                        ),
+
+                    display_name:
+                        value(
+                            "newGameleaderDisplayName"
+                        ),
+
+                    password:
+                        value(
+                            "newGameleaderPassword"
+                        ),
+
+                    organization_id:
+                        organizationId
+                })
+            }
+        );
+
+        clearInputs([
+            "newGameleaderUsername",
+            "newGameleaderDisplayName",
+            "newGameleaderPassword"
+        ]);
+
+        closeModal(
+            "gameleaderModal"
+        );
+
+        await Promise.all([
+            loadGameleaders(),
+            loadOrganizations()
+        ]);
+
+    } catch (err) {
+        showModalError(
+            error,
+            err.message
+        );
+    }
+}
+
+
+async function toggleGameleader(
+    userId,
+    active
+) {
+    try {
+        await api(
+            `/api/admin/gameleaders/${userId}/active`,
+            {
+                method: "PATCH",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    active
+                })
+            }
+        );
+
+        await loadGameleaders();
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+async function resetGameleaderPassword(
+    userId
+) {
+    const password = prompt(
+        "Nieuw wachtwoord (minimaal 8 tekens):"
+    );
+
+    if (!password) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/gameleaders/${userId}/password`,
+            {
+                method: "POST",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    password
+                })
+            }
+        );
+
+        alert(
+            "Wachtwoord aangepast."
+        );
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+async function changeGameleaderOrganization(
+    userId
+) {
+    const organizationId =
+        chooseOrganization();
+
+    if (!organizationId) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/gameleaders/${userId}/organization`,
+            {
+                method: "PATCH",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    organization_id:
+                        organizationId
+                })
+            }
+        );
+
+        await Promise.all([
+            loadGameleaders(),
+            loadOrganizations()
+        ]);
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+/* =========================================
+   TEAMS
+========================================= */
+
+async function loadTeams() {
+    const data = await api(
+        "/api/admin/teams"
+    );
+
+    teams =
+        data.teams || [];
+
+    document
+        .getElementById(
+            "statTeams"
+        )
+        .textContent =
+            teams.length;
+
+    renderTeams();
+}
+
+
+function renderTeams() {
+    const container =
+        document.getElementById(
+            "teamsContainer"
+        );
+
+    if (!teams.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Nog geen teams aangemaakt.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Gebruikersnaam</th>
+                    <th>Bedrijf</th>
+                    <th>Status</th>
+                    <th>Sessie</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${teams.map(team => `
+                    <tr>
+                        <td>
+                            ${escapeHtml(
+                                team.display_name
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                team.username
+                            )}
+                        </td>
+
+                        <td>
+                            ${
+                                team.organization
+                                ? escapeHtml(
+                                    team.organization
+                                )
+                                : badge(
+                                    "Niet gekoppeld",
+                                    "warning"
+                                )
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                team.active
+                                ? badge(
+                                    "Actief",
+                                    "active"
+                                )
+                                : badge(
+                                    "Uitgeschakeld",
+                                    "disabled"
+                                )
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                team.active_session
+                                ? badge(
+                                    `${team.active_session.current}/${team.active_session.total}`,
+                                    "active"
+                                )
+                                : "-"
+                            }
+                        </td>
+
+                        <td class="actions-cell">
+
+                            <button
+                                class="btn-small"
+                                onclick="openStartSessionModal(
+                                    ${team.id}
+                                )"
+                            >
+                                Start
+                            </button>
+
+                            <button
+                                class="btn-small"
+                                onclick="openAssignmentModal(
+                                    ${team.id}
+                                )"
+                            >
+                                Pakket
+                            </button>
+
+                            <button
+                                class="btn-small"
+                                onclick="changeTeamOrganization(
+                                    ${team.id}
+                                )"
+                            >
+                                Bedrijf
+                            </button>
+
+                            <button
+                                class="btn-small"
+                                onclick="resetTeamPassword(
+                                    ${team.id}
+                                )"
+                            >
+                                Wachtwoord
+                            </button>
+
+                            <button
+                                class="btn-small ${
+                                    team.active
+                                    ? "danger"
+                                    : ""
+                                }"
+                                onclick="toggleTeam(
+                                    ${team.id},
+                                    ${!team.active}
+                                )"
+                            >
+                                ${
+                                    team.active
+                                    ? "Uit"
+                                    : "Aan"
+                                }
+                            </button>
+
+                            <button
+                                class="btn-small danger"
+                                onclick="deleteTeam(
+                                    ${team.id}
+                                )"
+                            >
+                                Verwijder
+                            </button>
+
+                        </td>
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>
+    `;
+}
+
+
+function openTeamModal() {
+    populateOrganizationSelects();
+
+    document
+        .getElementById(
+            "teamModal"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+async function createTeam() {
+    const error =
+        modalError(
+            "teamModalError"
+        );
+
+    try {
+        const rawOrg =
+            document
+                .getElementById(
+                    "newTeamOrganization"
+                )
+                .value;
+
+        await api(
+            "/api/admin/teams",
+            {
+                method: "POST",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    username:
+                        value(
+                            "newTeamUsername"
+                        ),
+
+                    display_name:
+                        value(
+                            "newTeamDisplayName"
+                        ),
+
+                    password:
+                        value(
+                            "newTeamPassword"
+                        ),
+
+                    organization_id:
+                        rawOrg
+                        ? Number(rawOrg)
+                        : null
+                })
+            }
+        );
+
+        clearInputs([
+            "newTeamUsername",
+            "newTeamDisplayName",
+            "newTeamPassword"
+        ]);
+
+        closeModal(
+            "teamModal"
+        );
+
+        await Promise.all([
+            loadTeams(),
+            loadOrganizations(),
+            loadScoreboard()
+        ]);
+
+    } catch (err) {
+        showModalError(
+            error,
+            err.message
+        );
+    }
+}
+
+
+async function toggleTeam(
+    teamId,
+    active
+) {
+    try {
+        await api(
+            `/api/admin/teams/${teamId}/active`,
+            {
+                method: "PATCH",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    active
+                })
+            }
+        );
+
+        await loadTeams();
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+async function resetTeamPassword(
+    teamId
+) {
+    const password =
+        prompt(
+            "Nieuw wachtwoord (minimaal 8 tekens):"
+        );
+
+    if (!password) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/teams/${teamId}/password`,
+            {
+                method: "POST",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    password
+                })
+            }
+        );
+
+        alert(
+            "Wachtwoord aangepast."
+        );
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+async function changeTeamOrganization(
+    teamId
+) {
+    const answer = prompt(
+        organizationPromptText(
+            true
+        )
+    );
+
+    if (answer === null) {
+        return;
+    }
+
+    const organizationId =
+        answer.trim() === ""
+        ? null
+        : Number(answer);
+
+    if (
+        organizationId !== null
+        &&
+        !organizations.some(
+            org =>
+                org.id
+                === organizationId
+        )
+    ) {
+        alert(
+            "Ongeldig bedrijfs-ID."
+        );
+
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/teams/${teamId}/organization`,
+            {
+                method: "PATCH",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    organization_id:
+                        organizationId
+                })
+            }
+        );
+
+        await Promise.all([
+            loadTeams(),
+            loadOrganizations()
+        ]);
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+async function deleteTeam(
+    teamId
+) {
+    const team =
+        teams.find(
+            item =>
+                item.id === teamId
+        );
+
+    if (!team) {
+        return;
+    }
+
+    const confirmed =
+        confirm(
+            `Team '${team.display_name}' verwijderen?\n\n` +
+            "Sessies, resultaten en scores worden ook verwijderd."
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/teams/${teamId}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        await Promise.all([
+            loadTeams(),
+            loadSessions(),
+            loadScoreboard(),
+            loadOrganizations()
+        ]);
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+/* =========================================
+   CHALLENGES
+========================================= */
+
+async function loadChallenges() {
+    const data = await api(
+        "/api/admin/challenges"
+    );
+
+    challenges =
+        data.challenges || [];
+
+    const stats =
+        data.statistics || {};
+
+    document
+        .getElementById(
+            "statChallenges"
+        )
+        .textContent =
+            stats.enabled || 0;
+
+    document
+        .getElementById(
+            "challengeStats"
+        )
+        .textContent =
+            `${stats.enabled || 0} van ${stats.total || 0} challenges zijn momenteel actief.`;
+
+    renderChallenges();
+
+    populateChallengeSelect();
+}
+
+
+function renderChallenges() {
+    const container =
+        document.getElementById(
+            "challengesContainer"
+        );
+
+    container.innerHTML =
+        challenges.map(
+            challenge => `
+                <article
+                    class="challenge-card ${
+                        challenge.enabled
+                        ? ""
+                        : "disabled"
+                    }"
+                >
+
+                    <div class="challenge-top">
+
+                        <h3>
+                            ${escapeHtml(
+                                challenge.name
+                            )}
+                        </h3>
+
+                        ${
+                            challenge.enabled
+                            ? badge(
+                                "Actief",
+                                "active"
+                            )
+                            : badge(
+                                "In ontwikkeling",
+                                "warning"
+                            )
+                        }
+
+                    </div>
+
+                    <p>
+                        ${escapeHtml(
+                            challenge.description
+                        )}
+                    </p>
+
+                    <div class="challenge-meta">
+
+                        ${badge(
+                            `Niveau ${challenge.difficulty_level}`,
+                            "neutral"
+                        )}
+
+                        ${badge(
+                            challenge.difficulty,
+                            "neutral"
+                        )}
+
+                        ${badge(
+                            challenge.category,
+                            "neutral"
+                        )}
+
+                    </div>
+
+                </article>
+            `
+        )
+        .join("");
+}
+
+
+/* =========================================
+   START SESSIE
+========================================= */
+
+function openStartSessionModal(
+    teamId
+) {
+    const team =
+        teams.find(
+            item =>
+                item.id === teamId
+        );
+
+    if (!team) {
+        return;
+    }
+
+    if (team.active_session) {
+        alert(
+            "Dit team heeft al een actieve sessie."
+        );
+
+        return;
+    }
+
+    document
+        .getElementById(
+            "startSessionTeamId"
+        )
+        .value =
+            teamId;
+
+    document
+        .getElementById(
+            "startSessionTitle"
+        )
+        .textContent =
+            `Sessie starten · ${team.display_name}`;
+
+    document
+        .querySelector(
+            'input[name="sessionMode"][value="package"]'
+        )
+        .checked =
+            true;
+
+    updateSessionMode();
+
+    populateChallengeSelect();
+
+    document
+        .getElementById(
+            "startSessionModal"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+function updateSessionMode() {
+    const mode =
+        document
+            .querySelector(
+                'input[name="sessionMode"]:checked'
+            )
+            ?.value;
+
+    document
+        .getElementById(
+            "packageStartOptions"
+        )
+        .classList.toggle(
+            "hidden",
+            mode !== "package"
+        );
+
+    document
+        .getElementById(
+            "singleStartOptions"
+        )
+        .classList.toggle(
+            "hidden",
+            mode !== "single"
+        );
+}
+
+
+async function startTeamSession() {
+    const error =
+        modalError(
+            "startSessionError"
+        );
+
+    const teamId =
+        Number(
+            document
+                .getElementById(
+                    "startSessionTeamId"
+                )
+                .value
+        );
+
+    const mode =
+        document
+            .querySelector(
+                'input[name="sessionMode"]:checked'
+            )
+            ?.value;
+
+    try {
+        if (mode === "single") {
+            const challengeId =
+                document
+                    .getElementById(
+                        "singleChallengeSelect"
+                    )
+                    .value;
+
+            await api(
+                `/api/admin/teams/${teamId}/sessions/single`,
+                {
+                    method: "POST",
+                    headers: jsonHeaders(),
+
+                    body: JSON.stringify({
+                        challenge_id:
+                            challengeId
+                    })
+                }
+            );
+
+        } else {
+            await api(
+                `/api/admin/teams/${teamId}/sessions/package`,
+                {
+                    method: "POST",
+                    headers: jsonHeaders(),
+
+                    body: JSON.stringify({
+                        challenge_ids:
+                            null,
+
+                        use_saved_assignments:
+                            true
+                    })
+                }
+            );
+        }
+
+        closeModal(
+            "startSessionModal"
+        );
+
+        await Promise.all([
+            loadTeams(),
+            loadSessions()
+        ]);
+
+        alert(
+            "Sessie gestart."
+        );
+
+    } catch (err) {
+        showModalError(
+            error,
+            err.message
+        );
+    }
+}
+
+
+/* =========================================
+   HANDMATIG PAKKET
+========================================= */
+
+async function openAssignmentModal(
+    teamId
+) {
+    const team =
+        teams.find(
+            item =>
+                item.id === teamId
+        );
+
+    if (!team) {
+        return;
+    }
+
+    document
+        .getElementById(
+            "assignmentTeamId"
+        )
+        .value =
+            teamId;
+
+    document
+        .getElementById(
+            "assignmentTitle"
+        )
+        .textContent =
+            `Challengepakket · ${team.display_name}`;
+
+    const data = await api(
+        `/api/admin/teams/${teamId}/assignments`
+    );
+
+    renderAssignmentChallenges(
+        data.challenge_ids || []
+    );
+
+    document
+        .getElementById(
+            "assignmentModal"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+function renderAssignmentChallenges(
+    selectedIds
+) {
+    const container =
+        document.getElementById(
+            "assignmentChallengeList"
+        );
+
+    const enabled =
+        challenges.filter(
+            challenge =>
+                challenge.enabled
+        );
+
+    container.innerHTML =
+        enabled.map(
+            challenge => `
+                <div class="checkbox-item">
+
+                    <input
+                        type="checkbox"
+                        class="assignment-checkbox"
+                        id="assignment-${escapeHtml(
+                            challenge.id
+                        )}"
+                        value="${escapeHtml(
+                            challenge.id
+                        )}"
+                        ${
+                            selectedIds.includes(
+                                challenge.id
+                            )
+                            ? "checked"
+                            : ""
+                        }
+                        onchange="updateAssignmentCount()"
+                    >
+
+                    <label
+                        for="assignment-${escapeHtml(
+                            challenge.id
+                        )}"
+                    >
+
+                        <span class="checkbox-title">
+                            ${escapeHtml(
+                                challenge.name
+                            )}
+                        </span>
+
+                        <span class="checkbox-meta">
+                            Niveau
+                            ${challenge.difficulty_level}
+                            ·
+                            ${escapeHtml(
+                                challenge.category
+                            )}
+                        </span>
+
+                    </label>
+
+                </div>
+            `
+        )
+        .join("");
+
+    updateAssignmentCount();
+}
+
+
+function updateAssignmentCount() {
+    const selected =
+        document
+            .querySelectorAll(
+                ".assignment-checkbox:checked"
+            )
+            .length;
+
+    document
+        .getElementById(
+            "assignmentCount"
+        )
+        .textContent =
+            `${selected} / 10 geselecteerd`;
+}
+
+
+async function saveAssignments() {
+    const error =
+        modalError(
+            "assignmentError"
+        );
+
+    const teamId =
+        Number(
+            document
+                .getElementById(
+                    "assignmentTeamId"
+                )
+                .value
+        );
+
+    const challengeIds =
+        Array.from(
+            document.querySelectorAll(
+                ".assignment-checkbox:checked"
+            )
+        )
+        .map(
+            checkbox =>
+                checkbox.value
+        );
+
+    if (
+        challengeIds.length
+        !== 10
+    ) {
+        showModalError(
+            error,
+            "Selecteer exact 10 challenges."
+        );
+
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/teams/${teamId}/assignments`,
+            {
+                method: "PUT",
+                headers: jsonHeaders(),
+
+                body: JSON.stringify({
+                    challenge_ids:
+                        challengeIds
+                })
+            }
+        );
+
+        closeModal(
+            "assignmentModal"
+        );
+
+        alert(
+            "Challengepakket opgeslagen."
+        );
+
+    } catch (err) {
+        showModalError(
+            error,
+            err.message
+        );
+    }
+}
+
+
+async function clearAssignments() {
+    const teamId =
+        Number(
+            document
+                .getElementById(
+                    "assignmentTeamId"
+                )
+                .value
+        );
+
+    if (
+        !confirm(
+            "Handmatig pakket verwijderen en automatische selectie gebruiken?"
+        )
+    ) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/teams/${teamId}/assignments`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        closeModal(
+            "assignmentModal"
+        );
+
+        alert(
+            "Automatische selectie ingesteld."
+        );
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+/* =========================================
+   SESSIES
+========================================= */
+
+async function loadSessions() {
+    const data = await api(
+        "/api/admin/sessions"
+    );
+
+    sessions =
+        data.sessions || [];
+
+    const activeCount =
+        sessions.filter(
+            session =>
+                session.status
+                === "active"
+        )
+        .length;
+
+    document
+        .getElementById(
+            "statSessions"
+        )
+        .textContent =
+            activeCount;
+
+    renderSessions();
+}
+
+
+function setSessionFilter(
+    filter
+) {
+    sessionFilter = filter;
+
+    document
+        .querySelectorAll(
+            ".filter-button"
+        )
+        .forEach(
+            button => {
+                button.classList.toggle(
+                    "active",
+                    button.dataset.filter
+                    === filter
+                );
+            }
+        );
+
+    renderSessions();
+}
+
+
+function renderSessions() {
+    const container =
+        document.getElementById(
+            "sessionsContainer"
+        );
+
+    let filtered = sessions;
+
+    if (
+        sessionFilter
+        !== "all"
+    ) {
+        filtered =
+            sessions.filter(
+                session =>
+                    session.status
+                    === sessionFilter
+            );
+    }
+
+    if (!filtered.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Geen sessies gevonden.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Bedrijf</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Voortgang</th>
+                    <th>Fouten</th>
+                    <th>Hints</th>
+                    <th>Punten</th>
+                    <th>Gestart</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${filtered.map(session => `
+                    <tr>
+                        <td>
+                            ${escapeHtml(
+                                session.team
+                            )}
+                        </td>
+
+                        <td>
+                            ${
+                                session.organization
+                                ? escapeHtml(
+                                    session.organization
+                                )
+                                : "-"
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                session.mode === "single"
+                                ? "Los"
+                                : "Pakket"
+                            }
+                        </td>
+
+                        <td>
+                            ${statusBadge(
+                                session.status
+                            )}
+                        </td>
+
+                        <td>
+                            ${session.completed}
+                            /
+                            ${session.total}
+                        </td>
+
+                        <td>
+                            ${session.wrong_attempts}
+                        </td>
+
+                        <td>
+                            ${session.hints_used}
+                        </td>
+
+                        <td class="score">
+                            ${session.score}
+                        </td>
+
+                        <td>
+                            ${formatDate(
+                                session.started_at
+                            )}
+                        </td>
+
+                        <td class="actions-cell">
+
+                            ${
+                                session.status === "active"
+
+                                ? `
+                                    <button
+                                        class="btn-small danger"
+                                        onclick="stopSession(
+                                            '${session.id}'
+                                        )"
+                                    >
+                                        Stop
+                                    </button>
+                                `
+
+                                : `
+                                    <button
+                                        class="btn-small"
+                                        onclick="downloadReport(
+                                            '${session.id}'
+                                        )"
+                                    >
+                                        Rapport
+                                    </button>
+
+                                    <button
+                                        class="btn-small danger"
+                                        onclick="resetSession(
+                                            '${session.id}',
+                                            '${escapeJs(
+                                                session.team
+                                            )}'
+                                        )"
+                                    >
+                                        Reset
+                                    </button>
+                                `
+                            }
+
+                        </td>
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>
+    `;
+}
+
+
+async function stopSession(
+    sessionId
+) {
+    if (
+        !confirm(
+            "Deze actieve sessie stoppen?"
+        )
+    ) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/sessions/${sessionId}/stop`,
+            {
+                method: "POST"
+            }
+        );
+
+        await Promise.all([
+            loadSessions(),
+            loadTeams()
+        ]);
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+async function resetSession(
+    sessionId,
+    teamName
+) {
+    if (
+        !confirm(
+            `Sessie van '${teamName}' resetten?\n\nDe resultaten van deze sessie worden verwijderd.`
+        )
+    ) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/admin/sessions/${sessionId}/reset`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        await Promise.all([
+            loadSessions(),
+            loadTeams(),
+            loadScoreboard()
+        ]);
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+/* =========================================
+   RAPPORTEN
+========================================= */
+
+function downloadReport(
+    sessionId
+) {
+    window.location.href =
+        "/api/admin/sessions/"
+        + encodeURIComponent(
+            sessionId
+        )
+        + "/report";
+}
+
+
+/* =========================================
+   SCOREBOARD
+========================================= */
+
+async function loadScoreboard() {
+    const data = await api(
+        "/api/admin/scoreboard"
+    );
+
+    scoreboard =
+        data.scoreboard || [];
+
+    document
+        .getElementById(
+            "statHighscore"
+        )
+        .textContent =
+            scoreboard.length
+            ? scoreboard[0].score
+            : 0;
 
     document
         .getElementById(
             "scoreboardContainer"
         )
         .innerHTML =
-            table;
-
-
-    document
-        .getElementById(
-            "dashboardScoreboard"
-        )
-        .innerHTML =
             renderScoreboard(
-                scores.slice(0, 5)
+                scoreboard
             );
 }
 
 
-function renderScoreboard(scores) {
-
-    if (!scores.length) {
+function renderScoreboard(
+    rows
+) {
+    if (!rows.length) {
         return `
             <div class="empty">
-                Nog geen teams gevonden.
+                Nog geen scores beschikbaar.
             </div>
         `;
     }
-
 
     return `
         <table>
@@ -1054,836 +3997,58 @@ function renderScoreboard(scores) {
             </thead>
 
             <tbody>
-
-            ${scores.map(score => `
-                <tr>
-                    <td>
-                        ${score.position}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            score.display_name
-                        )}
-                    </td>
-
-                    <td>
-                        ${score.completed}
-                        /
-                        ${score.total}
-                    </td>
-
-                    <td class="score">
-                        ${score.score}
-                    </td>
-                </tr>
-            `).join("")}
-
-            </tbody>
-        </table>
-    `;
-}
-
-
-/* TEAMS */
-
-let teams = [];
-
-
-async function loadTeams() {
-
-    const data =
-        await api(
-            "/api/admin/teams"
-        );
-
-    teams = data.teams;
-
-    document
-        .getElementById("statTeams")
-        .textContent =
-            teams.length;
-
-
-    if (!teams.length) {
-
-        document
-            .getElementById(
-                "teamsContainer"
-            )
-            .innerHTML =
-                `
-                <div class="empty">
-                    Nog geen teams aangemaakt.
-                </div>
-                `;
-
-        return;
-    }
-
-
-    document
-        .getElementById(
-            "teamsContainer"
-        )
-        .innerHTML =
-            `
-            <table>
-
-                <thead>
+                ${rows.map(row => `
                     <tr>
-                        <th>Team</th>
-                        <th>Gebruikersnaam</th>
-                        <th>Status</th>
-                        <th>Acties</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    ${teams.map(team => `
-
-                        <tr>
-
-                            <td>
-                                ${escapeHtml(
-                                    team.display_name
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    team.username
-                                )}
-                            </td>
-
-                            <td>
-
-                                ${
-                                    team.active
-
-                                    ? `
-                                    <span class="
-                                        badge
-                                        badge-active
-                                    ">
-                                        Actief
-                                    </span>
-                                    `
-
-                                    : `
-                                    <span class="
-                                        badge
-                                        badge-disabled
-                                    ">
-                                        Uitgeschakeld
-                                    </span>
-                                    `
-                                }
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="btn-small"
-                                    onclick="
-                                        resetPassword(
-                                            ${team.id}
-                                        )
-                                    ">
-                                    Wachtwoord
-                                </button>
-
-                                <button
-                                    class="
-                                        btn-small
-                                        btn-danger
-                                    "
-                                    onclick="
-                                        toggleTeam(
-                                            ${team.id},
-                                            ${!team.active}
-                                        )
-                                    ">
-                                    ${
-                                        team.active
-                                        ? "Uitschakelen"
-                                        : "Inschakelen"
-                                    }
-                                </button>
-				
-				<button
-    					class="btn-small btn-danger"
-    					onclick="deleteTeam(${team.id})">
-    					Verwijderen
-				</button>
-
-                            </td>
-
-                        </tr>
-
-                    `).join("")}
-
-                </tbody>
-
-            </table>
-            `;
-}
-
-
-function openTeamModal() {
-
-    document
-        .getElementById("teamModal")
-        .classList.remove("hidden");
-}
-
-
-function closeTeamModal() {
-
-    document
-        .getElementById("teamModal")
-        .classList.add("hidden");
-
-    document
-        .getElementById("teamModalError")
-        .classList.add("hidden");
-}
-
-
-async function createTeam() {
-
-    const error =
-        document.getElementById(
-            "teamModalError"
-        );
-
-    error.classList.add("hidden");
-
-
-    try {
-
-        await api(
-            "/api/admin/teams",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify({
-                    username:
-                        document
-                            .getElementById(
-                                "newUsername"
-                            )
-                            .value,
-
-                    display_name:
-                        document
-                            .getElementById(
-                                "newDisplayName"
-                            )
-                            .value,
-
-                    password:
-                        document
-                            .getElementById(
-                                "newPassword"
-                            )
-                            .value
-                })
-            }
-        );
-
-
-        closeTeamModal();
-
-        document
-            .getElementById(
-                "newUsername"
-            )
-            .value = "";
-
-        document
-            .getElementById(
-                "newDisplayName"
-            )
-            .value = "";
-
-        document
-            .getElementById(
-                "newPassword"
-            )
-            .value = "";
-
-
-        await Promise.all([
-            loadTeams(),
-            loadScoreboard()
-        ]);
-
-    } catch (e) {
-
-        error.textContent =
-            e.message;
-
-        error.classList.remove(
-            "hidden"
-        );
-    }
-}
-
-
-async function toggleTeam(
-    teamId,
-    active
-) {
-
-    await api(
-        "/api/admin/teams/" +
-        teamId +
-        "/active",
-        {
-            method: "PATCH",
-
-            headers: {
-                "Content-Type":
-                    "application/json"
-            },
-
-            body: JSON.stringify({
-                active: active
-            })
-        }
-    );
-
-    await loadTeams();
-}
-
-
-async function resetPassword(teamId) {
-
-    const password =
-        prompt(
-            "Nieuw wachtwoord (minimaal 8 tekens):"
-        );
-
-    if (!password) {
-        return;
-    }
-
-
-    try {
-
-        await api(
-            "/api/admin/teams/" +
-            teamId +
-            "/password",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify({
-                    password: password
-                })
-            }
-        );
-
-        alert(
-            "Wachtwoord aangepast."
-        );
-
-    } catch (e) {
-
-        alert(e.message);
-    }
-}
-
-async function deleteTeam(teamId) {
-
-    const team = teams.find(
-        item => item.id === teamId
-    );
-
-    if (!team) {
-        alert("Team niet gevonden.");
-        return;
-    }
-
-    const confirmed = confirm(
-        "Weet je zeker dat je '" +
-        team.display_name +
-        "' wilt verwijderen?\n\n" +
-        "Alle sessies, resultaten en scores van dit team worden ook verwijderd."
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    try {
-
-        await api(
-            "/api/admin/teams/" + teamId,
-            {
-                method: "DELETE"
-            }
-        );
-
-        await Promise.all([
-            loadTeams(),
-            loadScoreboard()
-        ]);
-
-    } catch (error) {
-
-        alert(
-            error.message
-        );
-    }
-}
-
-let sessionFilter = "all";
-let sessionCache = [];
-
-
-async function loadSessions() {
-
-    const data = await api(
-        "/api/admin/sessions"
-    );
-
-    sessionCache = data.sessions;
-
-    renderSessions();
-}
-
-
-function setSessionFilter(filter) {
-
-    sessionFilter = filter;
-
-    document
-        .querySelectorAll(".session-filter")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.filter === filter
-            );
-        });
-
-    renderSessions();
-}
-
-
-function renderSessions() {
-
-    const container =
-        document.getElementById(
-            "sessionsContainer"
-        );
-
-
-    let sessions = sessionCache;
-
-
-    if (sessionFilter !== "all") {
-
-        sessions = sessions.filter(
-            session =>
-                session.status === sessionFilter
-        );
-    }
-
-
-    if (!sessions.length) {
-
-        container.innerHTML = `
-            <div class="empty">
-                Geen sessies gevonden voor dit filter.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    container.innerHTML = `
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Team</th>
-                    <th>Status</th>
-                    <th>Challenge</th>
-                    <th>Voortgang</th>
-                    <th>Fouten</th>
-                    <th>Punten</th>
-                    <th>Gestart</th>
-                    <th>Acties</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                ${sessions.map(session => `
-                    <tr>
-
                         <td>
-                            ${escapeHtml(session.team)}
+                            ${row.position}
                         </td>
 
                         <td>
-                            <span class="
-                                badge
-                                ${
-                                    session.status === "active"
-                                    ? "badge-active"
-                                    : "badge-disabled"
-                                }
-                            ">
-                                ${escapeHtml(session.status)}
-                            </span>
+                            ${escapeHtml(
+                                row.display_name
+                            )}
                         </td>
 
                         <td>
-                            ${
-                                session.current_challenge
-                                ? escapeHtml(
-                                    session.current_challenge
-                                )
-                                : "-"
-                            }
-                        </td>
-
-                        <td>
-                            ${session.completed}
+                            ${row.completed}
                             /
-                            ${session.total}
-                        </td>
-
-                        <td>
-                            ${session.wrong_attempts}
+                            ${row.total}
                         </td>
 
                         <td class="score">
-                            ${session.score}
+                            ${row.score}
                         </td>
-
-                        <td>
-                            ${
-                                session.started_at
-                                ? new Date(
-                                    session.started_at
-                                ).toLocaleString("nl-NL")
-                                : "-"
-                            }
-                        </td>
-
-                        <td>
-                            ${
-                                session.status === "active"
-
-                                ? `
-                                    <button
-                                        class="btn-small btn-danger"
-                                        onclick="stopAdminSession('${session.id}')">
-                                        Stoppen
-                                    </button>
-                                `
-
-                                : `
-                                    <button
-                                        class="btn-small btn-danger"
-                                        onclick="resetAdminSession(
-                                            '${session.id}',
-                                            '${escapeHtml(session.team)}'
-                                        )">
-                                        Resetten
-                                    </button>
-                                `
-                            }
-                        </td>
-
                     </tr>
                 `).join("")}
-
             </tbody>
-
         </table>
     `;
-}
-
-async function stopAdminSession(sessionId) {
-
-    const confirmed = confirm(
-        "Weet je zeker dat je deze actieve sessie wilt stoppen?"
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    try {
-
-        await api(
-            "/api/admin/sessions/" +
-            sessionId +
-            "/stop",
-            {
-                method: "POST"
-            }
-        );
-
-        await Promise.all([
-            loadSessions(),
-            loadScoreboard()
-        ]);
-
-    } catch (error) {
-
-        alert(
-            error.message
-        );
-    }
-}
-
-async function resetAdminSession(
-    sessionId,
-    teamName
-) {
-
-    const confirmed = confirm(
-        "Weet je zeker dat je de sessie van '" +
-        teamName +
-        "' wilt resetten?\n\n" +
-        "De resultaten en punten van deze sessie worden verwijderd."
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    try {
-
-        await api(
-            "/api/admin/sessions/" +
-            sessionId +
-            "/reset",
-            {
-                method: "DELETE"
-            }
-        );
-
-
-        await Promise.all([
-            loadSessions(),
-            loadScoreboard()
-        ]);
-
-
-    } catch (error) {
-
-        alert(
-            error.message
-        );
-    }
 }
 
 
 /* =========================================
-   LIVE DASHBOARD
+   DASHBOARD
 ========================================= */
 
-let dashboardTimer = null;
-
-
 async function refreshDashboard() {
-
     try {
-
-        const [
-            scoreboardData,
-            sessionsData
-        ] = await Promise.all([
-            api("/api/admin/scoreboard"),
-            api("/api/admin/sessions")
+        await Promise.all([
+            loadScoreboard(),
+            loadSessions()
         ]);
 
-
-        const scores =
-            scoreboardData.scoreboard || [];
-
-        const sessions =
-            sessionsData.sessions || [];
-
-
-        /*
-         * Totaal aantal teams
-         */
-        const totalTeams =
-            scores.length;
-
-
-        /*
-         * Actieve teams
-         *
-         * Eén team kan maximaal één actieve
-         * sessie tegelijk hebben.
-         */
-        const activeTeams =
-            sessions.filter(
-                session =>
-                    session.status === "active"
-            ).length;
-
-
-        /*
-         * Team telt als voltooid wanneer
-         * alle 10 challenges zijn afgerond.
-         */
-        const completedTeams =
-            scores.filter(
-                score =>
-                    score.completed >= score.total
-            ).length;
-
-
-        /*
-         * Gemiddelde voortgang over
-         * alle teams.
-         */
-        let averageProgress = 0;
-
-        if (scores.length > 0) {
-
-            const totalProgress =
-                scores.reduce(
-                    (sum, score) => {
-
-                        const percentage =
-                            score.total > 0
-                            ? (
-                                score.completed
-                                / score.total
-                              ) * 100
-                            : 0;
-
-                        return (
-                            sum + percentage
-                        );
-                    },
-                    0
-                );
-
-            averageProgress =
-                Math.round(
-                    totalProgress /
-                    scores.length
-                );
-        }
-
-
-        /*
-         * Alle fout beantwoorde pogingen
-         * uit de nog aanwezige sessiehistorie.
-         */
-        const wrongAnswers =
-            sessions.reduce(
-                (sum, session) =>
-                    sum +
-                    (
-                        session.wrong_attempts
-                        || 0
-                    ),
-                0
-            );
-
-
-        /*
-         * Hoogste score
-         */
-        const highscore =
-            scores.length
-            ? scores[0].score
-            : 0;
-
-
-        /*
-         * Statistieken tonen
-         */
-        document
-            .getElementById("statTeams")
-            .textContent =
-                totalTeams;
-
-
-        document
-            .getElementById(
-                "statActiveTeams"
-            )
-            .textContent =
-                activeTeams;
-
-
-        document
-            .getElementById(
-                "statCompletedTeams"
-            )
-            .textContent =
-                completedTeams;
-
-
-        document
-            .getElementById(
-                "statAverageProgress"
-            )
-            .textContent =
-                averageProgress + "%";
-
-
-        document
-            .getElementById(
-                "statWrongAnswers"
-            )
-            .textContent =
-                wrongAnswers;
-
-
-        document
-            .getElementById(
-                "statHighscore"
-            )
-            .textContent =
-                highscore;
-
-
-        /*
-         * Top 3
-         */
         document
             .getElementById(
                 "dashboardScoreboard"
             )
             .innerHTML =
                 renderScoreboard(
-                    scores.slice(0, 3)
+                    scoreboard.slice(
+                        0,
+                        3
+                    )
                 );
 
-
-        /*
-         * Tijdstip laatste update
-         */
         document
             .getElementById(
                 "dashboardUpdated"
@@ -1892,16 +4057,10 @@ async function refreshDashboard() {
                 "Bijgewerkt: " +
                 new Date()
                     .toLocaleTimeString(
-                        "nl-NL",
-                        {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            second: "2-digit"
-                        }
+                        "nl-NL"
                     );
 
-    } catch (error) {
-
+    } catch {
         document
             .getElementById(
                 "dashboardUpdated"
@@ -1913,27 +4072,12 @@ async function refreshDashboard() {
 
 
 function startDashboardRefresh() {
-
-    /*
-     * Voorkom meerdere timers
-     * wanneer opnieuw wordt ingelogd.
-     */
     if (dashboardTimer) {
         clearInterval(
             dashboardTimer
         );
     }
 
-
-    /*
-     * Meteen één keer laden.
-     */
-    refreshDashboard();
-
-
-    /*
-     * Daarna iedere 10 seconden.
-     */
     dashboardTimer =
         setInterval(
             refreshDashboard,
@@ -1941,18 +4085,349 @@ function startDashboardRefresh() {
         );
 }
 
-/* HELPERS */
 
-function escapeHtml(value) {
+/* =========================================
+   SELECTS
+========================================= */
 
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+function populateOrganizationSelects() {
+    const activeOrganizations =
+        organizations.filter(
+            organization =>
+                organization.active
+        );
+
+    const gameleaderSelect =
+        document.getElementById(
+            "newGameleaderOrganization"
+        );
+
+    const teamSelect =
+        document.getElementById(
+            "newTeamOrganization"
+        );
+
+    gameleaderSelect.innerHTML =
+        activeOrganizations.map(
+            org => `
+                <option value="${org.id}">
+                    ${escapeHtml(
+                        org.name
+                    )}
+                </option>
+            `
+        )
+        .join("");
+
+    teamSelect.innerHTML =
+        `
+            <option value="">
+                Geen bedrijf
+            </option>
+        `
+        +
+        activeOrganizations.map(
+            org => `
+                <option value="${org.id}">
+                    ${escapeHtml(
+                        org.name
+                    )}
+                </option>
+            `
+        )
+        .join("");
 }
 
+
+function populateChallengeSelect() {
+    const select =
+        document.getElementById(
+            "singleChallengeSelect"
+        );
+
+    select.innerHTML =
+        challenges
+            .filter(
+                challenge =>
+                    challenge.enabled
+            )
+            .map(
+                challenge => `
+                    <option
+                        value="${escapeHtml(
+                            challenge.id
+                        )}"
+                    >
+                        Niveau
+                        ${challenge.difficulty_level}
+                        ·
+                        ${escapeHtml(
+                            challenge.name
+                        )}
+                    </option>
+                `
+            )
+            .join("");
+}
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function closeModal(
+    modalId
+) {
+    document
+        .getElementById(
+            modalId
+        )
+        .classList.add(
+            "hidden"
+        );
+}
+
+
+function modalError(
+    id
+) {
+    const element =
+        document.getElementById(
+            id
+        );
+
+    element.classList.add(
+        "hidden"
+    );
+
+    return element;
+}
+
+
+function showModalError(
+    element,
+    message
+) {
+    element.textContent =
+        message;
+
+    element.classList.remove(
+        "hidden"
+    );
+}
+
+
+function jsonHeaders() {
+    return {
+        "Content-Type":
+            "application/json"
+    };
+}
+
+
+function value(
+    id
+) {
+    return document
+        .getElementById(id)
+        .value;
+}
+
+
+function clearInputs(
+    ids
+) {
+    ids.forEach(
+        id => {
+            document
+                .getElementById(id)
+                .value = "";
+        }
+    );
+}
+
+
+function badge(
+    text,
+    type
+) {
+    const classMap = {
+        active:
+            "badge-active",
+
+        disabled:
+            "badge-disabled",
+
+        warning:
+            "badge-warning",
+
+        neutral:
+            "badge-neutral"
+    };
+
+    return `
+        <span
+            class="badge ${
+                classMap[type]
+                || "badge-neutral"
+            }"
+        >
+            ${escapeHtml(text)}
+        </span>
+    `;
+}
+
+
+function statusBadge(
+    status
+) {
+    if (status === "active") {
+        return badge(
+            "Actief",
+            "active"
+        );
+    }
+
+    if (status === "completed") {
+        return badge(
+            "Voltooid",
+            "neutral"
+        );
+    }
+
+    if (status === "cancelled") {
+        return badge(
+            "Geannuleerd",
+            "disabled"
+        );
+    }
+
+    return badge(
+        status,
+        "warning"
+    );
+}
+
+
+function chooseOrganization() {
+    const answer =
+        prompt(
+            organizationPromptText(
+                false
+            )
+        );
+
+    if (!answer) {
+        return null;
+    }
+
+    const id =
+        Number(answer);
+
+    if (
+        !organizations.some(
+            org =>
+                org.id === id
+        )
+    ) {
+        alert(
+            "Ongeldig bedrijfs-ID."
+        );
+
+        return null;
+    }
+
+    return id;
+}
+
+
+function organizationPromptText(
+    allowEmpty
+) {
+    let text =
+        "Kies het bedrijfs-ID:\n\n";
+
+    organizations.forEach(
+        org => {
+            text +=
+                `${org.id} = ${org.name}\n`;
+        }
+    );
+
+    if (allowEmpty) {
+        text +=
+            "\nLaat leeg om de koppeling te verwijderen.";
+    }
+
+    return text;
+}
+
+
+function formatDate(
+    value
+) {
+    if (!value) {
+        return "-";
+    }
+
+    return new Date(
+        value
+    )
+    .toLocaleString(
+        "nl-NL"
+    );
+}
+
+
+function escapeHtml(
+    value
+) {
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+function escapeJs(
+    value
+) {
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "\\",
+            "\\\\"
+        )
+        .replaceAll(
+            "'",
+            "\\'"
+        );
+}
+
+
+/* =========================================
+   START
+========================================= */
 
 loadAdmin();
 

@@ -1,0 +1,4043 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BreachOut Spelleider</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --background: #050b08;
+            --panel: #0a140f;
+            --panel-light: #0d1812;
+            --border: #1b3225;
+            --border-light: #294235;
+            --text: #edf5f0;
+            --muted: #7d8c83;
+            --danger: #ff9696;
+            --warning: #ffd071;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            color: var(--text);
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(0,255,140,.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0,255,140,.025) 1px,
+                    transparent 1px
+                ),
+                var(--background);
+
+            background-size:
+                40px 40px;
+        }
+
+        *::selection {
+            color: #04100a;
+            background: var(--green);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================================
+           ALGEMEEN
+        ========================================= */
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .logo span {
+            color: var(--green);
+        }
+
+        .product-tag {
+            margin-top: 4px;
+
+            color: #59685f;
+
+            font-size: 10px;
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .empty {
+            padding: 32px;
+
+            color: #66756c;
+
+            text-align: center;
+        }
+
+        /* =========================================
+           LOGIN
+        ========================================= */
+
+        .login-page {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px;
+        }
+
+        .login-box {
+            width: 430px;
+            max-width: 100%;
+
+            padding: 33px;
+
+            border: 1px solid var(--border);
+            border-radius: 16px;
+
+            background: #0b1510;
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,.35);
+        }
+
+        .login-box h1 {
+            margin: 28px 0 7px;
+
+            font-size: 25px;
+        }
+
+        .login-box p {
+            margin: 0 0 27px;
+
+            color: var(--muted);
+
+            line-height: 1.55;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #aab6af;
+
+            font-size: 13px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+
+            outline: none;
+
+            color: white;
+
+            background: #07100b;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--green);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .error-message {
+            margin-top: 14px;
+
+            color: #ff9e9e;
+
+            font-size: 13px;
+        }
+
+        /* =========================================
+           BUTTONS
+        ========================================= */
+
+        .btn-primary,
+        .btn-secondary,
+        .btn-danger,
+        .btn-warning,
+        .btn-small {
+            border-radius: 8px;
+        }
+
+        .btn-primary {
+            padding: 11px 16px;
+
+            border: 0;
+
+            color: #031109;
+
+            font-weight: 700;
+
+            background: var(--green);
+        }
+
+        .btn-primary:hover {
+            background: var(--green-light);
+        }
+
+        .btn-secondary {
+            padding: 10px 14px;
+
+            border: 1px solid #2b4034;
+
+            color: white;
+
+            background: #111b15;
+        }
+
+        .btn-danger {
+            padding: 10px 14px;
+
+            border: 1px solid #4b292a;
+
+            color: var(--danger);
+
+            background: #1b1112;
+        }
+
+        .btn-warning {
+            padding: 10px 14px;
+
+            border: 1px solid #5a4822;
+
+            color: var(--warning);
+
+            background: #18150b;
+        }
+
+        .btn-small {
+            padding: 7px 10px;
+
+            border: 1px solid #2b4135;
+
+            color: #d6dfda;
+
+            background: #101a14;
+
+            font-size: 12px;
+        }
+
+        .btn-small:hover {
+            border-color: var(--green);
+        }
+
+        .btn-small:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+            border-color: #26332c;
+            color: #69756e;
+        }
+
+        .btn-small:disabled:hover {
+            border-color: #26332c;
+        }
+
+        .btn-small.danger {
+            color: var(--danger);
+        }
+
+        .btn-small.warning {
+            color: var(--warning);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* =========================================
+           LAYOUT
+        ========================================= */
+
+        .layout {
+            display: grid;
+
+            grid-template-columns:
+                230px
+                1fr;
+
+            min-height: 100vh;
+        }
+
+        aside {
+            position: sticky;
+            top: 0;
+
+            height: 100vh;
+
+            padding: 26px 18px;
+
+            border-right:
+                1px solid
+                #172a20;
+
+            background: #08110c;
+        }
+
+        .aside-brand {
+            margin:
+                0 10px
+                34px;
+        }
+
+        nav {
+            display: grid;
+            gap: 5px;
+        }
+
+        .nav-button {
+            width: 100%;
+
+            padding: 12px 14px;
+
+            border: 0;
+            border-radius: 8px;
+
+            color: #84928a;
+
+            text-align: left;
+
+            background: transparent;
+        }
+
+        .nav-button:hover {
+            color: white;
+
+            background: #101c15;
+        }
+
+        .nav-button.active {
+            color: var(--green);
+
+            background:
+                rgba(
+                    53,
+                    242,
+                    154,
+                    .10
+                );
+        }
+
+        .nav-button.logout {
+            margin-top: 25px;
+
+            color: var(--danger);
+        }
+
+        main {
+            min-width: 0;
+
+            padding: 34px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 31px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+
+            font-size: 30px;
+        }
+
+        .profile {
+            text-align: right;
+        }
+
+        .profile-name {
+            font-size: 14px;
+        }
+
+        .profile-role {
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        /* =========================================
+           PANELS / STATS
+        ========================================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(170px, 1fr)
+                );
+
+            gap: 14px;
+
+            margin-bottom: 24px;
+        }
+
+        .stat-card,
+        .panel {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background:
+                rgba(
+                    10,
+                    20,
+                    15,
+                    .94
+                );
+        }
+
+        .stat-card {
+            padding: 19px;
+        }
+
+        .stat-label {
+            margin-bottom: 9px;
+
+            color: #718078;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+        }
+
+        .stat-number {
+            color: var(--green);
+
+            font-size: 30px;
+
+            font-weight: 700;
+        }
+
+        .panel {
+            margin-bottom: 22px;
+
+            padding: 23px;
+        }
+
+        .panel-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+
+            font-size: 21px;
+        }
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px 10px;
+
+            border-bottom:
+                1px solid
+                #172a20;
+
+            text-align: left;
+
+            vertical-align: middle;
+        }
+
+        th {
+            color: #6f8076;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+        }
+
+        td {
+            color: #dce5df;
+
+            font-size: 14px;
+        }
+
+        .score {
+            color: var(--green);
+
+            font-weight: 700;
+        }
+
+        .actions-cell {
+            min-width: 220px;
+        }
+
+        .actions-cell button {
+            margin:
+                2px 3px
+                2px 0;
+        }
+
+        /* =========================================
+           BADGES
+        ========================================= */
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+        }
+
+        .badge-active {
+            color: var(--green);
+
+            background:
+                rgba(
+                    53,
+                    242,
+                    154,
+                    .10
+                );
+        }
+
+        .badge-disabled {
+            color: var(--danger);
+
+            background:
+                rgba(
+                    255,
+                    100,
+                    100,
+                    .10
+                );
+        }
+
+        .badge-warning {
+            color: var(--warning);
+
+            background:
+                rgba(
+                    255,
+                    208,
+                    113,
+                    .09
+                );
+        }
+
+        .badge-neutral {
+            color: #b1bbb5;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .06
+                );
+        }
+
+        /* =========================================
+           FILTERS
+        ========================================= */
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-bottom: 19px;
+        }
+
+        .filter-button.active {
+            color: var(--green);
+
+            border-color: var(--green);
+
+            background:
+                rgba(
+                    53,
+                    242,
+                    154,
+                    .08
+                );
+        }
+
+        /* =========================================
+           MODAL
+        ========================================= */
+
+        .modal-backdrop {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 100;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .76
+                );
+        }
+
+        .modal {
+            width: 520px;
+            max-width: 100%;
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            padding: 25px;
+
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+
+            background: #0b1510;
+        }
+
+        .modal.large {
+            width: 760px;
+        }
+
+        .modal h2 {
+            margin: 0 0 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-top: 22px;
+        }
+
+        .radio-row {
+            display: flex;
+
+            gap: 18px;
+
+            margin-bottom: 20px;
+        }
+
+        .radio-row label {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            margin: 0;
+        }
+
+        .radio-row input {
+            width: auto;
+        }
+
+        /* =========================================
+           SESSIEDETAILS
+        ========================================= */
+
+        .session-summary {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(140px, 1fr)
+                );
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            padding: 13px;
+
+            border: 1px solid #20382a;
+            border-radius: 8px;
+
+            background: #09130e;
+        }
+
+        .summary-label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #68776f;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+        }
+
+        .summary-value {
+            font-size: 14px;
+        }
+
+        .quick-messages {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            margin: 8px 0 18px;
+        }
+
+        .message-history {
+            display: grid;
+
+            gap: 8px;
+
+            max-height: 260px;
+
+            overflow-y: auto;
+
+            margin-top: 15px;
+        }
+
+        .message-row {
+            padding: 11px 13px;
+
+            border: 1px solid #20382a;
+            border-radius: 8px;
+
+            background: #09130e;
+        }
+
+        .message-row.hint {
+            border-color: #554723;
+        }
+
+        .message-row-head {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 5px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .message-row.hint
+        .message-row-head {
+            color: var(--warning);
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            aside {
+                position: static;
+
+                height: auto;
+
+                border-right: 0;
+                border-bottom:
+                    1px solid
+                    #172a20;
+            }
+
+            nav {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(0, 1fr)
+                    );
+            }
+
+            main {
+                padding: 22px;
+            }
+        }
+    
+/* =========================================
+   STARTSESSIE SELECTOR
+========================================= */
+
+#startSessionModal .modal {
+    width: min(1000px, 94vw);
+    max-width: 1000px;
+}
+
+#startSessionModal .radio-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+}
+
+#manualPackageOptions {
+    width: 100%;
+}
+
+#manualChallengeList {
+    width: 100%;
+    max-height: 500px !important;
+    overflow-y: auto;
+    padding: 18px !important;
+}
+
+.manual-package-row {
+    display: grid !important;
+    grid-template-columns: 24px minmax(0, 1fr) !important;
+
+    align-items: start !important;
+
+    gap: 14px !important;
+
+    width: 100% !important;
+
+    padding: 10px 8px !important;
+
+    margin: 0 !important;
+
+    cursor: pointer;
+
+    border-radius: 7px;
+}
+
+.manual-package-row:hover {
+    background: rgba(53, 242, 154, 0.05);
+}
+
+.manual-package-row input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+
+    min-width: 18px !important;
+
+    margin: 2px 0 0 0 !important;
+    padding: 0 !important;
+
+    justify-self: start !important;
+}
+
+.manual-package-text {
+    display: block;
+
+    min-width: 0;
+
+    line-height: 1.3;
+}
+
+.manual-package-text strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 15px;
+}
+
+.manual-level-title {
+    margin: 20px 0 8px;
+
+    padding-bottom: 8px;
+
+    border-bottom: 1px solid #20392b;
+
+    color: #35f29a;
+
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@media (max-width: 700px) {
+    #startSessionModal .modal {
+        width: 96vw;
+    }
+
+    #startSessionModal .radio-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+</style>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="/assets/breachout-favicon.png?v=3"
+    >
+
+</head>
+
+<body>
+
+<!-- =========================================
+     LOGIN
+========================================= -->
+
+<section
+    id="loginPage"
+    class="login-page"
+>
+
+    <div class="login-box">
+
+        <div class="logo">
+            Breach<span>Out</span>
+        </div>
+
+        <div class="product-tag">
+            Spelleider
+        </div>
+
+        <h1>
+            Welkom
+        </h1>
+
+        <p>
+            Meld je aan om jouw teams,
+            sessies en live begeleiding
+            te beheren.
+        </p>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label>
+                    Gebruikersnaam
+                </label>
+
+                <input
+                    id="loginUsername"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Wachtwoord
+                </label>
+
+                <input
+                    id="loginPassword"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+            <button
+                class="btn-primary btn-full"
+                type="submit"
+            >
+                Inloggen
+            </button>
+
+        </form>
+
+        <div
+            id="loginError"
+            class="error-message hidden"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     PORTAL
+========================================= -->
+
+<section
+    id="portal"
+    class="layout hidden"
+>
+
+    <aside>
+
+        <div class="aside-brand">
+
+            <div class="logo">
+                Breach<span>Out</span>
+            </div>
+
+            <div class="product-tag">
+                Spelleider
+            </div>
+
+        </div>
+
+        <nav>
+
+            <button
+                class="nav-button active"
+                data-page="dashboard"
+                onclick="showPage('dashboard')"
+            >
+                Dashboard
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="teams"
+                onclick="showPage('teams')"
+            >
+                Teams
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="sessions"
+                onclick="showPage('sessions')"
+            >
+                Sessies
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="challenges"
+                onclick="showPage('challenges')"
+            >
+                Challenges
+            </button>
+
+            <button
+                class="nav-button"
+                data-page="scoreboard"
+                onclick="showPage('scoreboard')"
+            >
+                Scoreboard
+            </button>
+
+            <button
+                class="nav-button logout"
+                onclick="logout()"
+            >
+                Uitloggen
+            </button>
+
+        </nav>
+
+    </aside>
+
+
+    <main>
+
+        <div class="topbar">
+
+            <h1 id="pageTitle">
+                Dashboard
+            </h1>
+
+            <div class="profile">
+
+                <div
+                    id="gameleaderName"
+                    class="profile-name"
+                ></div>
+
+                <div class="profile-role">
+                    Spelleider
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <section id="page-dashboard">
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Teams
+                    </div>
+
+                    <div
+                        id="statTeams"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Actieve sessies
+                    </div>
+
+                    <div
+                        id="statActiveSessions"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Voltooide sessies
+                    </div>
+
+                    <div
+                        id="statCompletedSessions"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Foute antwoorden
+                    </div>
+
+                    <div
+                        id="statWrongAnswers"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Gebruikte hints
+                    </div>
+
+                    <div
+                        id="statHints"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Hoogste score
+                    </div>
+
+                    <div
+                        id="statHighscore"
+                        class="stat-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Actieve sessies
+                    </h2>
+
+                    <button
+                        class="btn-small"
+                        onclick="refreshEverything()"
+                    >
+                        Vernieuwen
+                    </button>
+
+                </div>
+
+                <div
+                    id="dashboardSessions"
+                    class="table-wrap"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TEAMS -->
+
+        <section
+            id="page-teams"
+            class="hidden"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Teams
+                    </h2>
+
+                    <div style="display:flex; gap:8px;">
+
+                        <button
+                            class="btn-primary"
+                            onclick="openTeamModal()"
+                        >
+                            + Team
+                        </button>
+
+                        <button
+                            class="btn-small"
+                            onclick="loadTeams()"
+                        >
+                            Vernieuwen
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="teamsContainer"
+                    class="table-wrap"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SESSIES -->
+
+        <section
+            id="page-sessions"
+            class="hidden"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Sessies
+                    </h2>
+
+                    <button
+                        class="btn-small"
+                        onclick="loadSessions()"
+                    >
+                        Vernieuwen
+                    </button>
+
+                </div>
+
+                <div class="filters">
+
+                    <button
+                        class="btn-small filter-button active"
+                        data-filter="all"
+                        onclick="setSessionFilter('all')"
+                    >
+                        Alles
+                    </button>
+
+                    <button
+                        class="btn-small filter-button"
+                        data-filter="active"
+                        onclick="setSessionFilter('active')"
+                    >
+                        Actief
+                    </button>
+
+                    <button
+                        class="btn-small filter-button"
+                        data-filter="completed"
+                        onclick="setSessionFilter('completed')"
+                    >
+                        Voltooid
+                    </button>
+
+                    <button
+                        class="btn-small filter-button"
+                        data-filter="cancelled"
+                        onclick="setSessionFilter('cancelled')"
+                    >
+                        Geannuleerd
+                    </button>
+
+                </div>
+
+                <div
+                    id="sessionsContainer"
+                    class="table-wrap"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CHALLENGES -->
+
+        <section
+            id="page-challenges"
+            class="hidden"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Beschikbare challenges
+                    </h2>
+
+                    <button
+                        class="btn-small"
+                        onclick="loadChallenges()"
+                    >
+                        Vernieuwen
+                    </button>
+
+                </div>
+
+                <div
+                    id="challengesContainer"
+                    class="table-wrap"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- SCOREBOARD -->
+
+        <section
+            id="page-scoreboard"
+            class="hidden"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>
+                            Scoreboard
+                        </h2>
+
+                        <div
+                            class="muted"
+                            style="margin-top:6px"
+                        >
+                            Alleen teams van jouw bedrijf worden hier getoond.
+                        </div>
+                    </div>
+
+                    <button
+                        class="btn-small"
+                        onclick="loadScoreboard()"
+                    >
+                        Vernieuwen
+                    </button>
+
+                </div>
+
+                <div
+                    id="scoreboardContainer"
+                    class="table-wrap"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</section>
+
+
+<!-- =========================================
+     START SESSIE
+========================================= -->
+
+<div
+    id="startSessionModal"
+    class="modal-backdrop hidden"
+>
+
+    <div class="modal">
+
+        <h2 id="startSessionTitle">
+            Sessie starten
+        </h2>
+
+        <input
+            id="startTeamId"
+            type="hidden"
+        >
+
+        <div class="radio-row">
+
+            <label>
+                <input
+                    type="radio"
+                    name="sessionMode"
+                    value="package-random"
+                    checked
+                    onchange="updateSessionMode()"
+                >
+
+                Willekeurig pakket
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="sessionMode"
+                    value="package-manual"
+                    onchange="updateSessionMode()"
+                >
+
+                Handmatig pakket
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="sessionMode"
+                    value="single"
+                    onchange="updateSessionMode()"
+                >
+
+                Losse challenge
+            </label>
+
+        </div>
+
+
+        <!-- WILLEKEURIG -->
+
+        <div id="randomPackageOptions">
+
+            <p class="muted">
+                BreachOut kiest automatisch
+                <strong>10 challenges</strong>:
+                2 uit ieder niveau.
+            </p>
+
+            <p class="muted">
+                De volgorde loopt automatisch
+                van niveau 1 naar niveau 5.
+            </p>
+
+        </div>
+
+
+        <!-- HANDMATIG -->
+
+        <div
+            id="manualPackageOptions"
+            class="hidden"
+        >
+
+            <p class="muted">
+                Kies precies 10 challenges.
+                BreachOut sorteert ze automatisch
+                van makkelijk naar moeilijk.
+            </p>
+
+            <div
+                id="manualPackageCount"
+                style="
+                    margin: 12px 0;
+                    font-weight: bold;
+                    color: #35f29a;
+                "
+            >
+                0 / 10 geselecteerd
+            </div>
+
+            <div
+                id="manualChallengeList"
+                style="
+                    max-height: 390px;
+                    overflow-y: auto;
+                    padding: 14px;
+                    border: 1px solid #20392b;
+                    border-radius: 10px;
+                    background: #08110c;
+                "
+            ></div>
+
+        </div>
+
+
+        <!-- LOSSE CHALLENGE -->
+
+        <div
+            id="singleOptions"
+            class="hidden"
+        >
+
+            <div class="form-group">
+
+                <label>
+                    Challenge
+                </label>
+
+                <select
+                    id="singleChallenge"
+                ></select>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="startSessionError"
+            class="error-message hidden"
+        ></div>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-secondary"
+                onclick="closeModal('startSessionModal')"
+            >
+                Annuleren
+            </button>
+
+            <button
+                class="btn-primary"
+                onclick="startSession()"
+            >
+                Start sessie
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     LIVE SESSIEDETAILS
+========================================= -->
+
+<div
+    id="sessionModal"
+    class="modal-backdrop hidden"
+>
+
+    <div class="modal large">
+
+        <h2 id="sessionModalTitle">
+            Sessie
+        </h2>
+
+
+        <div
+            id="sessionSummary"
+            class="session-summary"
+        ></div>
+
+
+        <div class="form-group">
+
+            <label>
+                Type bericht
+            </label>
+
+            <select id="messageType">
+
+                <option value="message">
+                    Bericht
+                </option>
+
+                <option value="hint">
+                    Hint
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Bericht aan het team
+            </label>
+
+            <textarea
+                id="messageText"
+                maxlength="2000"
+                placeholder="Typ hier een bericht of hint..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="quick-messages">
+
+            <button
+                class="btn-small"
+                onclick="setQuickMessage(30)"
+            >
+                Nog 30 min
+            </button>
+
+            <button
+                class="btn-small"
+                onclick="setQuickMessage(15)"
+            >
+                Nog 15 min
+            </button>
+
+            <button
+                class="btn-small"
+                onclick="setQuickMessage(10)"
+            >
+                Nog 10 min
+            </button>
+
+            <button
+                class="btn-small"
+                onclick="setQuickMessage(5)"
+            >
+                Nog 5 min
+            </button>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-primary"
+                onclick="sendMessage()"
+            >
+                Versturen
+            </button>
+
+        </div>
+
+
+        <div
+            id="messageError"
+            class="error-message hidden"
+        ></div>
+
+
+        <h3 style="margin-top:28px">
+            Berichtgeschiedenis
+        </h3>
+
+        <div
+            id="messageHistory"
+            class="message-history"
+        >
+            Laden...
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                id="stopSessionButton"
+                class="btn-danger"
+                onclick="stopCurrentSession()"
+            >
+                Sessie stoppen
+            </button>
+
+            <button
+                class="btn-secondary"
+                onclick="closeModal('sessionModal')"
+            >
+                Sluiten
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     TEAM AANMAKEN
+========================================= -->
+
+<div
+    id="teamModal"
+    class="modal-backdrop hidden"
+>
+
+    <div class="modal">
+
+        <h2>
+            Nieuw team
+        </h2>
+
+        <p class="muted">
+            Het nieuwe team wordt automatisch
+            gekoppeld aan jouw bedrijf.
+        </p>
+
+        <div class="form-group">
+
+            <label>
+                Gebruikersnaam
+            </label>
+
+            <input
+                id="newTeamUsername"
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Teamnaam
+            </label>
+
+            <input
+                id="newTeamDisplayName"
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Wachtwoord
+            </label>
+
+            <input
+                id="newTeamPassword"
+                type="password"
+                autocomplete="new-password"
+            >
+
+        </div>
+
+        <div
+            id="teamModalError"
+            class="error-message hidden"
+        ></div>
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-secondary"
+                onclick="closeModal('teamModal')"
+            >
+                Annuleren
+            </button>
+
+            <button
+                class="btn-primary"
+                onclick="createTeam()"
+            >
+                Team aanmaken
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+"use strict";
+
+
+let currentGameleader = null;
+
+let teams = [];
+let sessions = [];
+let challenges = [];
+let scoreboard = [];
+
+let sessionFilter = "all";
+
+let selectedSessionId = null;
+
+let dashboardTimer = null;
+
+
+/* =========================================
+   API
+========================================= */
+
+async function api(
+    url,
+    options = {}
+) {
+    const response =
+        await fetch(
+            url,
+            {
+                credentials:
+                    "same-origin",
+                ...options
+            }
+        );
+
+    const raw =
+        await response.text();
+
+    let data = {};
+
+    if (raw) {
+        try {
+            data =
+                JSON.parse(raw);
+        } catch {
+            throw new Error(
+                "Ongeldige serverresponse"
+            );
+        }
+    }
+
+    if (!response.ok) {
+        const error =
+            new Error(
+                data.detail ||
+                "Er ging iets mis"
+            );
+
+        error.status =
+            response.status;
+
+        throw error;
+    }
+
+    return data;
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+document
+    .getElementById(
+        "loginForm"
+    )
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+            const error =
+                document
+                    .getElementById(
+                        "loginError"
+                    );
+
+            error.classList.add(
+                "hidden"
+            );
+
+            try {
+                const data =
+                    await api(
+                        "/api/gameleader/login",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    username:
+                                        value(
+                                            "loginUsername"
+                                        ),
+
+                                    password:
+                                        value(
+                                            "loginPassword"
+                                        )
+                                })
+                        }
+                    );
+
+                currentGameleader =
+                    data.user;
+
+                await openPortal();
+
+            } catch (err) {
+                error.textContent =
+                    err.message;
+
+                error.classList.remove(
+                    "hidden"
+                );
+            }
+        }
+    );
+
+
+async function checkLogin() {
+    try {
+        currentGameleader =
+            await api(
+                "/api/gameleader/me"
+            );
+
+        await openPortal();
+
+    } catch {
+        showLogin();
+    }
+}
+
+
+async function openPortal() {
+    document
+        .getElementById(
+            "loginPage"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "portal"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "gameleaderName"
+        )
+        .textContent =
+            currentGameleader
+                .display_name;
+
+    await refreshEverything();
+
+    startDashboardRefresh();
+}
+
+
+function showLogin() {
+    document
+        .getElementById(
+            "portal"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "loginPage"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+async function logout() {
+    if (dashboardTimer) {
+        clearInterval(
+            dashboardTimer
+        );
+    }
+
+    await api(
+        "/api/gameleader/logout",
+        {
+            method: "POST"
+        }
+    );
+
+    location.reload();
+}
+
+
+/* =========================================
+   NAVIGATIE
+========================================= */
+
+function showPage(
+    page
+) {
+    const pages = [
+        "dashboard",
+        "teams",
+        "sessions",
+        "challenges",
+        "scoreboard"
+    ];
+
+    pages.forEach(
+        name => {
+            document
+                .getElementById(
+                    "page-" + name
+                )
+                ?.classList
+                .toggle(
+                    "hidden",
+                    name !== page
+                );
+        }
+    );
+
+    document
+        .querySelectorAll(
+            ".nav-button"
+        )
+        .forEach(
+            button => {
+                button
+                    .classList
+                    .toggle(
+                        "active",
+                        button.dataset.page
+                        === page
+                    );
+            }
+        );
+
+    const titles = {
+        dashboard:
+            "Dashboard",
+
+        teams:
+            "Teams",
+
+        sessions:
+            "Sessies",
+
+        challenges:
+            "Challenges",
+
+        scoreboard:
+            "Scoreboard"
+    };
+
+    document
+        .getElementById(
+            "pageTitle"
+        )
+        .textContent =
+            titles[page]
+            || "BreachOut";
+}
+
+
+/* =========================================
+   REFRESH
+========================================= */
+
+async function refreshEverything() {
+    await Promise.allSettled([
+        loadTeams(),
+        loadSessions(),
+        loadChallenges(),
+        loadScoreboard()
+    ]);
+
+    refreshDashboard();
+}
+
+
+/* =========================================
+   TEAMS
+========================================= */
+
+async function loadTeams() {
+    const data =
+        await api(
+            "/api/gameleader/teams"
+        );
+
+    teams =
+        data.teams || [];
+
+    document
+        .getElementById(
+            "statTeams"
+        )
+        .textContent =
+            teams.length;
+
+    renderTeams();
+}
+
+
+function renderTeams() {
+    const container =
+        document
+            .getElementById(
+                "teamsContainer"
+            );
+
+    if (!teams.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Er zijn geen teams aan jouw bedrijf gekoppeld.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Gebruikersnaam</th>
+                    <th>Status</th>
+                    <th>Sessie</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${teams.map(team => `
+                    <tr>
+
+                        <td>
+                            ${escapeHtml(
+                                team.display_name
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                team.username
+                            )}
+                        </td>
+
+                        <td>
+                            ${
+                                team.active
+                                ? badge(
+                                    "Actief",
+                                    "active"
+                                )
+                                : badge(
+                                    "Uitgeschakeld",
+                                    "disabled"
+                                )
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                team.session
+                                ? badge(
+                                    `${team.session.current}/${team.session.total}`,
+                                    "active"
+                                )
+                                : "-"
+                            }
+                        </td>
+
+                        <td class="actions-cell">
+
+                            <button
+                                class="btn-small"
+                                onclick="openStartModal(
+                                    ${team.id}
+                                )"
+                                ${
+                                    team.session
+                                    ? "disabled"
+                                    : ""
+                                }
+                            >
+                                Start sessie
+                            </button>
+
+                            <button
+                                class="btn-small danger"
+                                onclick="stopTeamSession(
+                                    '${team.session?.id || ""}'
+                                )"
+                                ${
+                                    team.session
+                                    ? ""
+                                    : "disabled"
+                                }
+                            >
+                                Stop sessie
+                            </button>
+
+                            ${
+                                team.session
+                                ? `
+                                    <button
+                                        class="btn-small"
+                                        onclick="openSession(
+                                            '${team.session.id}'
+                                        )"
+                                    >
+                                        Begeleiden
+                                    </button>
+                                `
+                                : ""
+                            }
+
+                        </td>
+
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>
+    `;
+}
+
+
+/* =========================================
+   CHALLENGES
+========================================= */
+
+async function loadChallenges() {
+    const data =
+        await api(
+            "/api/gameleader/challenges"
+        );
+
+    challenges =
+        data.challenges || [];
+
+    renderChallenges();
+
+    populateChallengeSelect();
+}
+
+
+function renderChallenges() {
+    const container =
+        document
+            .getElementById(
+                "challengesContainer"
+            );
+
+    if (!challenges.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Geen actieve challenges beschikbaar.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Niveau</th>
+                    <th>Challenge</th>
+                    <th>Categorie</th>
+                    <th>Moeilijkheid</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${challenges.map(
+                    challenge => `
+                        <tr>
+
+                            <td>
+                                ${challenge.difficulty_level}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    challenge.name
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    challenge.category
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    challenge.difficulty
+                                )}
+                            </td>
+
+                        </tr>
+                    `
+                ).join("")}
+            </tbody>
+        </table>
+    `;
+}
+
+
+/* =========================================
+   SESSIE STARTEN
+========================================= */
+
+function openStartModal(
+    teamId
+) {
+    const team =
+        teams.find(
+            item =>
+                item.id === teamId
+        );
+
+    if (!team) {
+        return;
+    }
+
+    if (!team.active) {
+        alert(
+            "Dit teamaccount is uitgeschakeld."
+        );
+
+        return;
+    }
+
+    document
+        .getElementById(
+            "startTeamId"
+        )
+        .value =
+            team.id;
+
+    document
+        .getElementById(
+            "startSessionTitle"
+        )
+        .textContent =
+            `Sessie starten · ${team.display_name}`;
+
+    document
+        .querySelector(
+            'input[name="sessionMode"][value="package-random"]'
+        )
+        .checked =
+            true;
+
+    const error =
+        document.getElementById(
+            "startSessionError"
+        );
+
+    error.textContent = "";
+
+    error.classList.add(
+        "hidden"
+    );
+
+    renderManualPackage();
+
+    updateSessionMode();
+
+    document
+        .getElementById(
+            "startSessionModal"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+function updateSessionMode() {
+    const mode =
+        document
+            .querySelector(
+                'input[name="sessionMode"]:checked'
+            )
+            ?.value;
+
+    document
+        .getElementById(
+            "randomPackageOptions"
+        )
+        .classList.toggle(
+            "hidden",
+            mode !== "package-random"
+        );
+
+    document
+        .getElementById(
+            "manualPackageOptions"
+        )
+        .classList.toggle(
+            "hidden",
+            mode !== "package-manual"
+        );
+
+    document
+        .getElementById(
+            "singleOptions"
+        )
+        .classList.toggle(
+            "hidden",
+            mode !== "single"
+        );
+}
+
+
+/* =========================================
+   HANDMATIG PAKKET
+========================================= */
+
+function renderManualPackage() {
+    const container =
+        document.getElementById(
+            "manualChallengeList"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    const sorted =
+        [...challenges]
+            .sort(
+                (a, b) => {
+                    const levelDifference =
+                        a.difficulty_level
+                        - b.difficulty_level;
+
+                    if (levelDifference !== 0) {
+                        return levelDifference;
+                    }
+
+                    return a.name.localeCompare(
+                        b.name,
+                        "nl"
+                    );
+                }
+            );
+
+    let html = "";
+
+    for (
+        let level = 1;
+        level <= 5;
+        level++
+    ) {
+        const levelChallenges =
+            sorted.filter(
+                challenge =>
+                    challenge.difficulty_level
+                    === level
+            );
+
+        if (!levelChallenges.length) {
+            continue;
+        }
+
+        html += `
+            <div class="manual-level-title">
+                Niveau ${level}
+            </div>
+        `;
+
+        for (
+            const challenge
+            of levelChallenges
+        ) {
+            html += `
+                <label class="manual-package-row">
+
+                    <input
+                        type="checkbox"
+                        class="manual-package-challenge"
+                        value="${escapeHtml(
+                            challenge.id
+                        )}"
+                        onchange="updateManualPackageCount(this)"
+                    >
+
+                    <span class="manual-package-text">
+
+                        <strong>
+                            ${escapeHtml(
+                                challenge.name
+                            )}
+                        </strong>
+
+                        <span class="muted">
+                            ${escapeHtml(
+                                challenge.category
+                            )}
+                            ·
+                            ${escapeHtml(
+                                challenge.difficulty
+                            )}
+                        </span>
+
+                    </span>
+
+                </label>
+            `;
+        }
+    }
+
+    container.innerHTML =
+        html;
+
+    updateManualPackageCount();
+}
+
+
+function updateManualPackageCount(
+    changedCheckbox = null
+) {
+    let selected =
+        [
+            ...document.querySelectorAll(
+                ".manual-package-challenge:checked"
+            )
+        ];
+
+    if (
+        selected.length > 10
+        && changedCheckbox
+    ) {
+        changedCheckbox.checked =
+            false;
+
+        selected =
+            [
+                ...document.querySelectorAll(
+                    ".manual-package-challenge:checked"
+                )
+            ];
+    }
+
+    const count =
+        selected.length;
+
+    const countElement =
+        document.getElementById(
+            "manualPackageCount"
+        );
+
+    if (countElement) {
+        countElement.textContent =
+            `${count} / 10 geselecteerd`;
+
+        countElement.style.color =
+            count === 10
+            ? "#35f29a"
+            : "#f7c86a";
+    }
+
+    document
+        .querySelectorAll(
+            ".manual-package-challenge:not(:checked)"
+        )
+        .forEach(
+            checkbox => {
+                checkbox.disabled =
+                    count >= 10;
+            }
+        );
+}
+
+
+function getManualPackageIds() {
+    const selectedIds =
+        new Set(
+            [
+                ...document.querySelectorAll(
+                    ".manual-package-challenge:checked"
+                )
+            ].map(
+                checkbox =>
+                    checkbox.value
+            )
+        );
+
+    return [...challenges]
+        .filter(
+            challenge =>
+                selectedIds.has(
+                    challenge.id
+                )
+        )
+        .sort(
+            (a, b) => {
+                const levelDifference =
+                    a.difficulty_level
+                    - b.difficulty_level;
+
+                if (levelDifference !== 0) {
+                    return levelDifference;
+                }
+
+                return a.name.localeCompare(
+                    b.name,
+                    "nl"
+                );
+            }
+        )
+        .map(
+            challenge =>
+                challenge.id
+        );
+}
+
+
+async function startSession() {
+    const error =
+        document
+            .getElementById(
+                "startSessionError"
+            );
+
+    error.textContent = "";
+
+    error.classList.add(
+        "hidden"
+    );
+
+    const teamId =
+        Number(
+            value(
+                "startTeamId"
+            )
+        );
+
+    const mode =
+        document
+            .querySelector(
+                'input[name="sessionMode"]:checked'
+            )
+            ?.value;
+
+    try {
+        if (
+            mode === "single"
+        ) {
+            await api(
+                `/api/gameleader/teams/${teamId}/sessions/single`,
+                {
+                    method:
+                        "POST",
+
+                    headers:
+                        jsonHeaders(),
+
+                    body:
+                        JSON.stringify({
+                            challenge_id:
+                                value(
+                                    "singleChallenge"
+                                )
+                        })
+                }
+            );
+
+        } else if (
+            mode === "package-manual"
+        ) {
+            const challengeIds =
+                getManualPackageIds();
+
+            if (
+                challengeIds.length !== 10
+            ) {
+                throw new Error(
+                    "Selecteer precies 10 challenges."
+                );
+            }
+
+            await api(
+                `/api/gameleader/teams/${teamId}/sessions/package`,
+                {
+                    method:
+                        "POST",
+
+                    headers:
+                        jsonHeaders(),
+
+                    body:
+                        JSON.stringify({
+                            challenge_ids:
+                                challengeIds,
+
+                            use_saved_assignments:
+                                false
+                        })
+                }
+            );
+
+        } else if (
+            mode === "package-random"
+        ) {
+            await api(
+                `/api/gameleader/teams/${teamId}/sessions/package`,
+                {
+                    method:
+                        "POST",
+
+                    headers:
+                        jsonHeaders(),
+
+                    body:
+                        JSON.stringify({
+                            challenge_ids:
+                                null,
+
+                            use_saved_assignments:
+                                false
+                        })
+                }
+            );
+
+        } else {
+            throw new Error(
+                "Kies eerst een sessietype."
+            );
+        }
+
+
+        closeModal(
+            "startSessionModal"
+        );
+
+        await Promise.all([
+            loadTeams(),
+            loadSessions()
+        ]);
+
+        alert(
+            "Sessie gestart."
+        );
+
+    } catch (err) {
+        error.textContent =
+            err.message;
+
+        error.classList.remove(
+            "hidden"
+        );
+    }
+}
+
+
+/* =========================================
+   SESSIES
+========================================= */
+
+async function loadSessions() {
+    const data =
+        await api(
+            "/api/gameleader/sessions"
+        );
+
+    sessions =
+        data.sessions || [];
+
+    renderSessions();
+
+    updateStats();
+}
+
+
+function setSessionFilter(
+    filter
+) {
+    sessionFilter =
+        filter;
+
+    document
+        .querySelectorAll(
+            ".filter-button"
+        )
+        .forEach(
+            button => {
+                button.classList.toggle(
+                    "active",
+                    button.dataset.filter
+                    === filter
+                );
+            }
+        );
+
+    renderSessions();
+}
+
+
+function renderSessions() {
+    const container =
+        document
+            .getElementById(
+                "sessionsContainer"
+            );
+
+    let filtered =
+        sessions;
+
+    if (
+        sessionFilter !== "all"
+    ) {
+        filtered =
+            sessions.filter(
+                session =>
+                    session.status
+                    === sessionFilter
+            );
+    }
+
+    if (!filtered.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Geen sessies gevonden.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Voortgang</th>
+                    <th>Fouten</th>
+                    <th>Hints</th>
+                    <th>Punten</th>
+                    <th>Gestart</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${filtered.map(
+                    session => `
+                        <tr>
+
+                            <td>
+                                ${escapeHtml(
+                                    session.team.display_name
+                                )}
+                            </td>
+
+                            <td>
+                                ${statusBadge(
+                                    session.status
+                                )}
+                            </td>
+
+                            <td>
+                                ${
+                                    session.mode
+                                    === "single"
+                                    ? "Los"
+                                    : "Pakket"
+                                }
+                            </td>
+
+                            <td>
+                                ${session.completed}
+                                /
+                                ${session.total}
+                            </td>
+
+                            <td>
+                                ${session.wrong_attempts}
+                            </td>
+
+                            <td>
+                                ${session.hints_used}
+                            </td>
+
+                            <td class="score">
+                                ${session.score}
+                            </td>
+
+                            <td>
+                                ${formatDate(
+                                    session.started_at
+                                )}
+                            </td>
+
+                            <td class="actions-cell">
+
+                                <button
+                                    class="btn-small"
+                                    onclick="openSession(
+                                        '${session.id}'
+                                    )"
+                                >
+                                    Bekijken
+                                </button>
+
+                                ${
+                                    session.status !== "active"
+                                    ? `
+                                        <button
+                                            class="btn-small"
+                                            onclick="downloadReport(
+                                                '${session.id}'
+                                            )"
+                                        >
+                                            Rapport
+                                        </button>
+                                    `
+                                    : ""
+                                }
+
+                            </td>
+
+                        </tr>
+                    `
+                ).join("")}
+            </tbody>
+        </table>
+    `;
+}
+
+
+/* =========================================
+   SESSIEDETAIL
+========================================= */
+
+async function openSession(
+    sessionId
+) {
+    try {
+        selectedSessionId =
+            sessionId;
+
+        const data =
+            await api(
+                `/api/gameleader/sessions/${sessionId}`
+            );
+
+        document
+            .getElementById(
+                "sessionModalTitle"
+            )
+            .textContent =
+                `Sessie · ${data.team.display_name}`;
+
+        document
+            .getElementById(
+                "sessionSummary"
+            )
+            .innerHTML = `
+                ${summaryItem(
+                    "Status",
+                    translateStatus(
+                        data.status
+                    )
+                )}
+
+                ${summaryItem(
+                    "Type",
+                    data.mode === "single"
+                    ? "Losse challenge"
+                    : "Pakket"
+                )}
+
+                ${summaryItem(
+                    "Voortgang",
+                    `${data.current} / ${data.total}`
+                )}
+
+                ${summaryItem(
+                    "Gestart",
+                    formatDate(
+                        data.started_at
+                    )
+                )}
+            `;
+
+        document
+            .getElementById(
+                "stopSessionButton"
+            )
+            .classList.toggle(
+                "hidden",
+                data.status
+                !== "active"
+            );
+
+        document
+            .getElementById(
+                "messageText"
+            )
+            .value = "";
+
+        document
+            .getElementById(
+                "messageError"
+            )
+            .classList.add(
+                "hidden"
+            );
+
+        await loadMessages();
+
+        document
+            .getElementById(
+                "sessionModal"
+            )
+            .classList.remove(
+                "hidden"
+            );
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+/* =========================================
+   BERICHTEN
+========================================= */
+
+function setQuickMessage(
+    minutes
+) {
+    document
+        .getElementById(
+            "messageType"
+        )
+        .value =
+            "message";
+
+    document
+        .getElementById(
+            "messageText"
+        )
+        .value =
+            `Nog ${minutes} minuten resterend.`;
+}
+
+
+async function sendMessage() {
+    if (!selectedSessionId) {
+        return;
+    }
+
+    const message =
+        value(
+            "messageText"
+        )
+        .trim();
+
+    const type =
+        value(
+            "messageType"
+        );
+
+    const error =
+        document
+            .getElementById(
+                "messageError"
+            );
+
+    error.classList.add(
+        "hidden"
+    );
+
+    if (!message) {
+        error.textContent =
+            "Vul eerst een bericht in.";
+
+        error.classList.remove(
+            "hidden"
+        );
+
+        return;
+    }
+
+    try {
+        await api(
+            `/api/gameleader/sessions/${selectedSessionId}/messages`,
+            {
+                method: "POST",
+
+                headers:
+                    jsonHeaders(),
+
+                body:
+                    JSON.stringify({
+                        message:
+                            message,
+
+                        message_type:
+                            type
+                    })
+            }
+        );
+
+        document
+            .getElementById(
+                "messageText"
+            )
+            .value = "";
+
+        await loadMessages();
+
+    } catch (err) {
+        error.textContent =
+            err.message;
+
+        error.classList.remove(
+            "hidden"
+        );
+    }
+}
+
+
+async function loadMessages() {
+    if (!selectedSessionId) {
+        return;
+    }
+
+    const data =
+        await api(
+            `/api/gameleader/sessions/${selectedSessionId}/messages`
+        );
+
+    const messages =
+        data.messages || [];
+
+    const container =
+        document
+            .getElementById(
+                "messageHistory"
+            );
+
+    if (!messages.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Nog geen berichten verstuurd.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        messages
+            .slice()
+            .reverse()
+            .map(
+                message => `
+                    <div
+                        class="message-row ${
+                            message.type
+                            === "hint"
+                            ? "hint"
+                            : ""
+                        }"
+                    >
+
+                        <div class="message-row-head">
+
+                            <span>
+                                ${
+                                    message.type
+                                    === "hint"
+                                    ? "Hint"
+                                    : "Bericht"
+                                }
+                            </span>
+
+                            <span>
+                                ${formatDate(
+                                    message.created_at
+                                )}
+                            </span>
+
+                        </div>
+
+                        <div>
+                            ${escapeHtml(
+                                message.text
+                            )}
+                        </div>
+
+                    </div>
+                `
+            )
+            .join("");
+}
+
+
+/* =========================================
+   STOPPEN
+========================================= */
+
+async function stopTeamSession(
+    sessionId
+) {
+    if (!sessionId) {
+        return;
+    }
+
+    if (
+        !confirm(
+            "Weet je zeker dat je deze sessie wilt stoppen?"
+        )
+    ) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/gameleader/sessions/${sessionId}/stop`,
+            {
+                method: "POST"
+            }
+        );
+
+        await Promise.all([
+            loadSessions(),
+            loadTeams()
+        ]);
+
+        refreshDashboard();
+
+    } catch (err) {
+        alert(
+            err.message
+        );
+    }
+}
+
+
+/* =========================================
+   STOPPEN VANUIT SESSIEDETAIL
+========================================= */
+
+async function stopCurrentSession() {
+    if (!selectedSessionId) {
+        return;
+    }
+
+    if (
+        !confirm(
+            "Weet je zeker dat je deze sessie wilt stoppen?"
+        )
+    ) {
+        return;
+    }
+
+    try {
+        await api(
+            `/api/gameleader/sessions/${selectedSessionId}/stop`,
+            {
+                method: "POST"
+            }
+        );
+
+        closeModal(
+            "sessionModal"
+        );
+
+        selectedSessionId =
+            null;
+
+        await Promise.all([
+            loadSessions(),
+            loadTeams()
+        ]);
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+function updateStats() {
+    const active =
+        sessions.filter(
+            session =>
+                session.status
+                === "active"
+        );
+
+    const completed =
+        sessions.filter(
+            session =>
+                session.status
+                === "completed"
+        );
+
+    const wrongAnswers =
+        sessions.reduce(
+            (total, session) =>
+                total +
+                Number(
+                    session.wrong_attempts
+                    || 0
+                ),
+            0
+        );
+
+    const hints =
+        sessions.reduce(
+            (total, session) =>
+                total +
+                Number(
+                    session.hints_used
+                    || 0
+                ),
+            0
+        );
+
+    const highscore =
+        sessions.reduce(
+            (highest, session) =>
+                Math.max(
+                    highest,
+                    Number(
+                        session.score
+                        || 0
+                    )
+                ),
+            0
+        );
+
+    document
+        .getElementById(
+            "statActiveSessions"
+        )
+        .textContent =
+            active.length;
+
+    document
+        .getElementById(
+            "statCompletedSessions"
+        )
+        .textContent =
+            completed.length;
+
+    document
+        .getElementById(
+            "statWrongAnswers"
+        )
+        .textContent =
+            wrongAnswers;
+
+    document
+        .getElementById(
+            "statHints"
+        )
+        .textContent =
+            hints;
+
+    document
+        .getElementById(
+            "statHighscore"
+        )
+        .textContent =
+            highscore;
+}
+
+
+function refreshDashboard() {
+    const active =
+        sessions.filter(
+            session =>
+                session.status
+                === "active"
+        );
+
+    const container =
+        document
+            .getElementById(
+                "dashboardSessions"
+            );
+
+    if (!active.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Er zijn momenteel geen actieve sessies.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Voortgang</th>
+                    <th>Fouten</th>
+                    <th>Hints</th>
+                    <th>Punten</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${active.map(
+                    session => `
+                        <tr>
+
+                            <td>
+                                ${escapeHtml(
+                                    session.team.display_name
+                                )}
+                            </td>
+
+                            <td>
+                                ${session.current}
+                                /
+                                ${session.total}
+                            </td>
+
+                            <td>
+                                ${session.wrong_attempts}
+                            </td>
+
+                            <td>
+                                ${session.hints_used}
+                            </td>
+
+                            <td class="score">
+                                ${session.score}
+                            </td>
+
+                            <td>
+                                <button
+                                    class="btn-small"
+                                    onclick="openSession(
+                                        '${session.id}'
+                                    )"
+                                >
+                                    Begeleiden
+                                </button>
+                            </td>
+
+                        </tr>
+                    `
+                ).join("")}
+            </tbody>
+        </table>
+    `;
+}
+
+
+function startDashboardRefresh() {
+    if (dashboardTimer) {
+        clearInterval(
+            dashboardTimer
+        );
+    }
+
+    dashboardTimer =
+        setInterval(
+            async () => {
+                try {
+                    await Promise.all([
+                        loadSessions(),
+                        loadTeams()
+                    ]);
+
+                    refreshDashboard();
+
+                } catch {
+                    // volgende interval opnieuw
+                }
+            },
+            10000
+        );
+}
+
+
+/* =========================================
+   TEAM AANMAKEN
+========================================= */
+
+function openTeamModal() {
+    document
+        .getElementById(
+            "newTeamUsername"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "newTeamDisplayName"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "newTeamPassword"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "teamModalError"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "teamModal"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+async function createTeam() {
+    const username =
+        value(
+            "newTeamUsername"
+        )
+        .trim();
+
+    const displayName =
+        value(
+            "newTeamDisplayName"
+        )
+        .trim();
+
+    const password =
+        value(
+            "newTeamPassword"
+        );
+
+    const error =
+        document
+            .getElementById(
+                "teamModalError"
+            );
+
+    error.classList.add(
+        "hidden"
+    );
+
+    try {
+        await api(
+            "/api/gameleader/teams",
+            {
+                method: "POST",
+
+                headers:
+                    jsonHeaders(),
+
+                body:
+                    JSON.stringify({
+                        username:
+                            username,
+
+                        display_name:
+                            displayName,
+
+                        password:
+                            password
+                    })
+            }
+        );
+
+        closeModal(
+            "teamModal"
+        );
+
+        await Promise.all([
+            loadTeams(),
+            loadScoreboard()
+        ]);
+
+    } catch (err) {
+        error.textContent =
+            err.message;
+
+        error.classList.remove(
+            "hidden"
+        );
+    }
+}
+
+
+/* =========================================
+   BEDRIJFSSCOREBOARD
+========================================= */
+
+async function loadScoreboard() {
+    const data =
+        await api(
+            "/api/gameleader/scoreboard"
+        );
+
+    scoreboard =
+        data.scoreboard || [];
+
+    renderScoreboard();
+}
+
+
+function renderScoreboard() {
+    const container =
+        document
+            .getElementById(
+                "scoreboardContainer"
+            );
+
+    if (!scoreboard.length) {
+        container.innerHTML = `
+            <div class="empty">
+                Nog geen teams of scores beschikbaar.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Team</th>
+                    <th>Voortgang</th>
+                    <th>Punten</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${scoreboard.map(
+                    row => `
+                        <tr>
+
+                            <td>
+                                ${row.position}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    row.team
+                                )}
+                            </td>
+
+                            <td>
+                                ${row.completed}
+                                /
+                                ${row.total}
+                            </td>
+
+                            <td class="score">
+                                ${row.score}
+                            </td>
+
+                        </tr>
+                    `
+                ).join("")}
+
+            </tbody>
+
+        </table>
+    `;
+}
+
+
+/* =========================================
+   RAPPORT
+========================================= */
+
+function downloadReport(
+    sessionId
+) {
+    window.location.href =
+        "/api/gameleader/sessions/"
+        + encodeURIComponent(
+            sessionId
+        )
+        + "/report";
+}
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function populateChallengeSelect() {
+    const select =
+        document
+            .getElementById(
+                "singleChallenge"
+            );
+
+    select.innerHTML =
+        challenges.map(
+            challenge => `
+                <option
+                    value="${escapeHtml(
+                        challenge.id
+                    )}"
+                >
+                    Niveau
+                    ${challenge.difficulty_level}
+                    ·
+                    ${escapeHtml(
+                        challenge.name
+                    )}
+                </option>
+            `
+        )
+        .join("");
+}
+
+
+function closeModal(
+    modalId
+) {
+    document
+        .getElementById(
+            modalId
+        )
+        .classList.add(
+            "hidden"
+        );
+}
+
+
+function summaryItem(
+    label,
+    value
+) {
+    return `
+        <div class="summary-item">
+
+            <span class="summary-label">
+                ${escapeHtml(label)}
+            </span>
+
+            <span class="summary-value">
+                ${escapeHtml(value)}
+            </span>
+
+        </div>
+    `;
+}
+
+
+function badge(
+    text,
+    type
+) {
+    const classes = {
+        active:
+            "badge-active",
+
+        disabled:
+            "badge-disabled",
+
+        warning:
+            "badge-warning",
+
+        neutral:
+            "badge-neutral"
+    };
+
+    return `
+        <span
+            class="badge ${
+                classes[type]
+                || "badge-neutral"
+            }"
+        >
+            ${escapeHtml(text)}
+        </span>
+    `;
+}
+
+
+function statusBadge(
+    status
+) {
+    if (
+        status === "active"
+    ) {
+        return badge(
+            "Actief",
+            "active"
+        );
+    }
+
+    if (
+        status === "completed"
+    ) {
+        return badge(
+            "Voltooid",
+            "neutral"
+        );
+    }
+
+    if (
+        status === "cancelled"
+    ) {
+        return badge(
+            "Geannuleerd",
+            "disabled"
+        );
+    }
+
+    return badge(
+        status,
+        "warning"
+    );
+}
+
+
+function translateStatus(
+    status
+) {
+    const values = {
+        active:
+            "Actief",
+
+        completed:
+            "Voltooid",
+
+        cancelled:
+            "Geannuleerd",
+
+        waiting:
+            "Wachtend"
+    };
+
+    return values[status]
+        || status;
+}
+
+
+function jsonHeaders() {
+    return {
+        "Content-Type":
+            "application/json"
+    };
+}
+
+
+function value(
+    id
+) {
+    return document
+        .getElementById(id)
+        .value;
+}
+
+
+function formatDate(
+    value
+) {
+    if (!value) {
+        return "-";
+    }
+
+    return new Date(
+        value
+    )
+        .toLocaleString(
+            "nl-NL"
+        );
+}
+
+
+function escapeHtml(
+    value
+) {
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+checkLogin();
+
+</script>
+
+</body>
+</html>

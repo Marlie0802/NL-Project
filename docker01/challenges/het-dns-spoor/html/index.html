@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Het DNS-spoor</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --background: #07100b;
+            --panel: #0d1712;
+            --border: #20392b;
+            --muted: #839087;
+            --warning: #f7c86a;
+            --danger: #ff7d7d;
+        }
+
+        body {
+            margin: 0;
+
+            color: #e9f2ed;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(53, 242, 154, .025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(53, 242, 154, .025) 1px,
+                    transparent 1px
+                ),
+                var(--background);
+
+            background-size:
+                40px 40px;
+        }
+
+        .container {
+            width: 1120px;
+            max-width: 94%;
+
+            margin:
+                40px auto
+                70px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            color: var(--green);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+            color: var(--muted);
+        }
+
+        .panel {
+            margin-bottom: 20px;
+            padding: 24px;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--panel);
+        }
+
+        .grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(360px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+        .terminal {
+            overflow-x: auto;
+
+            padding: 18px;
+
+            border: 1px solid #193022;
+            border-radius: 8px;
+
+            color: #d8e8df;
+            background: #050b07;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+            line-height: 1.65;
+
+            white-space: pre;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .warning-box {
+            padding: 15px;
+
+            border-left:
+                3px solid
+                var(--warning);
+
+            color: #e8dfc5;
+
+            background:
+                rgba(
+                    247,
+                    200,
+                    106,
+                    .05
+                );
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #223128;
+            text-align: left;
+        }
+
+        th {
+            color: var(--green);
+        }
+
+        input {
+            width: 340px;
+            max-width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #355443;
+            border-radius: 7px;
+
+            outline: none;
+
+            color: white;
+            background: #07100b;
+        }
+
+        input:focus {
+            border-color: var(--green);
+        }
+
+        button {
+            padding: 12px 18px;
+
+            border: 0;
+            border-radius: 7px;
+
+            color: #04100a;
+
+            font-weight: bold;
+
+            background: var(--green);
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--green-light);
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: var(--green);
+        }
+
+        .error {
+            color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        Het DNS-spoor
+    </h1>
+
+    <div class="subtitle">
+        DNS-analyse · intern netwerk
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Situatie
+        </h2>
+
+        <p>
+            Medewerkers melden dat
+            <strong>portal.breachout.local</strong>
+            soms naar de oude webserver verwijst.
+        </p>
+
+        <p>
+            Niet iedereen heeft het probleem.
+            De DNS-infrastructuur bestaat uit twee
+            interne nameservers.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            DNS-infrastructuur
+        </h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Server</th>
+                    <th>IP-adres</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>dns01</td>
+                    <td>10.20.53.11</td>
+                    <td>Primary</td>
+                </tr>
+
+                <tr>
+                    <td>dns02</td>
+                    <td>10.20.53.12</td>
+                    <td>Secondary</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                Controle dns01
+            </h2>
+
+            <div class="terminal">$ dig @10.20.53.11 portal.breachout.local
+
+;; ANSWER SECTION:
+portal.breachout.local. 300 IN A 10.20.30.40
+
+
+$ dig @10.20.53.11 breachout.local SOA
+
+breachout.local. 3600 IN SOA dns01.breachout.local.
+hostmaster.breachout.local.
+2026101204 3600 900 604800 300</div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                Controle dns02
+            </h2>
+
+            <div class="terminal">$ dig @10.20.53.12 portal.breachout.local
+
+;; ANSWER SECTION:
+portal.breachout.local. 300 IN A 10.20.30.19
+
+
+$ dig @10.20.53.12 breachout.local SOA
+
+breachout.local. 3600 IN SOA dns01.breachout.local.
+hostmaster.breachout.local.
+2026100902 3600 900 604800 300</div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Serverinventaris
+        </h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Server</th>
+                    <th>IP-adres</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>WEB-PROD</td>
+                    <td>10.20.30.40</td>
+                    <td>Productie</td>
+                </tr>
+
+                <tr>
+                    <td>WEB-OLD</td>
+                    <td>10.20.30.19</td>
+                    <td>Buiten gebruik</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Clientmelding
+        </h2>
+
+        <div class="warning-box">
+
+            <strong>
+                Werkstation PC-27
+            </strong>
+
+            <p>
+                DNS-server:
+                <code>10.20.53.12</code>
+            </p>
+
+            <p>
+                portal.breachout.local opent nog de
+                oude versie van de website.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Opdracht
+        </h2>
+
+        <p>
+            Welke DNS-server bevat verouderde
+            zone-informatie?
+        </p>
+
+        <p class="muted">
+            Vul de hostnaam van de DNS-server in.
+        </p>
+
+        <input
+            id="answer"
+            placeholder="bijvoorbeeld: dns01"
+            autocomplete="off"
+        >
+
+        <button
+            id="submitButton"
+            onclick="checkAnswer()"
+        >
+            Controleer
+        </button>
+
+        <div id="result"></div>
+
+    </section>
+
+</div>
+
+
+<script src="/hint-widget.js"></script>
+
+
+<script>
+"use strict";
+
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const sessionId =
+    params.get(
+        "session"
+    );
+
+let answerSubmitting =
+    false;
+
+
+async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    const input =
+        document.getElementById(
+            "answer"
+        );
+
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+    const answer =
+        input.value
+            .trim()
+            .toLowerCase();
+
+
+    if (!sessionId) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Geen geldige BreachOut-sessie gevonden.";
+
+        return;
+    }
+
+
+    if (!answer) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Vul eerst een antwoord in.";
+
+        return;
+    }
+
+
+    answerSubmitting =
+        true;
+
+    button.disabled =
+        true;
+
+
+    try {
+        const response =
+            await fetch(
+                "/api/session/" +
+                encodeURIComponent(
+                    sessionId
+                ) +
+                "/answer",
+                {
+                    method:
+                        "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            answer
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+
+        if (!data.correct) {
+            answerSubmitting =
+                false;
+
+            button.disabled =
+                false;
+
+            result.className =
+                "error";
+
+            result.textContent =
+                "✗ Niet correct. Vergelijk de DNS-antwoorden en zoneversies opnieuw.";
+
+            return;
+        }
+
+
+        if (data.completed) {
+            result.className =
+                "success";
+
+            result.textContent =
+                "✓ Correct! De sessie is voltooid. Je gaat terug naar BreachOut...";
+
+            setTimeout(
+                () => {
+                    window.location.href =
+                        "/";
+                },
+                1600
+            );
+
+            return;
+        }
+
+
+        result.className =
+            "success";
+
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt geladen...";
+
+
+        await waitForChallenge(
+            data.url
+        );
+
+    } catch (error) {
+        answerSubmitting =
+            false;
+
+        button.disabled =
+            false;
+
+        result.className =
+            "error";
+
+        result.textContent =
+            "Fout: " +
+            error.message;
+    }
+}
+
+
+async function waitForChallenge(
+    url
+) {
+    if (!url) {
+        window.location.href =
+            "/";
+
+        return;
+    }
+
+    for (
+        let attempt = 0;
+        attempt < 20;
+        attempt++
+    ) {
+        try {
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method: "GET",
+                        cache: "no-store"
+                    }
+                );
+
+            if (response.ok) {
+                window.location.href =
+                    url;
+
+                return;
+            }
+
+        } catch {
+            // container start nog
+        }
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    500
+                )
+        );
+    }
+
+    window.location.href =
+        url;
+}
+
+
+document
+    .getElementById(
+        "answer"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key === "Enter"
+            ) {
+                event.preventDefault();
+
+                checkAnswer();
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>

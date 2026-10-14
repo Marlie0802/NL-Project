@@ -2,34 +2,68 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>ChallengeLab</title>
+    <title>BreachOut</title>
 
     <style>
         * {
             box-sizing: border-box;
         }
 
+        :root {
+            --green: #35f29a;
+            --green-light: #69ffb6;
+            --background: #050807;
+            --panel: rgba(8, 18, 15, .92);
+            --border: rgba(53, 242, 154, .15);
+            --muted: #819087;
+            --muted-dark: #5e6c64;
+            --danger: #ff9999;
+        }
+
+        html {
+            min-height: 100%;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background:
-                linear-gradient(rgba(0,255,140,.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,255,140,.03) 1px, transparent 1px),
-                radial-gradient(circle at top, #062218 0%, #08120f 45%, #050807 100%);
-            background-size: 40px 40px, 40px 40px, auto;
-            color: #f5f7f6;
             min-height: 100vh;
+            color: #f4f7f5;
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(0, 255, 140, .025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 255, 140, .025) 1px,
+                    transparent 1px
+                ),
+                radial-gradient(
+                    circle at top,
+                    #08251a 0%,
+                    #08120f 42%,
+                    #050807 100%
+                );
+
+            background-size:
+                40px 40px,
+                40px 40px,
+                auto;
         }
 
         *::selection {
-            background: #35f29a;
+            background: var(--green);
             color: #04100a;
-        }
-
-        .hidden {
-            display: none !important;
         }
 
         button,
@@ -41,7 +75,35 @@
             cursor: pointer;
         }
 
-        /* LOGIN */
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================================
+           BRANDING
+        ========================================= */
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -.7px;
+        }
+
+        .logo span {
+            color: var(--green);
+        }
+
+        .product-tag {
+            margin-top: 5px;
+            color: var(--muted-dark);
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           LOGIN
+        ========================================= */
 
         .login-page {
             min-height: 100vh;
@@ -54,108 +116,117 @@
         .login-box {
             width: 430px;
             max-width: 100%;
-            background: rgba(8,18,15,.94);
-            border: 1px solid rgba(53,242,154,.20);
-            border-radius: 16px;
-            padding: 32px;
+            padding: 34px;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            background: rgba(8, 18, 15, .95);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, .35);
         }
 
-        .logo {
+        .login-title {
+            margin: 29px 0 7px;
             font-size: 25px;
-            font-weight: 700;
-        }
-
-        .logo span {
-            color: #35f29a;
         }
 
         .login-subtitle {
-            color: #79877f;
-            margin: 8px 0 28px;
-            line-height: 1.5;
+            margin: 0 0 27px;
+            color: var(--muted);
+            line-height: 1.55;
         }
 
         label {
-            color: #9ba8a1;
             display: block;
             margin-bottom: 7px;
+            color: #9aa79f;
             font-size: 13px;
         }
 
         input {
             width: 100%;
-            padding: 13px;
-            background: #07100b;
-            border: 1px solid #294235;
-            color: white;
-            border-radius: 8px;
-            outline: none;
             margin-bottom: 17px;
+            padding: 13px 14px;
+            color: white;
+            outline: none;
+            border: 1px solid #294235;
+            border-radius: 8px;
+            background: #07100b;
         }
 
         input:focus {
-            border-color: #35f29a;
+            border-color: var(--green);
         }
 
         .login-button {
             width: 100%;
-            border: 0;
             padding: 13px;
-            border-radius: 8px;
-            background: #35f29a;
             color: #04100a;
-            font-weight: bold;
+            font-weight: 700;
+            border: 0;
+            border-radius: 8px;
+            background: var(--green);
         }
 
         .login-button:hover {
-            background: #65ffb4;
+            background: var(--green-light);
         }
 
         .error-box {
             margin-top: 16px;
-            padding: 12px;
-            border-radius: 8px;
-            background: rgba(255,80,80,.08);
+            padding: 12px 14px;
             color: #ff9b9b;
-            border: 1px solid rgba(255,80,80,.20);
+            border: 1px solid rgba(255, 80, 80, .20);
+            border-radius: 8px;
+            background: rgba(255, 80, 80, .08);
         }
 
-        /* PORTAL */
+        /* =========================================
+           HEADER
+        ========================================= */
 
         header {
-            max-width: 1200px;
+            width: 1200px;
+            max-width: calc(100% - 48px);
             margin: auto;
-            padding: 26px 24px;
+            padding: 25px 0;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,.04);
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
         }
 
         .header-right {
             display: flex;
-            gap: 15px;
             align-items: center;
+            gap: 17px;
         }
 
         .team-name {
-            color: #87958d;
+            color: #9aa79f;
             font-size: 14px;
         }
 
-        .logout-button {
-            background: transparent;
-            color: #ff9d9d;
-            border: 1px solid #4a2929;
-            padding: 8px 12px;
-            border-radius: 7px;
-        }
-
-        .admin-link {
-            color: #738078;
+        .nav-link {
+            color: var(--muted);
             text-decoration: none;
             font-size: 13px;
         }
+
+        .nav-link:hover {
+            color: var(--green);
+        }
+
+        .logout-button {
+            padding: 8px 12px;
+            color: var(--danger);
+            border: 1px solid #49282a;
+            border-radius: 7px;
+            background: transparent;
+        }
+
+        /* =========================================
+           MAIN
+        ========================================= */
 
         .page {
             width: 1200px;
@@ -165,171 +236,276 @@
         }
 
         .hero {
-            max-width: 800px;
-            padding: 80px 0 65px;
+            max-width: 820px;
+            padding: 75px 0 58px;
         }
 
         .eyebrow {
-            color: #35f29a;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 12px;
             margin-bottom: 17px;
+            color: var(--green);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .hero h1 {
+            margin: 0;
             font-size: clamp(48px, 7vw, 82px);
+            font-weight: 600;
             line-height: .98;
             letter-spacing: -3px;
-            margin: 0;
-            font-weight: 600;
         }
 
         .hero h1 span {
-            color: #35f29a;
+            color: var(--green);
         }
 
         .hero p {
-            color: #87958f;
+            max-width: 670px;
+            margin-top: 26px;
+            color: var(--muted);
             font-size: 18px;
             line-height: 1.65;
-            max-width: 650px;
-            margin-top: 25px;
         }
 
-        .session-card {
-            background: rgba(8,18,15,.90);
-            border: 1px solid rgba(53,242,154,.14);
+        /* =========================================
+           CARDS
+        ========================================= */
+
+        .card {
+            margin-bottom: 52px;
+            padding: 27px;
+            border: 1px solid var(--border);
             border-radius: 15px;
-            padding: 26px;
-            margin-bottom: 65px;
+            background: var(--panel);
         }
 
-        .session-card h2 {
-            margin-top: 0;
+        .card h2 {
+            margin: 0 0 10px;
+            font-size: 25px;
         }
 
-        .session-card p {
-            color: #839087;
+        .card p {
+            color: var(--muted);
             line-height: 1.6;
         }
 
-        .btn-primary {
-            background: #35f29a;
-            color: #04100a;
-            border: 0;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-weight: bold;
+        .waiting {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-top: 22px;
+            padding: 17px;
+            border: 1px solid rgba(53, 242, 154, .09);
+            border-radius: 10px;
+            background: rgba(53, 242, 154, .035);
         }
 
-        .btn-secondary {
-            background: #121b17;
-            color: white;
-            border: 1px solid #293b31;
-            padding: 12px 18px;
-            border-radius: 8px;
+        .waiting-dot {
+            width: 13px;
+            height: 13px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow:
+                0 0 0 0 rgba(53, 242, 154, .5);
+            animation: pulse 2s infinite;
         }
 
-        .btn-danger {
-            background: #241314;
-            color: #ff9999;
-            border: 1px solid #492527;
-            padding: 12px 18px;
-            border-radius: 8px;
+        @keyframes pulse {
+            0% {
+                box-shadow:
+                    0 0 0 0 rgba(53, 242, 154, .45);
+            }
+
+            70% {
+                box-shadow:
+                    0 0 0 12px rgba(53, 242, 154, 0);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 0 0 rgba(53, 242, 154, 0);
+            }
         }
 
-        .btn-primary:disabled {
-            opacity: .5;
-            cursor: not-allowed;
+        .waiting strong {
+            display: block;
+            margin-bottom: 4px;
         }
+
+        .waiting span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* =========================================
+           SESSION
+        ========================================= */
 
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(170px, 1fr)
+                );
             gap: 12px;
-            margin-top: 20px;
+            margin-top: 22px;
         }
 
         .status-item {
-            background: rgba(255,255,255,.025);
-            border: 1px solid rgba(255,255,255,.05);
-            border-radius: 9px;
+            min-height: 84px;
             padding: 16px;
+            border: 1px solid rgba(255, 255, 255, .055);
+            border-radius: 9px;
+            background: rgba(255, 255, 255, .025);
         }
 
         .status-label {
             display: block;
-            color: #66746c;
+            margin-bottom: 9px;
+            color: var(--muted-dark);
+            font-size: 10px;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            font-size: 11px;
-            margin-bottom: 8px;
+        }
+
+        .status-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .status-value.green {
+            color: var(--green);
         }
 
         .progress-wrapper {
-            margin-top: 22px;
+            margin-top: 24px;
         }
 
         .progress-info {
             display: flex;
             justify-content: space-between;
-            color: #7d8b83;
-            font-size: 13px;
             margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 13px;
         }
 
         .progress-bar {
             height: 9px;
+            overflow: hidden;
             border-radius: 20px;
             background: #121c16;
-            overflow: hidden;
         }
 
         .progress-fill {
-            height: 100%;
             width: 0;
-            background: #35f29a;
+            height: 100%;
+            border-radius: inherit;
+            background: var(--green);
             transition: width .3s ease;
         }
 
         .actions {
-            margin-top: 22px;
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
         }
 
-        .message {
-            margin-top: 18px;
-            padding: 12px 14px;
+        .btn-primary,
+        .btn-secondary {
+            padding: 12px 18px;
             border-radius: 8px;
+            font-weight: 700;
         }
 
-        .message-success {
-            color: #79ffbd;
-            background: rgba(53,242,154,.08);
+        .btn-primary {
+            color: #04100a;
+            border: 0;
+            background: var(--green);
         }
 
-        .message-error {
-            color: #ff9e9e;
-            background: rgba(255,70,70,.08);
+        .btn-primary:hover {
+            background: var(--green-light);
         }
+
+        .btn-secondary {
+            color: white;
+            border: 1px solid #293b31;
+            background: #121b17;
+        }
+
+        /* =========================================
+           GAMELEADER MESSAGES
+        ========================================= */
+
+        .messages-container {
+            display: grid;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .gameleader-message {
+            padding: 15px 17px;
+            border: 1px solid #294438;
+            border-radius: 9px;
+            background: #0a1710;
+        }
+
+        .gameleader-message.hint {
+            border-color: rgba(255, 196, 80, .30);
+            background: rgba(255, 196, 80, .055);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 7px;
+        }
+
+        .message-type {
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .gameleader-message.hint .message-type {
+            color: #ffd071;
+        }
+
+        .message-time {
+            color: var(--muted-dark);
+            font-size: 11px;
+        }
+
+        .message-text {
+            color: #e8eeea;
+            line-height: 1.5;
+        }
+
+        /* =========================================
+           CATALOG
+        ========================================= */
 
         .section-header {
             display: flex;
-            justify-content: space-between;
             align-items: end;
+            justify-content: space-between;
             gap: 15px;
             margin-bottom: 20px;
         }
 
         .section-header h2 {
-            font-size: 28px;
             margin: 0;
+            font-size: 28px;
         }
 
         .section-header span {
-            color: #67756d;
+            color: var(--muted-dark);
             font-size: 13px;
         }
 
@@ -340,29 +516,33 @@
 
         .challenge-row {
             display: grid;
-            grid-template-columns: 55px 1fr 180px 120px;
+            grid-template-columns:
+                55px
+                minmax(250px, 1fr)
+                190px
+                140px;
             gap: 15px;
             align-items: center;
-            background: rgba(8,18,15,.78);
-            border: 1px solid rgba(53,242,154,.08);
-            border-radius: 11px;
             padding: 17px;
+            border: 1px solid rgba(53, 242, 154, .08);
+            border-radius: 11px;
+            background: rgba(8, 18, 15, .78);
         }
 
         .challenge-number {
-            color: #35f29a;
+            color: var(--green);
             font-size: 13px;
         }
 
         .challenge-name {
-            font-weight: 600;
             font-size: 17px;
+            font-weight: 600;
         }
 
         .challenge-description {
+            margin-top: 5px;
             color: #728078;
             font-size: 13px;
-            margin-top: 5px;
             line-height: 1.4;
         }
 
@@ -371,49 +551,111 @@
             font-size: 13px;
         }
 
+        .level {
+            display: inline-block;
+            padding: 5px 8px;
+            border: 1px solid #294438;
+            border-radius: 20px;
+            color: #9cc6ae;
+            font-size: 11px;
+        }
+
         footer {
-            max-width: 1200px;
+            width: 1200px;
+            max-width: calc(100% - 48px);
             margin: auto;
-            padding: 30px 24px 50px;
+            padding: 30px 0 50px;
             color: #4e5953;
             font-size: 13px;
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 850px) {
             .challenge-row {
-                grid-template-columns: 45px 1fr;
+                grid-template-columns:
+                    45px
+                    1fr;
             }
 
-            .meta {
+            .challenge-row .meta,
+            .challenge-row .level {
                 display: none;
             }
 
-            .header-right .admin-link {
+            .hero {
+                padding-top: 55px;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                align-items: flex-start;
+            }
+
+            .header-right {
+                align-items: flex-end;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .nav-link {
                 display: none;
+            }
+
+            .page,
+            header,
+            footer {
+                max-width: calc(100% - 28px);
             }
         }
     </style>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="/assets/breachout-favicon.png?v=3"
+    >
+
 </head>
 
 <body>
 
-<!-- TEAM LOGIN -->
+<!-- =========================================
+     LOGIN
+========================================= -->
 
-<section id="loginPage" class="login-page">
-
+<section
+    id="loginPage"
+    class="login-page"
+>
     <div class="login-box">
 
         <div class="logo">
-            Challenge<span>Lab</span>
+            Breach<span>Out</span>
         </div>
 
-        <div class="login-subtitle">
-            Log in met het account van je team om een challengesessie te starten.
+        <div class="product-tag">
+            Cybersecurity Challenge Platform
         </div>
+
+        <h1 class="login-title">
+            Teamlogin
+        </h1>
+
+        <p class="login-subtitle">
+            Log in met het account van jouw team.
+            De Spelleider opent de sessie wanneer jullie
+            kunnen beginnen.
+        </p>
 
         <form id="loginForm">
 
-            <label>Gebruikersnaam</label>
+            <label for="username">
+                Gebruikersnaam
+            </label>
 
             <input
                 id="username"
@@ -421,7 +663,9 @@
                 required
             >
 
-            <label>Wachtwoord</label>
+            <label for="password">
+                Wachtwoord
+            </label>
 
             <input
                 id="password"
@@ -430,7 +674,11 @@
                 required
             >
 
-            <button class="login-button">
+            <button
+                id="loginButton"
+                class="login-button"
+                type="submit"
+            >
                 Inloggen
             </button>
 
@@ -438,40 +686,52 @@
 
         <div
             id="loginError"
-            class="error-box hidden">
-        </div>
+            class="error-box hidden"
+        ></div>
 
     </div>
-
 </section>
 
 
-<!-- CHALLENGELAB PORTAL -->
+<!-- =========================================
+     TEAMPORTAL
+========================================= -->
 
-<section id="portal" class="hidden">
+<section
+    id="portal"
+    class="hidden"
+>
 
     <header>
 
-        <div class="logo">
-            Challenge<span>Lab</span>
+        <div>
+            <div class="logo">
+                Breach<span>Out</span>
+            </div>
+
+            <div class="product-tag">
+                Teamportal
+            </div>
         </div>
 
         <div class="header-right">
 
             <a
-                href="/admin/"
-                class="admin-link">
-                Beheer
+                href="/scoreboard/"
+                class="nav-link"
+            >
+                Scoreboard
             </a>
 
             <span
                 id="teamName"
-                class="team-name">
-            </span>
+                class="team-name"
+            ></span>
 
             <button
                 class="logout-button"
-                onclick="logout()">
+                onclick="logout()"
+            >
                 Uitloggen
             </button>
 
@@ -485,49 +745,55 @@
         <section class="hero">
 
             <div class="eyebrow">
-                Interactive Learning Platform
+                BreachOut
             </div>
 
             <h1>
-                Eén sessie.<br>
-                <span>Alle challenges.</span>
+                Analyseer.<br>
+                <span>Los op.</span>
             </h1>
 
             <p>
-                Werk als team door alle cybersecurity-challenges.
-                Je voortgang en score worden automatisch opgeslagen.
+                Werk samen door de cybersecurity-challenges.
+                Jullie resultaten, hints en voortgang worden
+                automatisch bijgehouden.
             </p>
 
         </section>
 
 
-        <!-- NIEUWE SESSIE -->
+        <!-- WACHT OP SPELLEIDER -->
 
         <section
-            id="startSessionCard"
-            class="session-card">
-
+            id="waitingCard"
+            class="card"
+        >
             <h2>
-                Start een nieuwe sessie
+                Wachten op de Spelleider
             </h2>
 
             <p>
-                Je voortgang wordt tijdens de sessie bijgehouden.
-                Na een correct antwoord start automatisch de volgende challenge.
+                Er staat momenteel geen actieve sessie voor
+                jullie klaar. Deze pagina controleert
+                automatisch of de Spelleider een challenge
+                of pakket heeft gestart.
             </p>
 
-            <button
-                id="startSessionButton"
-                class="btn-primary"
-                onclick="startSession()">
-                Start sessie
-            </button>
+            <div class="waiting">
 
-            <div
-                id="startMessage"
-                class="message hidden">
+                <div class="waiting-dot"></div>
+
+                <div>
+                    <strong>
+                        Klaar om te beginnen
+                    </strong>
+
+                    <span>
+                        Je hoeft deze pagina niet te vernieuwen.
+                    </span>
+                </div>
+
             </div>
-
         </section>
 
 
@@ -535,11 +801,15 @@
 
         <section
             id="activeSessionCard"
-            class="session-card hidden">
-
+            class="card hidden"
+        >
             <h2>
                 Actieve sessie
             </h2>
+
+            <p id="sessionDescription">
+                Er staat een challenge voor jullie klaar.
+            </p>
 
             <div class="status-grid">
 
@@ -548,29 +818,49 @@
                         Challenge
                     </span>
 
-                    <span id="currentChallenge">
+                    <span
+                        id="currentChallenge"
+                        class="status-value"
+                    >
                         -
                     </span>
                 </div>
 
+                <div class="status-item">
+                    <span class="status-label">
+                        Niveau
+                    </span>
+
+                    <span
+                        id="currentDifficulty"
+                        class="status-value"
+                    >
+                        -
+                    </span>
+                </div>
 
                 <div class="status-item">
                     <span class="status-label">
                         Voortgang
                     </span>
 
-                    <span id="progressText">
+                    <span
+                        id="progressText"
+                        class="status-value"
+                    >
                         -
                     </span>
                 </div>
 
-
                 <div class="status-item">
                     <span class="status-label">
-                        Status
+                        Mogelijke score
                     </span>
 
-                    <span id="sessionStatus">
+                    <span
+                        id="potentialScore"
+                        class="status-value green"
+                    >
                         -
                     </span>
                 </div>
@@ -581,15 +871,20 @@
             <div class="progress-wrapper">
 
                 <div class="progress-info">
-                    <span>Voortgang</span>
-                    <span id="progressPercent">0%</span>
+                    <span>
+                        Voortgang
+                    </span>
+
+                    <span id="progressPercent">
+                        0%
+                    </span>
                 </div>
 
                 <div class="progress-bar">
                     <div
                         id="progressFill"
-                        class="progress-fill">
-                    </div>
+                        class="progress-fill"
+                    ></div>
                 </div>
 
             </div>
@@ -600,40 +895,82 @@
                 <button
                     id="openChallengeButton"
                     class="btn-primary"
-                    onclick="openCurrentChallenge()">
-                    Open huidige challenge
+                    onclick="openCurrentChallenge()"
+                >
+                    Open challenge
                 </button>
 
                 <button
                     class="btn-secondary"
-                    onclick="refreshSession()">
+                    onclick="refreshSession()"
+                >
                     Vernieuwen
                 </button>
 
-                <button
-                    class="btn-danger"
-                    onclick="stopSession()">
-                    Sessie stoppen
-                </button>
-
             </div>
+
 
             <div
-                id="sessionMessage"
-                class="message hidden">
-            </div>
+                id="messagesContainer"
+                class="messages-container"
+            ></div>
 
         </section>
 
 
-        <!-- CHALLENGES -->
+        <!-- VOLTOOID -->
+
+        <section
+            id="completedCard"
+            class="card hidden"
+        >
+            <h2>
+                Sessie voltooid
+            </h2>
+
+            <p>
+                Jullie hebben de volledige BreachOut-sessie
+                afgerond. De resultaten zijn opgeslagen en
+                kunnen door de Spelleider worden bekeken.
+            </p>
+
+            <div class="status-grid">
+
+                <div class="status-item">
+                    <span class="status-label">
+                        Status
+                    </span>
+
+                    <span class="status-value green">
+                        Voltooid
+                    </span>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-label">
+                        Challenges
+                    </span>
+
+                    <span
+                        id="completedProgress"
+                        class="status-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- CATALOGUS -->
 
         <section>
 
             <div class="section-header">
 
                 <h2>
-                    Challenge overzicht
+                    Beschikbare challenges
                 </h2>
 
                 <span id="catalogCount">
@@ -644,8 +981,8 @@
 
             <div
                 id="challengeList"
-                class="challenge-list">
-            </div>
+                class="challenge-list"
+            ></div>
 
         </section>
 
@@ -653,24 +990,33 @@
 
 
     <footer>
-        ChallengeLab · Interactive Learning Platform
+        BreachOut · Cybersecurity Challenge Platform
     </footer>
 
 </section>
 
 
 <script>
+"use strict";
+
 
 let currentTeam = null;
 let currentSession = null;
+
+let sessionPollTimer = null;
+let messagePollTimer = null;
+
+let lastMessageId = 0;
 
 
 /* =========================================
    API
 ========================================= */
 
-async function api(url, options = {}) {
-
+async function api(
+    url,
+    options = {}
+) {
     const response = await fetch(
         url,
         {
@@ -683,21 +1029,20 @@ async function api(url, options = {}) {
 
     let data = {};
 
-    try {
-        data = raw
-            ? JSON.parse(raw)
-            : {};
-    } catch {
-        throw new Error(
-            raw || "Ongeldige serverresponse"
-        );
+    if (raw) {
+        try {
+            data = JSON.parse(raw);
+        } catch {
+            throw new Error(
+                "De server gaf een ongeldige reactie."
+            );
+        }
     }
 
     if (!response.ok) {
-
         const error = new Error(
             data.detail ||
-            "Er ging iets mis"
+            "Er ging iets mis."
         );
 
         error.status = response.status;
@@ -717,7 +1062,7 @@ document
     .getElementById("loginForm")
     .addEventListener(
         "submit",
-        async function(event) {
+        async event => {
 
             event.preventDefault();
 
@@ -726,11 +1071,20 @@ document
                     "loginError"
                 );
 
-            errorBox.classList.add("hidden");
+            const button =
+                document.getElementById(
+                    "loginButton"
+                );
 
+            errorBox.classList.add(
+                "hidden"
+            );
+
+            button.disabled = true;
+            button.textContent =
+                "Inloggen...";
 
             try {
-
                 const data = await api(
                     "/api/team/login",
                     {
@@ -759,45 +1113,44 @@ document
                     }
                 );
 
-
-                currentTeam =
-                    data.user;
-
+                currentTeam = data.user;
 
                 await openPortal();
 
             } catch (error) {
-
                 errorBox.textContent =
                     error.message;
 
                 errorBox.classList.remove(
                     "hidden"
                 );
+
+            } finally {
+                button.disabled = false;
+
+                button.textContent =
+                    "Inloggen";
             }
         }
     );
 
 
 async function checkLogin() {
-
     try {
-
-        currentTeam =
-            await api(
-                "/api/team/me"
-            );
+        currentTeam = await api(
+            "/api/team/me"
+        );
 
         await openPortal();
 
     } catch {
-
         showLogin();
     }
 }
 
 
 function showLogin() {
+    stopPolling();
 
     document
         .getElementById("portal")
@@ -810,7 +1163,6 @@ function showLogin() {
 
 
 async function openPortal() {
-
     document
         .getElementById("loginPage")
         .classList.add("hidden");
@@ -819,23 +1171,22 @@ async function openPortal() {
         .getElementById("portal")
         .classList.remove("hidden");
 
-
     document
         .getElementById("teamName")
         .textContent =
             currentTeam.display_name;
 
+    await Promise.allSettled([
+        loadCatalog(),
+        restoreSession()
+    ]);
 
-    await loadCatalog();
-
-    await restoreSession();
+    startPolling();
 }
 
 
 async function logout() {
-
     try {
-
         await api(
             "/api/team/logout",
             {
@@ -844,9 +1195,14 @@ async function logout() {
         );
 
     } finally {
+        stopPolling();
 
         localStorage.removeItem(
             "challengelab_session"
+        );
+
+        localStorage.removeItem(
+            "challengelab_message_id"
         );
 
         currentTeam = null;
@@ -862,31 +1218,26 @@ async function logout() {
 ========================================= */
 
 async function loadCatalog() {
-
-    const data =
-        await api(
-            "/api/catalog"
-        );
-
+    const data = await api(
+        "/api/catalog"
+    );
 
     document
-        .getElementById("catalogCount")
+        .getElementById(
+            "catalogCount"
+        )
         .textContent =
-            data.total +
-            " challenges";
-
+            `${data.total} actief`;
 
     const list =
         document.getElementById(
             "challengeList"
         );
 
-
     list.innerHTML = "";
 
-
     data.challenges.forEach(
-        challenge => {
+        (challenge, index) => {
 
             const row =
                 document.createElement(
@@ -896,10 +1247,9 @@ async function loadCatalog() {
             row.className =
                 "challenge-row";
 
-
             row.innerHTML = `
                 <div class="challenge-number">
-                    #${challenge.number}
+                    #${index + 1}
                 </div>
 
                 <div>
@@ -922,94 +1272,25 @@ async function loadCatalog() {
                     )}
                 </div>
 
-                <div class="meta">
-                    ${escapeHtml(
-                        challenge.difficulty
-                    )}
+                <div>
+                    <span class="level">
+                        Niveau
+                        ${escapeHtml(
+                            challenge.difficulty_level
+                        )}
+                        ·
+                        ${escapeHtml(
+                            challenge.difficulty
+                        )}
+                    </span>
                 </div>
             `;
 
-
-            list.appendChild(row);
+            list.appendChild(
+                row
+            );
         }
     );
-}
-
-
-/* =========================================
-   SESSIE STARTEN
-========================================= */
-
-async function startSession() {
-
-    const button =
-        document.getElementById(
-            "startSessionButton"
-        );
-
-
-    button.disabled = true;
-    button.textContent =
-        "Sessie starten...";
-
-
-    hideMessage(
-        "startMessage"
-    );
-
-
-    try {
-
-        const data =
-            await api(
-                "/api/session/start",
-                {
-                    method: "POST"
-                }
-            );
-
-
-        currentSession =
-            data;
-
-
-        saveSession();
-
-        showActiveSession();
-
-
-        setTimeout(
-            openCurrentChallenge,
-            400
-        );
-
-
-    } catch (error) {
-
-    if (
-        error.status === 409 &&
-        error.message.includes("actieve sessie")
-    ) {
-
-        await restoreSession();
-
-        return;
-    }
-
-
-    showMessage(
-        "startMessage",
-        error.message,
-        "error"
-    );
-
-    } finally {
-
-        button.disabled = false;
-
-        button.textContent =
-            "Start sessie";
-    }
 }
 
 
@@ -1018,251 +1299,169 @@ async function startSession() {
 ========================================= */
 
 async function restoreSession() {
-
-    /*
-     * Eerst proberen we de lokale sessie-ID.
-     */
-    const localSessionId =
-        localStorage.getItem(
-            "challengelab_session"
-        );
-
-
-    if (localSessionId) {
-
-        try {
-
-            const data = await api(
-                "/api/session/" +
-                localSessionId
-            );
-
-
-            currentSession = {
-                session_id: localSessionId,
-                ...data
-            };
-
-
-            showActiveSession();
-
-            return;
-
-        } catch (error) {
-
-            localStorage.removeItem(
-                "challengelab_session"
-            );
-        }
-    }
-
-
-    /*
-     * Geen lokale sessie?
-     * Vraag dan de database of het team
-     * nog een actieve sessie heeft.
-     */
     try {
-
         const data = await api(
             "/api/session/active"
         );
 
-
         if (!data.active) {
-
             currentSession = null;
 
-            showStartSession();
+            localStorage.removeItem(
+                "challengelab_session"
+            );
+
+            showWaiting();
 
             return;
         }
 
-
         currentSession = data;
-
 
         localStorage.setItem(
             "challengelab_session",
             data.session_id
         );
 
+        lastMessageId = Number(
+            localStorage.getItem(
+                "challengelab_message_id"
+            ) || 0
+        );
 
         showActiveSession();
 
+        await pollMessages();
 
     } catch (error) {
+        if (error.status === 401) {
+            showLogin();
+            return;
+        }
 
         currentSession = null;
-
-        showStartSession();
+        showWaiting();
     }
 }
+
+
+/* =========================================
+   LIVE POLLING
+========================================= */
+
+function startPolling() {
+    stopPolling();
+
+    sessionPollTimer = setInterval(
+        refreshSession,
+        5000
+    );
+
+    messagePollTimer = setInterval(
+        pollMessages,
+        4000
+    );
+}
+
+
+function stopPolling() {
+    if (sessionPollTimer) {
+        clearInterval(
+            sessionPollTimer
+        );
+
+        sessionPollTimer = null;
+    }
+
+    if (messagePollTimer) {
+        clearInterval(
+            messagePollTimer
+        );
+
+        messagePollTimer = null;
+    }
+}
+
 
 /* =========================================
    SESSIE STATUS
 ========================================= */
 
 async function refreshSession() {
-
+    /*
+     * Geen actieve sessie?
+     * Vraag periodiek of de Spelleider er één heeft gestart.
+     */
     if (!currentSession?.session_id) {
+        await restoreSession();
         return;
     }
 
-
     try {
-
-        const data =
-            await api(
-                "/api/session/" +
+        const data = await api(
+            "/api/session/" +
+            encodeURIComponent(
                 currentSession.session_id
-            );
-
+            )
+        );
 
         currentSession = {
             ...currentSession,
             ...data
         };
 
+        if (
+            currentSession.status
+            === "completed"
+        ) {
+            showCompletedSession();
+            return;
+        }
+
+        if (
+            currentSession.status
+            !== "active"
+        ) {
+            localStorage.removeItem(
+                "challengelab_session"
+            );
+
+            currentSession = null;
+
+            showWaiting();
+
+            return;
+        }
 
         showActiveSession();
 
-
     } catch (error) {
+        if (error.status === 401) {
+            showLogin();
+            return;
+        }
 
-        showMessage(
-            "sessionMessage",
-            error.message,
-            "error"
-        );
+        if (error.status === 404) {
+            currentSession = null;
+
+            localStorage.removeItem(
+                "challengelab_session"
+            );
+
+            showWaiting();
+        }
     }
 }
 
-function showActiveSession() {
 
-    if (!currentSession) {
-        showStartSession();
-        return;
-    }
-
-
-    /*
-     * Een geannuleerde sessie hoort niet meer
-     * als actieve sessie in de portal te staan.
-     */
-    if (currentSession.status === "cancelled") {
-
-        localStorage.removeItem(
-            "challengelab_session"
+function showWaiting() {
+    document
+        .getElementById(
+            "waitingCard"
+        )
+        .classList.remove(
+            "hidden"
         );
-
-        currentSession = null;
-
-        showStartSession();
-
-        showMessage(
-            "startMessage",
-            "De vorige sessie is gestopt. Je kunt een nieuwe sessie starten.",
-            "success"
-        );
-
-        return;
-    }
-
-
-    document
-        .getElementById("startSessionCard")
-        .classList.add("hidden");
-
-
-    document
-        .getElementById("activeSessionCard")
-        .classList.remove("hidden");
-
-
-    /*
-     * Voltooide sessie
-     */
-    if (currentSession.status === "completed") {
-
-        document
-            .getElementById("currentChallenge")
-            .textContent =
-                "Alle challenges voltooid";
-
-
-        document
-            .getElementById("sessionStatus")
-            .textContent =
-                "Voltooid";
-
-
-        document
-            .getElementById("progressText")
-            .textContent =
-                currentSession.total +
-                " / " +
-                currentSession.total;
-
-
-        setProgress(
-            currentSession.total,
-            currentSession.total
-        );
-
-
-        document
-            .getElementById("openChallengeButton")
-            .classList.add("hidden");
-
-
-        showMessage(
-            "sessionMessage",
-            "Gefeliciteerd! Alle challenges zijn voltooid.",
-            "success"
-        );
-
-        return;
-    }
-
-
-    /*
-     * Actieve sessie
-     */
-    document
-        .getElementById("openChallengeButton")
-        .classList.remove("hidden");
-
-
-    document
-        .getElementById("currentChallenge")
-        .textContent =
-            currentSession.challenge?.name
-            || "-";
-
-
-    document
-        .getElementById("sessionStatus")
-        .textContent =
-            currentSession.status;
-
-
-    document
-        .getElementById("progressText")
-        .textContent =
-            currentSession.current +
-            " / " +
-            currentSession.total;
-
-
-    setProgress(
-        currentSession.current - 1,
-        currentSession.total
-    );
-}
-
-
-function showStartSession() {
 
     document
         .getElementById(
@@ -1272,14 +1471,141 @@ function showStartSession() {
             "hidden"
         );
 
+    document
+        .getElementById(
+            "completedCard"
+        )
+        .classList.add(
+            "hidden"
+        );
+}
+
+
+function showActiveSession() {
+    if (!currentSession) {
+        showWaiting();
+        return;
+    }
 
     document
         .getElementById(
-            "startSessionCard"
+            "waitingCard"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "completedCard"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "activeSessionCard"
         )
         .classList.remove(
             "hidden"
         );
+
+    const modeText =
+        currentSession.mode === "single"
+        ? "Losse challenge"
+        : "Challengepakket";
+
+    document
+        .getElementById(
+            "sessionDescription"
+        )
+        .textContent =
+            `${modeText} gestart door de Spelleider.`;
+
+    document
+        .getElementById(
+            "currentChallenge"
+        )
+        .textContent =
+            currentSession.challenge?.name
+            || "-";
+
+    document
+        .getElementById(
+            "currentDifficulty"
+        )
+        .textContent =
+            currentSession.challenge
+            ? (
+                "Niveau " +
+                currentSession
+                    .challenge
+                    .difficulty_level
+            )
+            : "-";
+
+    document
+        .getElementById(
+            "progressText"
+        )
+        .textContent =
+            `${currentSession.current} / ${currentSession.total}`;
+
+    const potentialPoints =
+        currentSession.score
+            ?.potential_points;
+
+    document
+        .getElementById(
+            "potentialScore"
+        )
+        .textContent =
+            potentialPoints !== undefined
+            ? `${potentialPoints} punten`
+            : "10 punten";
+
+    setProgress(
+        Math.max(
+            0,
+            currentSession.current - 1
+        ),
+        currentSession.total
+    );
+}
+
+
+function showCompletedSession() {
+    document
+        .getElementById(
+            "waitingCard"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "activeSessionCard"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "completedCard"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+    document
+        .getElementById(
+            "completedProgress"
+        )
+        .textContent =
+            `${currentSession.total} / ${currentSession.total}`;
 }
 
 
@@ -1288,11 +1614,9 @@ function showStartSession() {
 ========================================= */
 
 function openCurrentChallenge() {
-
     if (!currentSession?.url) {
         return;
     }
-
 
     window.location.href =
         currentSession.url;
@@ -1300,57 +1624,124 @@ function openCurrentChallenge() {
 
 
 /* =========================================
-   SESSIE STOPPEN
+   LIVE BERICHTEN
 ========================================= */
 
-async function stopSession() {
-
-    if (!currentSession?.session_id) {
+async function pollMessages() {
+    if (
+        !currentSession?.session_id
+        ||
+        currentSession.status
+        !== "active"
+    ) {
         return;
     }
-
-
-    const confirmed =
-        confirm(
-            "Weet je zeker dat je deze sessie wilt stoppen?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
 
     try {
-
-        await api(
+        const data = await api(
             "/api/session/" +
-            currentSession.session_id,
-            {
-                method: "DELETE"
-            }
+            encodeURIComponent(
+                currentSession.session_id
+            ) +
+            "/messages?after_id=" +
+            encodeURIComponent(
+                lastMessageId
+            )
         );
 
+        if (
+            !Array.isArray(
+                data.messages
+            )
+            ||
+            data.messages.length === 0
+        ) {
+            return;
+        }
 
-        localStorage.removeItem(
-            "challengelab_session"
+        for (
+            const message
+            of data.messages
+        ) {
+            renderMessage(
+                message
+            );
+        }
+
+        lastMessageId =
+            Number(
+                data.last_id
+                || lastMessageId
+            );
+
+        localStorage.setItem(
+            "challengelab_message_id",
+            String(
+                lastMessageId
+            )
         );
-
-
-        currentSession = null;
-
-
-        showStartSession();
-
 
     } catch (error) {
-
-        showMessage(
-            "sessionMessage",
-            error.message,
-            "error"
-        );
+        if (error.status === 401) {
+            showLogin();
+        }
     }
+}
+
+
+function renderMessage(
+    message
+) {
+    const container =
+        document.getElementById(
+            "messagesContainer"
+        );
+
+    const element =
+        document.createElement(
+            "div"
+        );
+
+    element.className =
+        "gameleader-message" +
+        (
+            message.type === "hint"
+            ? " hint"
+            : ""
+        );
+
+    const label =
+        message.type === "hint"
+        ? "Hint van de Spelleider"
+        : "Bericht van de Spelleider";
+
+    element.innerHTML = `
+        <div class="message-header">
+
+            <span class="message-type">
+                ${escapeHtml(label)}
+            </span>
+
+            <span class="message-time">
+                ${escapeHtml(
+                    formatTime(
+                        message.created_at
+                    )
+                )}
+            </span>
+
+        </div>
+
+        <div class="message-text">
+            ${escapeHtml(
+                message.text
+            )}
+        </div>
+    `;
+
+    container.prepend(
+        element
+    );
 }
 
 
@@ -1358,25 +1749,10 @@ async function stopSession() {
    HELPERS
 ========================================= */
 
-function saveSession() {
-
-    if (!currentSession?.session_id) {
-        return;
-    }
-
-
-    localStorage.setItem(
-        "challengelab_session",
-        currentSession.session_id
-    );
-}
-
-
 function setProgress(
     completed,
     total
 ) {
-
     const percentage =
         total > 0
         ? Math.round(
@@ -1384,14 +1760,12 @@ function setProgress(
         )
         : 0;
 
-
     document
         .getElementById(
             "progressFill"
         )
         .style.width =
             percentage + "%";
-
 
     document
         .getElementById(
@@ -1402,52 +1776,67 @@ function setProgress(
 }
 
 
-function showMessage(
-    id,
-    text,
-    type
+function formatTime(
+    value
 ) {
+    if (!value) {
+        return "";
+    }
 
-    const element =
-        document.getElementById(id);
+    const date = new Date(
+        value
+    );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "";
+    }
+
+    return date.toLocaleTimeString(
+        "nl-NL",
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+}
 
 
-    element.textContent =
-        text;
-
-
-    element.className =
-        "message " +
-        (
-            type === "success"
-            ? "message-success"
-            : "message-error"
+function escapeHtml(
+    value
+) {
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
         );
 }
 
 
-function hideMessage(id) {
-
-    document
-        .getElementById(id)
-        .classList.add(
-            "hidden"
-        );
-}
-
-
-function escapeHtml(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-
-/* START */
+/* =========================================
+   START
+========================================= */
 
 checkLogin();
 

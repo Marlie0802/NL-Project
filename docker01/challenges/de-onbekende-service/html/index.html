@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>De onbekende service</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --background: #07100b;
+            --panel: #0d1712;
+            --border: #20392b;
+            --muted: #839087;
+            --warning: #f7c86a;
+            --danger: #ff7d7d;
+        }
+
+        body {
+            margin: 0;
+
+            color: #e9f2ed;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(53, 242, 154, .025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(53, 242, 154, .025) 1px,
+                    transparent 1px
+                ),
+                var(--background);
+
+            background-size:
+                40px 40px;
+        }
+
+        .container {
+            width: 1100px;
+            max-width: 94%;
+
+            margin:
+                40px auto
+                70px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+
+            color: var(--green);
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+
+            color: var(--muted);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .panel {
+            margin-bottom: 20px;
+
+            padding: 24px;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--panel);
+        }
+
+        .grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(330px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+        .terminal {
+            overflow-x: auto;
+
+            padding: 18px;
+
+            border: 1px solid #193022;
+            border-radius: 8px;
+
+            color: #d8e8df;
+
+            background: #050b07;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 14px;
+            line-height: 1.65;
+
+            white-space: pre;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border-bottom:
+                1px solid
+                #223128;
+
+            text-align: left;
+        }
+
+        th {
+            color: var(--green);
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .warning {
+            color: var(--warning);
+        }
+
+        input {
+            width: 310px;
+            max-width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #355443;
+            border-radius: 7px;
+
+            outline: none;
+
+            color: white;
+
+            background: #07100b;
+        }
+
+        input:focus {
+            border-color: var(--green);
+        }
+
+        button {
+            padding: 12px 18px;
+
+            border: 0;
+            border-radius: 7px;
+
+            color: #04100a;
+
+            font-weight: bold;
+
+            background: var(--green);
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--green-light);
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 16px;
+
+            font-weight: bold;
+        }
+
+        .success {
+            color: var(--green);
+        }
+
+        .error {
+            color: var(--danger);
+        }
+
+        .ticket {
+            padding: 15px;
+
+            border-left:
+                3px solid
+                var(--warning);
+
+            color: #ddd6bc;
+
+            background:
+                rgba(
+                    247,
+                    200,
+                    106,
+                    .05
+                );
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        De onbekende service
+    </h1>
+
+    <div class="subtitle">
+        Servercontrole · APP-02
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Situatie
+        </h2>
+
+        <p>
+            Tijdens een reguliere controle van APP-02
+            blijkt dat er meer netwerkservices actief
+            zijn dan in de serverinventaris staan.
+        </p>
+
+        <p>
+            Bepaal welke service niet thuishoort op
+            deze productieserver.
+        </p>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                Serverinventaris
+            </h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Gebruik</th>
+                        <th>Toegestaan</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>SSH</td>
+                        <td>Beheer</td>
+                        <td>Ja</td>
+                    </tr>
+
+                    <tr>
+                        <td>HTTP</td>
+                        <td>Webapplicatie</td>
+                        <td>Ja</td>
+                    </tr>
+
+                    <tr>
+                        <td>PostgreSQL</td>
+                        <td>Lokale database</td>
+                        <td>Alleen localhost</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                Laatste wijziging
+            </h2>
+
+            <div class="ticket">
+
+                <strong>
+                    CHG-2026-441
+                </strong>
+
+                <p>
+                    Tijdelijke legacy-testomgeving
+                    verwijderd.
+                </p>
+
+                <p>
+                    Alle bijbehorende testservices
+                    zouden na afronding zijn
+                    uitgeschakeld.
+                </p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Actieve listeners
+        </h2>
+
+        <p class="muted">
+            Uitvoer van
+            <code>ss -tulpn</code>
+            op APP-02:
+        </p>
+
+        <div class="terminal">Netid  State   Local Address:Port     Process
+tcp    LISTEN  0.0.0.0:22             sshd
+tcp    LISTEN  0.0.0.0:80             nginx
+tcp    LISTEN  127.0.0.1:5432         postgres
+tcp    LISTEN  0.0.0.0:23             telnetd</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Procesinformatie
+        </h2>
+
+        <div class="terminal">$ systemctl --type=service --state=running
+
+ssh.service          OpenSSH server
+nginx.service        Web server
+postgresql.service   Database server
+telnet.service       Legacy remote login service</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Opdracht
+        </h2>
+
+        <p>
+            Welke service is ongewenst actief op
+            APP-02?
+        </p>
+
+        <p class="muted">
+            Vul alleen de naam van de service in.
+        </p>
+
+        <input
+            id="answer"
+            placeholder="bijvoorbeeld: ssh"
+            autocomplete="off"
+        >
+
+        <button
+            id="submitButton"
+            onclick="checkAnswer()"
+        >
+            Controleer
+        </button>
+
+        <div id="result"></div>
+
+    </section>
+
+</div>
+
+
+<!-- Centrale BreachOut hint- en berichtenwidget -->
+<script src="/hint-widget.js"></script>
+
+
+<script>
+"use strict";
+
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const sessionId =
+    params.get(
+        "session"
+    );
+
+let answerSubmitting =
+    false;
+
+
+/* =========================================
+   ANTWOORD
+========================================= */
+
+async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    const input =
+        document.getElementById(
+            "answer"
+        );
+
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+    const answer =
+        input.value
+            .trim()
+            .toLowerCase();
+
+
+    if (!sessionId) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Geen geldige BreachOut-sessie gevonden.";
+
+        return;
+    }
+
+
+    if (!answer) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Vul eerst een antwoord in.";
+
+        return;
+    }
+
+
+    answerSubmitting =
+        true;
+
+    button.disabled =
+        true;
+
+
+    try {
+        const response =
+            await fetch(
+                "/api/session/" +
+                encodeURIComponent(
+                    sessionId
+                ) +
+                "/answer",
+                {
+                    method:
+                        "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            answer
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+
+        if (!data.correct) {
+            answerSubmitting =
+                false;
+
+            button.disabled =
+                false;
+
+            result.className =
+                "error";
+
+            result.textContent =
+                "✗ Niet correct. Bekijk de gegevens nog eens.";
+
+            return;
+        }
+
+
+        if (data.completed) {
+            result.className =
+                "success";
+
+            result.textContent =
+                "✓ Correct! De sessie is voltooid. Je gaat terug naar BreachOut...";
+
+            setTimeout(
+                () => {
+                    window.location.href =
+                        "/";
+                },
+                1600
+            );
+
+            return;
+        }
+
+
+        result.className =
+            "success";
+
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt geladen...";
+
+
+        await waitForChallenge(
+            data.url
+        );
+
+    } catch (error) {
+        answerSubmitting =
+            false;
+
+        button.disabled =
+            false;
+
+        result.className =
+            "error";
+
+        result.textContent =
+            "Fout: " +
+            error.message;
+    }
+}
+
+
+/* =========================================
+   WACHTEN TOT VOLGENDE CONTAINER KLAAR IS
+========================================= */
+
+async function waitForChallenge(
+    url
+) {
+    if (!url) {
+        window.location.href =
+            "/";
+
+        return;
+    }
+
+    for (
+        let attempt = 0;
+        attempt < 20;
+        attempt++
+    ) {
+        try {
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method:
+                            "GET",
+
+                        cache:
+                            "no-store"
+                    }
+                );
+
+            if (response.ok) {
+                window.location.href =
+                    url;
+
+                return;
+            }
+
+        } catch {
+            // Container is nog aan het starten.
+        }
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    500
+                )
+        );
+    }
+
+    window.location.href =
+        url;
+}
+
+
+/* =========================================
+   ENTER
+========================================= */
+
+document
+    .getElementById(
+        "answer"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key
+                === "Enter"
+            ) {
+                event.preventDefault();
+
+                checkAnswer();
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>

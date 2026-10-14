@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Route naar nergens</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --background: #07100b;
+            --panel: #0d1712;
+            --border: #20392b;
+            --muted: #839087;
+            --warning: #f7c86a;
+            --danger: #ff7d7d;
+        }
+
+        body {
+            margin: 0;
+
+            color: #e9f2ed;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(53,242,154,.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(53,242,154,.025) 1px,
+                    transparent 1px
+                ),
+                var(--background);
+
+            background-size:
+                40px 40px;
+        }
+
+        .container {
+            width: 1180px;
+            max-width: 94%;
+
+            margin:
+                40px auto
+                70px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+
+            color: var(--green);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .subtitle,
+        .muted {
+            color: var(--muted);
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            margin-bottom: 20px;
+
+            padding: 24px;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--panel);
+        }
+
+        .grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(370px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+        .terminal {
+            overflow-x: auto;
+
+            padding: 18px;
+
+            border: 1px solid #193022;
+            border-radius: 8px;
+
+            color: #d8e8df;
+            background: #050b07;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+            line-height: 1.65;
+
+            white-space: pre;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border-bottom:
+                1px solid
+                #223128;
+
+            text-align: left;
+        }
+
+        th {
+            color: var(--green);
+        }
+
+        .warning-box {
+            padding: 16px;
+
+            border-left:
+                3px solid
+                var(--warning);
+
+            color: #e3dcc4;
+
+            background:
+                rgba(
+                    247,
+                    200,
+                    106,
+                    .05
+                );
+        }
+
+        code {
+            color: #b7e8cc;
+        }
+
+        input {
+            width: 460px;
+            max-width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #355443;
+            border-radius: 7px;
+
+            outline: none;
+
+            color: white;
+            background: #07100b;
+        }
+
+        input:focus {
+            border-color: var(--green);
+        }
+
+        button {
+            padding: 12px 18px;
+
+            border: 0;
+            border-radius: 7px;
+
+            color: #04100a;
+
+            font-weight: bold;
+
+            background: var(--green);
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--green-light);
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 16px;
+
+            font-weight: bold;
+        }
+
+        .success {
+            color: var(--green);
+        }
+
+        .error {
+            color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        Route naar nergens
+    </h1>
+
+    <div class="subtitle">
+        Linux routing troubleshooting · APP-07
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Situatie
+        </h2>
+
+        <p>
+            APP-07 kan sinds een oude netwerkproef
+            de databaseserver DB-02 niet meer bereiken.
+        </p>
+
+        <p>
+            Internet, DNS en andere interne systemen
+            werken normaal.
+        </p>
+
+        <p>
+            DB-02 is vanaf andere servers gewoon
+            bereikbaar.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Netwerkdocumentatie
+        </h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Systeem</th>
+                    <th>IP-adres</th>
+                    <th>Netwerk</th>
+                    <th>Gateway</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>APP-07</td>
+                    <td>10.40.10.27</td>
+                    <td>10.40.10.0/24</td>
+                    <td>10.40.10.1</td>
+                </tr>
+
+                <tr>
+                    <td>DB-02</td>
+                    <td>10.50.60.20</td>
+                    <td>10.50.60.0/24</td>
+                    <td>10.50.60.1</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                Basisconnectiviteit
+            </h2>
+
+            <div class="terminal">$ ping -c 2 10.40.10.1
+
+64 bytes from 10.40.10.1:
+icmp_seq=1 ttl=64 time=0.422 ms
+
+64 bytes from 10.40.10.1:
+icmp_seq=2 ttl=64 time=0.401 ms
+
+
+$ ping -c 2 1.1.1.1
+
+64 bytes from 1.1.1.1:
+icmp_seq=1 ttl=57 time=8.31 ms</div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                Test naar DB-02
+            </h2>
+
+            <div class="terminal">$ ping 10.50.60.20
+
+From 10.40.10.27:
+Destination Host Unreachable
+
+
+$ curl http://10.50.60.20:8080/health
+
+curl: (7) Failed to connect</div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Routing table
+        </h2>
+
+        <div class="terminal">$ ip route
+
+default via 10.40.10.1 dev ens18 proto static
+10.40.10.0/24 dev ens18 proto kernel scope link src 10.40.10.27
+10.50.60.0/24 via 10.40.10.254 dev ens18 proto static metric 10</div>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                Routekeuze
+            </h2>
+
+            <div class="terminal">$ ip route get 10.50.60.20
+
+10.50.60.20 via 10.40.10.254 dev ens18
+    src 10.40.10.27
+    uid 0</div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                Neighbor table
+            </h2>
+
+            <div class="terminal">$ ip neigh
+
+10.40.10.1 dev ens18
+    lladdr 00:25:90:aa:10:01
+    REACHABLE
+
+10.40.10.254 dev ens18
+    FAILED</div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Controle vanaf een werkende server
+        </h2>
+
+        <div class="terminal">APP-06$ ip route get 10.50.60.20
+
+10.50.60.20 via 10.40.10.1 dev ens18
+
+
+APP-06$ ping -c 1 10.50.60.20
+
+64 bytes from 10.50.60.20:
+icmp_seq=1 ttl=62 time=1.12 ms</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Netplan APP-07
+        </h2>
+
+        <div class="terminal">$ cat /etc/netplan/01-app07.yaml
+
+network:
+  version: 2
+
+  ethernets:
+    ens18:
+      addresses:
+        - 10.40.10.27/24
+
+      routes:
+        - to: default
+          via: 10.40.10.1
+
+        - to: 10.50.60.0/24
+          via: 10.40.10.254</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Wijzigingshistorie
+        </h2>
+
+        <div class="warning-box">
+
+            <strong>
+                CHG-2026-318
+            </strong>
+
+            <p>
+                Tijdelijke router
+                <code>10.40.10.254</code>
+                gebruikt tijdens migratietest.
+            </p>
+
+            <p>
+                Testapparatuur is op 4 oktober
+                verwijderd.
+            </p>
+
+            <p>
+                Configuratiecontrole op aangesloten
+                servers is niet gedocumenteerd.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Opdracht
+        </h2>
+
+        <p>
+            Welke next-hop zorgt ervoor dat verkeer
+            naar DB-02 via een niet-bestaande route
+            wordt gestuurd?
+        </p>
+
+        <p class="muted">
+            Vul alleen het IP-adres van de verkeerde
+            next-hop in.
+        </p>
+
+        <input
+            id="answer"
+            placeholder="bijvoorbeeld: 10.40.10.1"
+            autocomplete="off"
+        >
+
+        <button
+            id="submitButton"
+            onclick="checkAnswer()"
+        >
+            Controleer
+        </button>
+
+        <div id="result"></div>
+
+    </section>
+
+</div>
+
+
+<script src="/hint-widget.js"></script>
+
+
+<script>
+"use strict";
+
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const sessionId =
+    params.get(
+        "session"
+    );
+
+let answerSubmitting =
+    false;
+
+
+async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    const input =
+        document.getElementById(
+            "answer"
+        );
+
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+    const answer =
+        input.value
+            .trim()
+            .toLowerCase()
+            .replaceAll(
+                " ",
+                ""
+            );
+
+
+    if (!sessionId) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Geen geldige BreachOut-sessie gevonden.";
+
+        return;
+    }
+
+
+    if (!answer) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Vul eerst een antwoord in.";
+
+        return;
+    }
+
+
+    answerSubmitting =
+        true;
+
+    button.disabled =
+        true;
+
+
+    try {
+        const response =
+            await fetch(
+                "/api/session/" +
+                encodeURIComponent(
+                    sessionId
+                ) +
+                "/answer",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            answer
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+
+        if (!data.correct) {
+            answerSubmitting =
+                false;
+
+            button.disabled =
+                false;
+
+            result.className =
+                "error";
+
+            result.textContent =
+                "✗ Niet correct. Bepaal eerst welke route Linux daadwerkelijk kiest.";
+
+            return;
+        }
+
+
+        if (data.completed) {
+            result.className =
+                "success";
+
+            result.textContent =
+                "✓ Correct! De sessie is voltooid. Je gaat terug naar BreachOut...";
+
+            setTimeout(
+                () => {
+                    window.location.href =
+                        "/";
+                },
+                1600
+            );
+
+            return;
+        }
+
+
+        result.className =
+            "success";
+
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt geladen...";
+
+        await waitForChallenge(
+            data.url
+        );
+
+    } catch (error) {
+        answerSubmitting =
+            false;
+
+        button.disabled =
+            false;
+
+        result.className =
+            "error";
+
+        result.textContent =
+            "Fout: " +
+            error.message;
+    }
+}
+
+
+async function waitForChallenge(
+    url
+) {
+    if (!url) {
+        window.location.href =
+            "/";
+
+        return;
+    }
+
+    for (
+        let attempt = 0;
+        attempt < 20;
+        attempt++
+    ) {
+        try {
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method: "GET",
+                        cache: "no-store"
+                    }
+                );
+
+            if (response.ok) {
+                window.location.href =
+                    url;
+
+                return;
+            }
+
+        } catch {
+            // Volgende container start nog.
+        }
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    500
+                )
+        );
+    }
+
+    window.location.href =
+        url;
+}
+
+
+document
+    .getElementById(
+        "answer"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key === "Enter"
+            ) {
+                event.preventDefault();
+
+                checkAnswer();
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>

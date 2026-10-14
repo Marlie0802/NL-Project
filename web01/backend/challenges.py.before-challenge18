@@ -1,0 +1,826 @@
+import random
+
+
+# =========================================================
+# ChallengeLab challengecatalogus
+#
+# difficulty_level:
+#   1 = Intro
+#   2 = Basis
+#   3 = Gemiddeld
+#   4 = Moeilijk
+#   5 = Eindjaars MBO 4
+#
+# enabled:
+#   True  = beschikbaar voor sessies
+#   False = nog niet klaar / nog geen Docker-image
+# =========================================================
+
+
+CHALLENGES = [
+
+    # =====================================================
+    # NIVEAU 1 - INTRO
+    # =====================================================
+
+    {
+        "id": "vergeten-medewerker",
+        "name": "De vergeten medewerker",
+        "image": "challengelab/vergeten-medewerker:1.0",
+        "difficulty_level": 1,
+        "difficulty": "Intro",
+        "category": "Authenticatie",
+        "enabled": True,
+        "description": (
+            "Onderzoek accountgegevens, HR-mutaties en "
+            "beveiligingslogs en ontdek welk account een "
+            "beveiligingsrisico vormt."
+        ),
+        "answers": [
+            "tvos"
+        ],
+        "hints": [
+            (
+                "Vergelijk de actieve accounts met de lijst "
+                "van medewerkers die nog in dienst zijn."
+            ),
+            (
+                "Zoek naar een actief account van iemand "
+                "die niet meer op de actuele medewerkerslijst staat."
+            )
+        ]
+    },
+
+    {
+        "id": "bericht-van-directeur",
+        "name": "Bericht van Directeur",
+        "image": "challengelab/bericht-van-directeur:1.0",
+        "difficulty_level": 1,
+        "difficulty": "Intro",
+        "category": "Phishing",
+        "enabled": True,
+        "description": (
+            "Onderzoek een verdachte e-mail en ontdek welk "
+            "domein voor het nep-betaalportaal wordt gebruikt."
+        ),
+        "answers": [
+            "secure-paymentdesk.net"
+        ],
+        "hints": [
+            (
+                "Vergelijk het normale bedrijfsdomein met "
+                "het domein van de link in de e-mail."
+            ),
+            (
+                "Kijk specifiek naar het gedeelte direct na "
+                "https:// in de betaallink."
+            )
+        ]
+    },
+
+    {
+        "id": "de-verkeerde-deur",
+        "name": "De verkeerde deur",
+        "image": "challengelab/de-verkeerde-deur:1.0",
+        "difficulty_level": 1,
+        "difficulty": "Intro",
+        "category": "Netwerk / firewall",
+        "enabled": True,
+        "description": (
+            "Onderzoek firewallregels en bepaal welke "
+            "beheerservice ten onrechte vanaf het internet "
+            "bereikbaar is."
+        ),
+        "answers": [
+            "22"
+        ],
+        "hints": [
+            (
+                "De website moet vanaf internet bereikbaar zijn, "
+                "maar serverbeheer niet."
+            ),
+            (
+                "SSH is een beheerprotocol. Controleer vanaf "
+                "welk netwerk dat bereikbaar hoort te zijn."
+            )
+        ]
+    },
+
+    {
+        "id": "het-geheime-bericht",
+        "name": "Het geheime bericht",
+        "image": "challengelab/het-geheime-bericht:1.0",
+        "difficulty_level": 1,
+        "difficulty": "Intro",
+        "category": "Encryptie",
+        "enabled": True,
+        "description": (
+            "Ontcijfer een eenvoudig versleuteld bericht "
+            "met behulp van een Caesar-verschuiving."
+        ),
+        "answers": [
+            "blauw"
+        ],
+        "hints": [
+            (
+                "Bij deze Caesar-versleuteling moet iedere "
+                "letter drie plaatsen terug."
+            ),
+            (
+                "KHW wordt HET. Gebruik dezelfde verschuiving "
+                "voor de rest van het bericht."
+            )
+        ]
+    },
+
+
+    # =====================================================
+    # NIVEAU 2 - BASIS
+    # =====================================================
+
+    {
+        "id": "wie-kun-je-vertrouwen",
+        "name": "Wie kun je vertrouwen?",
+        "image": "challengelab/wie-kun-je-vertrouwen:1.0",
+        "difficulty_level": 2,
+        "difficulty": "Basis",
+        "category": "Social engineering",
+        "enabled": True,
+        "description": (
+            "Beoordeel verschillende contactpogingen en bepaal "
+            "welke persoon een veilige en controleerbare "
+            "procedure volgt."
+        ),
+        "answers": [
+            "persoon-b"
+        ],
+        "hints": [
+            (
+                "Een echte IT-medewerker hoeft jouw "
+                "wachtwoord nooit te weten."
+            ),
+            (
+                "Zoek de persoon van wie je de identiteit "
+                "zelf via interne middelen kunt controleren."
+            )
+        ]
+    },
+
+    {
+        "id": "de-echte-kluis",
+        "name": "De echte Kluis",
+        "image": "challengelab/de-echte-kluis:1.0",
+        "difficulty_level": 2,
+        "difficulty": "Basis",
+        "category": "Databeveiliging",
+        "enabled": True,
+        "description": (
+            "Analyseer classificaties en toegangsrechten en "
+            "bepaal welk vertrouwelijk bestand onvoldoende "
+            "beschermd is."
+        ),
+        "answers": [
+            "salarissen.xlsx"
+        ],
+        "hints": [
+            (
+                "Let vooral op bestanden met de classificatie "
+                "Vertrouwelijk."
+            ),
+            (
+                "Salarisgegevens horen bij HR. Controleer wie "
+                "het salarisbestand momenteel allemaal kan openen."
+            )
+        ]
+    },
+
+    {
+        "id": "gebroken-toegangscode",
+        "name": "De gebroken toegangscode",
+        "image": "challengelab/gebroken-toegangscode:1.0",
+        "difficulty_level": 2,
+        "difficulty": "Basis",
+        "category": "Authenticatie",
+        "enabled": True,
+        "description": (
+            "Combineer informatie uit authenticatielogs en "
+            "herstelsystemen om een MFA-herstelcode te reconstrueren."
+        ),
+        "answers": [
+            "47218396"
+        ],
+        "hints": [
+            (
+                "Begin bij het recovery request-ID dat bij "
+                "Eva de Wit hoort."
+            ),
+            (
+                "Gebruik beide codefragmenten met request-ID "
+                "REC-8821 en zet ze achter elkaar."
+            )
+        ]
+    },
+
+    {
+        "id": "de-onbekende-service",
+        "name": "De onbekende service",
+        "image": "challengelab/de-onbekende-service:1.0",
+        "difficulty_level": 2,
+        "difficulty": "Basis",
+        "category": "Serverbeheer",
+        "enabled": True,
+        "description": (
+            "Onderzoek actieve services en processen en bepaal "
+            "welke dienst niet op de server hoort te draaien."
+        ),
+        "answers": [],
+        "hints": []
+    },
+
+
+    # =====================================================
+    # NIVEAU 3 - GEMIDDELD
+    # =====================================================
+
+    {
+        "id": "de-verboden-route",
+        "name": "De verboden route",
+        "image": "challengelab/de-verboden-route:1.0",
+        "difficulty_level": 3,
+        "difficulty": "Gemiddeld",
+        "category": "Netwerk / firewall",
+        "enabled": True,
+        "description": (
+            "Analyseer netwerkzones en firewallregels en ontdek "
+            "welke verkeersroute in strijd is met het "
+            "beveiligingsbeleid."
+        ),
+        "answers": [
+            "user-db"
+        ],
+        "hints": [
+            (
+                "Lees het beleid eerst zonder naar de "
+                "poortnummers te kijken."
+            ),
+            (
+                "USER-NET mag via de DMZ werken, maar niet "
+                "rechtstreeks verbinding maken met DB-NET."
+            )
+        ]
+    },
+
+    {
+        "id": "de-ontbrekende-minuten",
+        "name": "De ontbrekende minuten",
+        "image": "challengelab/de-ontbrekende-minuten:1.0",
+        "difficulty_level": 3,
+        "difficulty": "Gemiddeld",
+        "category": "Forensics",
+        "enabled": True,
+        "description": (
+            "Combineer login-, bestands- en netwerklogs om te "
+            "bepalen welke gebruiker actief was tijdens "
+            "ontbrekende logging."
+        ),
+        "answers": [
+            "mvandermeer"
+        ],
+        "hints": [
+            (
+                "Let op welk IP-adres tijdens de ontbrekende "
+                "minuten actief blijft."
+            ),
+            (
+                "Koppel 10.10.10.37 aan de gebruiker die "
+                "vlak daarvoor is ingelogd."
+            )
+        ]
+    },
+
+    {
+        "id": "het-dns-spoor",
+        "name": "Het DNS-spoor",
+        "image": "challengelab/het-dns-spoor:1.0",
+        "difficulty_level": 3,
+        "difficulty": "Gemiddeld",
+        "category": "DNS",
+        "enabled": True,
+        "description": (
+            "Analyseer DNS-records, zonegegevens en resolver-output "
+            "en bepaal waar de naamresolutie fout gaat."
+        ),
+        "answers": [
+            "dns02",
+            "dns02.breachout.local",
+            "10.20.53.12",
+        ],
+        "hints": [
+            "Vergelijk niet alleen de A-records, maar ook de SOA-serial van beide DNS-servers.",
+            "De server met de lagere SOA-serial heeft een oudere versie van de zone.",
+        ]
+    },
+
+    {
+        "id": "de-verdwaalde-rechten",
+        "name": "De verdwaalde rechten",
+        "image": "challengelab/de-verdwaalde-rechten:1.0",
+        "difficulty_level": 3,
+        "difficulty": "Gemiddeld",
+        "category": "Linux",
+        "enabled": True,
+        "description": (
+            "Onderzoek Linux-gebruikers, groepen, eigenaarschap "
+            "en permissies en ontdek waarom een gebruiker "
+            "toegang heeft tot de verkeerde bestanden."
+        ),
+        "answers": [
+            "backupsvc",
+        ],
+        "hints": [
+            "Controleer welke Unix-groep eigenaar is van /srv/hr en welke accounts lid zijn van die groep.",
+            "Het verdachte account is geen HR-medewerker, maar staat wel in de groep hr.",
+        ]
+    },
+
+
+    # =====================================================
+    # NIVEAU 4 - MOEILIJK
+    # =====================================================
+
+    {
+        "id": "wie-was-het",
+        "name": "Wie was het?",
+        "image": "challengelab/wie-was-het:1.0",
+        "difficulty_level": 4,
+        "difficulty": "Moeilijk",
+        "category": "Forensics",
+        "enabled": True,
+        "description": (
+            "Combineer toegangsgegevens, gebruikerslogins, "
+            "IP-adressen en USB-auditlogs om een incident "
+            "te reconstrueren."
+        ),
+        "answers": [
+            "rkuiper",
+            "robin kuiper"
+        ],
+        "hints": [
+            (
+                "Begin bij het IP-adres waarmee het bestand "
+                "op de fileserver werd geopend."
+            ),
+            (
+                "Volg de keten: IP-adres → werkstation → "
+                "ingelogde gebruiker."
+            )
+        ]
+    },
+
+    {
+        "id": "de-stille-service",
+        "name": "De stille service",
+        "image": "challengelab/de-stille-service:1.0",
+        "difficulty_level": 4,
+        "difficulty": "Moeilijk",
+        "category": "Linux / systemd",
+        "enabled": True,
+        "description": (
+            "Combineer systemctl-status, journald-output en "
+            "serviceconfiguratie om de oorzaak van een "
+            "serverstoring te achterhalen."
+        ),
+        "answers": [
+            "privatenetwork=yes",
+            "privatenetwork",
+        ],
+        "hints": [
+            "De applicatie meldt dat hij luistert, maar ss op de host ziet geen socket. Denk aan isolatie door systemd.",
+            "Controleer welke hardening-directive een aparte netwerknamespace voor de service maakt.",
+        ]
+    },
+
+    {
+        "id": "het-verkeerde-vlan",
+        "name": "Het verkeerde VLAN",
+        "image": "challengelab/het-verkeerde-vlan:1.0",
+        "difficulty_level": 4,
+        "difficulty": "Moeilijk",
+        "category": "Netwerk",
+        "enabled": True,
+        "description": (
+            "Analyseer VLAN-configuratie, trunks, accesspoorten, "
+            "subnetten en gateways en ontdek waarom een client "
+            "het netwerk niet correct kan bereiken."
+        ),
+        "answers": [
+            "40",
+            "vlan40",
+            "vlan 40",
+        ],
+        "hints": [
+            "Andere Finance-pc's werken wel. Zoek daarom eerst naar iets dat specifiek is voor werkplek F-18.",
+            "Vergelijk het IP-adres van de pc met het VLAN-plan en daarna met de access-VLAN-configuratie van Gi1/0/18.",
+        ]
+    },
+
+    {
+        "id": "de-backup-die-niet-terugkwam",
+        "name": "De backup die niet terugkwam",
+        "image": "challengelab/de-backup-die-niet-terugkwam:1.0",
+        "difficulty_level": 4,
+        "difficulty": "Moeilijk",
+        "category": "Backup / recovery",
+        "enabled": True,
+        "description": (
+            "Analyseer backuplogs, retentie, timestamps en "
+            "restorepunten en bepaal welke backup geschikt is "
+            "voor herstel."
+        ),
+        "answers": [
+            "inc-20261010-2300",
+        ],
+        "hints": [
+            "Begin bij de gewenste restore van 11 oktober en volg telkens het veld Parent terug.",
+            "De backup van 11 oktober bestaat nog, maar zijn directe parent is door de retentie-engine verwijderd.",
+        ]
+    },
+
+
+    # =====================================================
+    # NIVEAU 5 - EINDJAARS MBO 4
+    # =====================================================
+
+    {
+        "id": "route-naar-nergens",
+        "name": "Route naar nergens",
+        "image": "challengelab/route-naar-nergens:1.0",
+        "difficulty_level": 5,
+        "difficulty": "Expert",
+        "category": "Routing / firewall",
+        "enabled": True,
+        "description": (
+            "Combineer routingtabellen, gateways, subnetten en "
+            "ACL-regels en bepaal waarom verkeer een bestemming "
+            "niet bereikt."
+        ),
+        "answers": [
+            "10.40.10.254",
+            "10.40.10.254/32",
+        ],
+        "hints": [
+            "Een default route wordt niet gebruikt als er een specifiekere route voor het bestemmingsnetwerk bestaat.",
+            "Controleer met ip route get welke next-hop Linux daadwerkelijk kiest en vergelijk die met de neighbor table.",
+        ]
+    },
+
+    {
+        "id": "de-gebroken-webstack",
+        "name": "De gebroken webstack",
+        "image": "challengelab/de-gebroken-webstack:1.0",
+        "difficulty_level": 5,
+        "difficulty": "Expert",
+        "category": "Linux / web / database",
+        "enabled": False,
+        "description": (
+            "Onderzoek de volledige keten van reverse proxy, "
+            "applicatieservice en database en bepaal waar de "
+            "storing daadwerkelijk ontstaat."
+        ),
+        "answers": [],
+        "hints": []
+    },
+
+    {
+        "id": "de-verdachte-beheerder",
+        "name": "De verdachte beheerder",
+        "image": "challengelab/de-verdachte-beheerder:1.0",
+        "difficulty_level": 5,
+        "difficulty": "Expert",
+        "category": "Security / Linux",
+        "enabled": False,
+        "description": (
+            "Correleer SSH-, sudo-, audit- en systeemlogs en "
+            "reconstrueer welke beheeractie een incident heeft "
+            "veroorzaakt."
+        ),
+        "answers": [],
+        "hints": []
+    },
+
+    {
+        "id": "kettingreactie",
+        "name": "Kettingreactie",
+        "image": "challengelab/kettingreactie:1.0",
+        "difficulty_level": 5,
+        "difficulty": "Expert",
+        "category": "Systeembeheer",
+        "enabled": False,
+        "description": (
+            "Analyseer een compleet incident met DNS, routing, "
+            "firewall, Linux-services, webserver en database en "
+            "bepaal de werkelijke hoofdoorzaak."
+        ),
+        "answers": [],
+        "hints": []
+    }
+]
+
+
+# =========================================================
+# Basisfuncties
+# =========================================================
+
+def get_challenge(challenge_id: str):
+    """
+    Zoek één challenge op basis van zijn ID.
+    Geeft None terug wanneer de challenge niet bestaat.
+    """
+
+    return next(
+        (
+            challenge
+            for challenge in CHALLENGES
+            if challenge["id"] == challenge_id
+        ),
+        None
+    )
+
+
+def get_enabled_challenges():
+    """
+    Geef alle challenges terug die momenteel beschikbaar zijn.
+    """
+
+    return [
+        challenge
+        for challenge in CHALLENGES
+        if challenge["enabled"]
+    ]
+
+
+def get_enabled_challenges_by_level(
+    difficulty_level: int
+):
+    """
+    Geef alle actieve challenges van één niveau terug.
+    """
+
+    return [
+        challenge
+        for challenge in CHALLENGES
+        if (
+            challenge["enabled"]
+            and
+            challenge["difficulty_level"]
+            == difficulty_level
+        )
+    ]
+
+
+def get_public_challenge(challenge: dict):
+    """
+    Veilige challenge-informatie voor API-responses.
+
+    Antwoorden en hints worden hierbij bewust niet meegestuurd.
+    """
+
+    return {
+        "id": challenge["id"],
+        "name": challenge["name"],
+        "difficulty_level": (
+            challenge["difficulty_level"]
+        ),
+        "difficulty": challenge["difficulty"],
+        "category": challenge["category"],
+        "description": challenge["description"],
+        "enabled": challenge["enabled"]
+    }
+
+
+def get_catalog(
+    include_disabled: bool = False
+):
+    """
+    Geef de challengecatalogus terug.
+
+    include_disabled=False:
+        alleen speelbare challenges.
+
+    include_disabled=True:
+        alle 20 challenges, bijvoorbeeld voor admin.
+    """
+
+    if include_disabled:
+        challenges = CHALLENGES
+    else:
+        challenges = get_enabled_challenges()
+
+    return [
+        get_public_challenge(challenge)
+        for challenge in challenges
+    ]
+
+
+# =========================================================
+# Gebalanceerd pakket
+# =========================================================
+
+def generate_balanced_package(
+    challenges_per_level: int = 2
+):
+    """
+    Genereer een pakket dat van makkelijk naar moeilijk loopt.
+
+    Standaard:
+        2x niveau 1
+        2x niveau 2
+        2x niveau 3
+        2x niveau 4
+        2x niveau 5
+
+    Binnen ieder niveau worden willekeurige challenges gekozen.
+
+    Deze functie wordt pas gebruikt wanneer van ieder niveau
+    voldoende challenges enabled zijn.
+    """
+
+    selected = []
+
+    for level in range(1, 6):
+
+        available = (
+            get_enabled_challenges_by_level(
+                level
+            )
+        )
+
+        if len(available) < challenges_per_level:
+            raise ValueError(
+                (
+                    f"Niveau {level} heeft slechts "
+                    f"{len(available)} actieve challenge(s), "
+                    f"maar {challenges_per_level} nodig."
+                )
+            )
+
+        level_selection = random.sample(
+            available,
+            challenges_per_level
+        )
+
+        random.shuffle(
+            level_selection
+        )
+
+        selected.extend(
+            level_selection
+        )
+
+    return selected
+
+
+# =========================================================
+# Handmatig pakket controleren
+# =========================================================
+
+def validate_manual_package(
+    challenge_ids: list[str],
+    expected_count: int = 10
+):
+    """
+    Controleer een handmatig samengesteld pakket.
+
+    - exact het juiste aantal
+    - geen dubbele challenges
+    - alle challenges bestaan
+    - alle challenges zijn enabled
+
+    Het resultaat wordt automatisch van makkelijk naar
+    moeilijk gesorteerd.
+    """
+
+    if len(challenge_ids) != expected_count:
+        raise ValueError(
+            (
+                f"Een pakket moet exact "
+                f"{expected_count} challenges bevatten."
+            )
+        )
+
+    if len(set(challenge_ids)) != len(
+        challenge_ids
+    ):
+        raise ValueError(
+            "Een challenge mag maar één keer voorkomen."
+        )
+
+    selected = []
+
+    for challenge_id in challenge_ids:
+
+        challenge = get_challenge(
+            challenge_id
+        )
+
+        if not challenge:
+            raise ValueError(
+                (
+                    f"Onbekende challenge: "
+                    f"{challenge_id}"
+                )
+            )
+
+        if not challenge["enabled"]:
+            raise ValueError(
+                (
+                    f"Challenge '{challenge['name']}' "
+                    f"is nog niet beschikbaar."
+                )
+            )
+
+        selected.append(
+            challenge
+        )
+
+    # Eerst niveau 1, daarna 2, 3, 4 en 5.
+    # Binnen hetzelfde niveau blijft de gekozen volgorde behouden.
+    selected.sort(
+        key=lambda challenge: (
+            challenge["difficulty_level"]
+        )
+    )
+
+    return selected
+
+
+# =========================================================
+# Losse challenge controleren
+# =========================================================
+
+def validate_single_challenge(
+    challenge_id: str
+):
+    """
+    Controleer of een losse challenge speelbaar is.
+    """
+
+    challenge = get_challenge(
+        challenge_id
+    )
+
+    if not challenge:
+        raise ValueError(
+            "Challenge bestaat niet."
+        )
+
+    if not challenge["enabled"]:
+        raise ValueError(
+            (
+                f"Challenge '{challenge['name']}' "
+                f"is nog niet beschikbaar."
+            )
+        )
+
+    return challenge
+
+
+# =========================================================
+# Statistieken
+# =========================================================
+
+def challenge_statistics():
+    """
+    Handig voor admin/dashboard.
+    """
+
+    levels = {}
+
+    for level in range(1, 6):
+
+        all_on_level = [
+            challenge
+            for challenge in CHALLENGES
+            if challenge["difficulty_level"] == level
+        ]
+
+        enabled_on_level = [
+            challenge
+            for challenge in all_on_level
+            if challenge["enabled"]
+        ]
+
+        levels[level] = {
+            "total": len(all_on_level),
+            "enabled": len(
+                enabled_on_level
+            )
+        }
+
+    return {
+        "total": len(CHALLENGES),
+        "enabled": len(
+            get_enabled_challenges()
+        ),
+        "levels": levels
+    }

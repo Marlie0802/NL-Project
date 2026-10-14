@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>De backup die niet terugkwam</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --background: #07100b;
+            --panel: #0d1712;
+            --border: #20392b;
+            --muted: #839087;
+            --warning: #f7c86a;
+            --danger: #ff7d7d;
+        }
+
+        body {
+            margin: 0;
+
+            color: #e9f2ed;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(53, 242, 154, .025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(53, 242, 154, .025) 1px,
+                    transparent 1px
+                ),
+                var(--background);
+
+            background-size:
+                40px 40px;
+        }
+
+        .container {
+            width: 1160px;
+            max-width: 94%;
+
+            margin:
+                40px auto
+                70px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            color: var(--green);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .subtitle,
+        .muted {
+            color: var(--muted);
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            margin-bottom: 20px;
+            padding: 24px;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--panel);
+        }
+
+        .grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(370px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+        .terminal {
+            overflow-x: auto;
+
+            padding: 18px;
+
+            border: 1px solid #193022;
+            border-radius: 8px;
+
+            color: #d8e8df;
+            background: #050b07;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+            line-height: 1.65;
+
+            white-space: pre;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border-bottom:
+                1px solid
+                #223128;
+
+            text-align: left;
+        }
+
+        th {
+            color: var(--green);
+        }
+
+        .success-badge {
+            display: inline-block;
+
+            padding: 4px 8px;
+
+            border-radius: 20px;
+
+            color: var(--green);
+
+            background:
+                rgba(
+                    53,
+                    242,
+                    154,
+                    .10
+                );
+        }
+
+        .missing-badge {
+            display: inline-block;
+
+            padding: 4px 8px;
+
+            border-radius: 20px;
+
+            color: var(--danger);
+
+            background:
+                rgba(
+                    255,
+                    125,
+                    125,
+                    .10
+                );
+        }
+
+        .warning-box {
+            padding: 16px;
+
+            border-left:
+                3px solid
+                var(--warning);
+
+            color: #e3dcc4;
+
+            background:
+                rgba(
+                    247,
+                    200,
+                    106,
+                    .05
+                );
+        }
+
+        code {
+            color: #b7e8cc;
+        }
+
+        input {
+            width: 410px;
+            max-width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #355443;
+            border-radius: 7px;
+
+            outline: none;
+
+            color: white;
+            background: #07100b;
+        }
+
+        input:focus {
+            border-color: var(--green);
+        }
+
+        button {
+            padding: 12px 18px;
+
+            border: 0;
+            border-radius: 7px;
+
+            color: #04100a;
+
+            font-weight: bold;
+
+            background: var(--green);
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--green-light);
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: var(--green);
+        }
+
+        .error {
+            color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        De backup die niet terugkwam
+    </h1>
+
+    <div class="subtitle">
+        Backup & recovery · FILE-02
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Situatie
+        </h2>
+
+        <p>
+            FILE-02 is beschadigd geraakt en moet worden
+            hersteld naar de backup van
+            <strong>11 oktober 23:00</strong>.
+        </p>
+
+        <p>
+            Het monitoringdashboard toont voor de afgelopen
+            dagen alleen maar groene backupjobs.
+        </p>
+
+        <p>
+            Toch stopt de restore vrijwel direct.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Backupmethode
+        </h2>
+
+        <p>
+            Iedere donderdag wordt een volledige backup
+            gemaakt. Op de overige dagen wordt een
+            incrementele backup opgeslagen.
+        </p>
+
+        <p class="muted">
+            Iedere incrementele backup bevat alleen de
+            wijzigingen sinds zijn directe voorganger.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Backupcatalogus
+        </h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Backup-ID</th>
+                    <th>Type</th>
+                    <th>Parent</th>
+                    <th>Jobstatus</th>
+                    <th>Repository</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>FULL-20261008-2300</td>
+                    <td>Full</td>
+                    <td>-</td>
+                    <td>
+                        <span class="success-badge">
+                            Success
+                        </span>
+                    </td>
+                    <td>Aanwezig</td>
+                </tr>
+
+                <tr>
+                    <td>INC-20261009-2300</td>
+                    <td>Incremental</td>
+                    <td>FULL-20261008-2300</td>
+                    <td>
+                        <span class="success-badge">
+                            Success
+                        </span>
+                    </td>
+                    <td>Aanwezig</td>
+                </tr>
+
+                <tr>
+                    <td>INC-20261010-2300</td>
+                    <td>Incremental</td>
+                    <td>INC-20261009-2300</td>
+                    <td>
+                        <span class="success-badge">
+                            Success
+                        </span>
+                    </td>
+                    <td>
+                        <span class="missing-badge">
+                            Ontbreekt
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>INC-20261011-2300</td>
+                    <td>Incremental</td>
+                    <td>INC-20261010-2300</td>
+                    <td>
+                        <span class="success-badge">
+                            Success
+                        </span>
+                    </td>
+                    <td>Aanwezig</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                Backupjob 11 oktober
+            </h2>
+
+            <div class="terminal">23:00:01 Starting incremental backup
+23:00:01 Parent: INC-20261010-2300
+23:00:03 Scanning changed blocks
+23:02:44 Upload complete
+23:02:45 Catalog updated
+23:02:45 Job status: SUCCESS</div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                Restorelog
+            </h2>
+
+            <div class="terminal">07:41:12 Restore requested:
+          INC-20261011-2300
+
+07:41:12 Loading backup metadata
+07:41:13 Parent:
+          INC-20261010-2300
+
+07:41:13 ERROR:
+          parent object not found
+
+07:41:13 Restore aborted</div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Retentielog
+        </h2>
+
+        <div class="terminal">2026-10-12 02:00:00 retention-engine start
+2026-10-12 02:00:01 applying policy: daily=2 weekly=1
+2026-10-12 02:00:02 deleting expired object:
+                    INC-20261010-2300
+2026-10-12 02:00:02 deletion successful
+2026-10-12 02:00:03 retention-engine complete</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Retentiebeleid
+        </h2>
+
+        <div class="warning-box">
+            De retentie-engine beoordeelt momenteel ieder
+            backupobject afzonderlijk op leeftijd. Er wordt
+            niet gecontroleerd of een nieuwer incremental
+            object nog afhankelijk is van het object dat
+            verwijderd wordt.
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Opdracht
+        </h2>
+
+        <p>
+            Welk ontbrekend backupobject verbreekt de
+            keten die nodig is om de backup van
+            11 oktober 23:00 te herstellen?
+        </p>
+
+        <p class="muted">
+            Vul het volledige backup-ID in.
+        </p>
+
+        <input
+            id="answer"
+            placeholder="bijvoorbeeld: INC-20261009-2300"
+            autocomplete="off"
+        >
+
+        <button
+            id="submitButton"
+            onclick="checkAnswer()"
+        >
+            Controleer
+        </button>
+
+        <div id="result"></div>
+
+    </section>
+
+</div>
+
+
+<script src="/hint-widget.js"></script>
+
+
+<script>
+"use strict";
+
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const sessionId =
+    params.get(
+        "session"
+    );
+
+let answerSubmitting =
+    false;
+
+
+async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    const input =
+        document.getElementById(
+            "answer"
+        );
+
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+    const answer =
+        input.value
+            .trim()
+            .toLowerCase()
+            .replaceAll(
+                " ",
+                ""
+            );
+
+
+    if (!sessionId) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Geen geldige BreachOut-sessie gevonden.";
+
+        return;
+    }
+
+
+    if (!answer) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Vul eerst een antwoord in.";
+
+        return;
+    }
+
+
+    answerSubmitting =
+        true;
+
+    button.disabled =
+        true;
+
+
+    try {
+        const response =
+            await fetch(
+                "/api/session/" +
+                encodeURIComponent(
+                    sessionId
+                ) +
+                "/answer",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            answer
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+
+        if (!data.correct) {
+            answerSubmitting =
+                false;
+
+            button.disabled =
+                false;
+
+            result.className =
+                "error";
+
+            result.textContent =
+                "✗ Niet correct. Volg de parent-keten vanaf de gewenste restore.";
+
+            return;
+        }
+
+
+        if (data.completed) {
+            result.className =
+                "success";
+
+            result.textContent =
+                "✓ Correct! De sessie is voltooid. Je gaat terug naar BreachOut...";
+
+            setTimeout(
+                () => {
+                    window.location.href =
+                        "/";
+                },
+                1600
+            );
+
+            return;
+        }
+
+
+        result.className =
+            "success";
+
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt geladen...";
+
+        await waitForChallenge(
+            data.url
+        );
+
+    } catch (error) {
+        answerSubmitting =
+            false;
+
+        button.disabled =
+            false;
+
+        result.className =
+            "error";
+
+        result.textContent =
+            "Fout: " +
+            error.message;
+    }
+}
+
+
+async function waitForChallenge(
+    url
+) {
+    if (!url) {
+        window.location.href =
+            "/";
+
+        return;
+    }
+
+    for (
+        let attempt = 0;
+        attempt < 20;
+        attempt++
+    ) {
+        try {
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method: "GET",
+                        cache: "no-store"
+                    }
+                );
+
+            if (response.ok) {
+                window.location.href =
+                    url;
+
+                return;
+            }
+
+        } catch {
+            // Nieuwe container start nog.
+        }
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    500
+                )
+        );
+    }
+
+    window.location.href =
+        url;
+}
+
+
+document
+    .getElementById(
+        "answer"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key === "Enter"
+            ) {
+                event.preventDefault();
+
+                checkAnswer();
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>

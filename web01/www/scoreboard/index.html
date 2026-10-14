@@ -8,23 +8,35 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>ChallengeLab Scoreboard</title>
+    <title>BreachOut Scoreboard</title>
 
     <style>
         * {
             box-sizing: border-box;
         }
 
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --background: #050807;
+            --panel: rgba(8,18,15,.92);
+            --border: rgba(53,242,154,.15);
+            --text: #f2f7f4;
+            --muted: #7c8b82;
+            --gold: #ffd66b;
+            --silver: #c9d0cc;
+            --bronze: #d59c6a;
+        }
+
         body {
             margin: 0;
+            min-height: 100vh;
+
+            color: var(--text);
 
             font-family:
                 Arial,
                 sans-serif;
-
-            min-height: 100vh;
-
-            color: #eef5f1;
 
             background:
                 linear-gradient(
@@ -36,85 +48,157 @@
                     rgba(0,255,140,.025) 1px,
                     transparent 1px
                 ),
-                #050b08;
+                radial-gradient(
+                    circle at top,
+                    #08251a 0%,
+                    #08120f 42%,
+                    #050807 100%
+                );
 
             background-size:
-                40px 40px;
+                40px 40px,
+                40px 40px,
+                auto;
         }
 
-        header {
-            max-width: 1200px;
-            margin: auto;
-
-            padding:
-                30px 25px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        *::selection {
+            color: #04100a;
+            background: var(--green);
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
+        .hidden {
+            display: none !important;
         }
 
-        .logo span {
-            color: #35f29a;
-        }
-
-        .back {
-            color: #819087;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        main {
-            width: 1150px;
+        .page {
+            width: 1100px;
             max-width: calc(100% - 40px);
 
             margin: auto;
 
             padding:
-                40px 0
-                80px;
+                30px 0
+                70px;
         }
 
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding-bottom: 26px;
+
+            border-bottom:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .05
+                );
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: -.6px;
+        }
+
+        .logo span {
+            color: var(--green);
+        }
+
+        .product-tag {
+            margin-top: 4px;
+
+            color: #59685f;
+
+            font-size: 10px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .header-link {
+            color: var(--muted);
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+        .header-link:hover {
+            color: var(--green);
+        }
+
+        /* =========================================
+           HERO
+        ========================================= */
+
         .hero {
-            margin-bottom: 45px;
+            padding:
+                65px 0
+                45px;
+
+            text-align: center;
         }
 
         .eyebrow {
-            color: #35f29a;
+            margin-bottom: 15px;
+
+            color: var(--green);
 
             font-size: 12px;
 
-            text-transform: uppercase;
             letter-spacing: 2px;
 
-            margin-bottom: 12px;
+            text-transform: uppercase;
         }
 
-        h1 {
+        .hero h1 {
             margin: 0;
 
             font-size:
                 clamp(
-                    42px,
-                    6vw,
-                    70px
+                    44px,
+                    7vw,
+                    74px
                 );
 
-            letter-spacing: -2px;
+            line-height: 1;
+
+            letter-spacing: -3px;
         }
 
-        .subtitle {
-            color: #7e8c84;
+        .hero h1 span {
+            color: var(--green);
+        }
 
-            margin-top: 14px;
+        .hero p {
+            max-width: 600px;
+
+            margin:
+                22px auto
+                0;
+
+            color: var(--muted);
 
             font-size: 17px;
+
+            line-height: 1.6;
         }
+
+        /* =========================================
+           PODIUM
+        ========================================= */
 
         .podium {
             display: grid;
@@ -122,248 +206,544 @@
             grid-template-columns:
                 repeat(
                     3,
-                    1fr
+                    minmax(0, 1fr)
                 );
 
-            gap: 16px;
+            gap: 14px;
 
-            margin-bottom: 35px;
+            margin:
+                10px 0
+                30px;
         }
 
         .podium-card {
-            background: #0a1510;
+            position: relative;
+
+            padding: 25px 20px;
 
             border:
                 1px solid
-                #1b3526;
+                var(--border);
 
             border-radius: 14px;
 
-            padding: 24px;
+            text-align: center;
+
+            background: var(--panel);
         }
 
-        .position {
-            color: #35f29a;
+        .podium-position {
+            width: 42px;
+            height: 42px;
 
-            font-size: 13px;
+            margin:
+                0 auto
+                14px;
 
-            margin-bottom: 15px;
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            font-size: 17px;
+            font-weight: 800;
         }
 
-        .team {
-            font-size: 22px;
-            font-weight: bold;
+        .first
+        .podium-position {
+            color: #261d00;
+            background: var(--gold);
+        }
 
-            margin-bottom: 18px;
+        .second
+        .podium-position {
+            color: #1b1d1c;
+            background: var(--silver);
+        }
+
+        .third
+        .podium-position {
+            color: #25170b;
+            background: var(--bronze);
+        }
+
+        .podium-team {
+            min-height: 24px;
+
+            font-size: 19px;
+            font-weight: 700;
         }
 
         .podium-score {
-            font-size: 38px;
-            color: #35f29a;
-            font-weight: bold;
+            margin-top: 9px;
+
+            color: var(--green);
+
+            font-size: 29px;
+            font-weight: 800;
         }
 
         .podium-progress {
-            color: #7e8b84;
+            margin-top: 5px;
 
-            margin-top: 7px;
+            color: var(--muted);
+
+            font-size: 12px;
         }
 
+        /* =========================================
+           SCOREBOARD
+        ========================================= */
+
         .panel {
-            background: #08120d;
+            padding: 23px;
 
             border:
                 1px solid
-                #193123;
+                var(--border);
 
             border-radius: 14px;
 
-            padding: 25px;
+            background: var(--panel);
         }
 
         .panel-header {
             display: flex;
 
-            justify-content:
-                space-between;
+            align-items: end;
+            justify-content: space-between;
 
-            align-items: center;
+            gap: 15px;
 
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .panel-header h2 {
             margin: 0;
+
+            font-size: 24px;
         }
 
-        .updated {
-            color: #708078;
-            font-size: 13px;
+        .update-info {
+            color: #607067;
+
+            font-size: 12px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
 
-            border-collapse:
-                collapse;
+            border-collapse: collapse;
         }
 
         th,
         td {
-            text-align: left;
-
-            padding:
-                15px 12px;
+            padding: 14px 12px;
 
             border-bottom:
                 1px solid
-                #172a20;
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .055
+                );
+
+            text-align: left;
         }
 
         th {
-            color: #718179;
+            color: #65756c;
 
-            text-transform:
-                uppercase;
+            font-size: 11px;
 
-            font-size: 12px;
+            text-transform: uppercase;
         }
 
         td {
-            font-size: 16px;
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .position {
+            width: 55px;
+
+            color: var(--muted);
+        }
+
+        .team {
+            font-weight: 700;
+        }
+
+        .progress {
+            color: var(--muted);
         }
 
         .score {
-            color: #35f29a;
+            color: var(--green);
 
-            font-weight: bold;
-
-            font-size: 18px;
+            font-size: 17px;
+            font-weight: 800;
         }
 
         .empty {
             padding: 40px;
 
-            text-align: center;
+            color: var(--muted);
 
-            color: #718078;
+            text-align: center;
         }
 
-        @media (
-            max-width: 750px
-        ) {
+        .error-box {
+            padding: 17px;
 
+            border:
+                1px solid
+                rgba(
+                    255,
+                    90,
+                    90,
+                    .22
+                );
+
+            border-radius: 9px;
+
+            color: #ff9c9c;
+
+            background:
+                rgba(
+                    255,
+                    90,
+                    90,
+                    .06
+                );
+        }
+
+        footer {
+            padding-top: 30px;
+
+            color: #4e5a53;
+
+            text-align: center;
+
+            font-size: 12px;
+        }
+
+        @media (max-width: 750px) {
             .podium {
+                grid-template-columns: 1fr;
+            }
+
+            .podium-card {
+                display: grid;
+
                 grid-template-columns:
-                    1fr;
+                    55px 1fr auto;
+
+                align-items: center;
+
+                gap: 10px;
+
+                text-align: left;
+            }
+
+            .podium-position {
+                margin: 0;
+            }
+
+            .podium-score {
+                margin: 0;
+            }
+
+            .podium-progress {
+                grid-column:
+                    2 / 4;
+
+                margin: 0;
+            }
+
+            .hero {
+                padding-top: 50px;
             }
         }
     </style>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="/assets/breachout-favicon.png?v=3"
+    >
+
 </head>
 
 <body>
 
-<header>
+<div class="page">
 
-    <div class="logo">
-        Challenge<span>Lab</span>
-    </div>
+    <header>
 
-    <a
-        href="/"
-        class="back">
-        Terug naar ChallengeLab
-    </a>
+        <div>
 
-</header>
+            <div class="logo">
+                Breach<span>Out</span>
+            </div>
 
+            <div class="product-tag">
+                Publiek scoreboard
+            </div>
 
-<main>
-
-    <section class="hero">
-
-        <div class="eyebrow">
-            Live ranking
         </div>
 
-        <h1>
-            Scoreboard
-        </h1>
+        <a
+            href="/"
+            class="header-link"
+        >
+            Teamlogin
+        </a>
 
-        <div class="subtitle">
-            De actuele stand van ChallengeLab.
-        </div>
-
-    </section>
-
-
-    <div
-        id="podium"
-        class="podium">
-    </div>
+    </header>
 
 
-    <section class="panel">
+    <main>
 
-        <div class="panel-header">
+        <section class="hero">
 
-            <h2>
-                Alle teams
-            </h2>
+            <div class="eyebrow">
+                Live resultaten
+            </div>
 
-            <span
-                id="updated"
-                class="updated">
+            <h1>
+                Wie breekt er<br>
+                <span>het beste uit?</span>
+            </h1>
+
+            <p>
+                Bekijk de actuele resultaten van de
+                BreachOut-challenges. Alleen pakketsessies
+                tellen mee voor het hoofdscoreboard.
+            </p>
+
+        </section>
+
+
+        <section
+            id="podium"
+            class="podium"
+        >
+
+            <article
+                class="podium-card first"
+            >
+                <div class="podium-position">
+                    1
+                </div>
+
+                <div
+                    id="podiumTeam1"
+                    class="podium-team"
+                >
+                    -
+                </div>
+
+                <div
+                    id="podiumScore1"
+                    class="podium-score"
+                >
+                    0
+                </div>
+
+                <div
+                    id="podiumProgress1"
+                    class="podium-progress"
+                >
+                    0 / 10
+                </div>
+            </article>
+
+
+            <article
+                class="podium-card second"
+            >
+                <div class="podium-position">
+                    2
+                </div>
+
+                <div
+                    id="podiumTeam2"
+                    class="podium-team"
+                >
+                    -
+                </div>
+
+                <div
+                    id="podiumScore2"
+                    class="podium-score"
+                >
+                    0
+                </div>
+
+                <div
+                    id="podiumProgress2"
+                    class="podium-progress"
+                >
+                    0 / 10
+                </div>
+            </article>
+
+
+            <article
+                class="podium-card third"
+            >
+                <div class="podium-position">
+                    3
+                </div>
+
+                <div
+                    id="podiumTeam3"
+                    class="podium-team"
+                >
+                    -
+                </div>
+
+                <div
+                    id="podiumScore3"
+                    class="podium-score"
+                >
+                    0
+                </div>
+
+                <div
+                    id="podiumProgress3"
+                    class="podium-progress"
+                >
+                    0 / 10
+                </div>
+            </article>
+
+        </section>
+
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Alle teams
+                </h2>
+
+                <div
+                    id="updated"
+                    class="update-info"
+                >
+                    Laden...
+                </div>
+
+            </div>
+
+            <div
+                id="scoreboardContainer"
+                class="table-wrap"
+            >
                 Laden...
-            </span>
+            </div>
 
-        </div>
+        </section>
+
+    </main>
 
 
-        <div id="scoreboard">
-            Laden...
-        </div>
+    <footer>
+        BreachOut · Cybersecurity Challenge Platform
+    </footer>
 
-    </section>
-
-</main>
+</div>
 
 
 <script>
+"use strict";
 
-async function loadScoreboard() {
 
-    try {
+let refreshTimer = null;
 
-        const response = await fetch(
-            "/api/public/scoreboard",
+
+/* =========================================
+   API
+========================================= */
+
+async function api(
+    url
+) {
+    const response =
+        await fetch(
+            url,
             {
                 cache: "no-store"
             }
         );
 
+    const raw =
+        await response.text();
 
-        const data =
-            await response.json();
+    let data = {};
 
-
-        if (!response.ok) {
+    if (raw) {
+        try {
+            data =
+                JSON.parse(
+                    raw
+                );
+        } catch {
             throw new Error(
-                "Scoreboard kon niet worden geladen."
+                "Ongeldige serverresponse"
             );
         }
+    }
 
+    if (!response.ok) {
+        throw new Error(
+            data.detail ||
+            "Scoreboard kon niet worden geladen."
+        );
+    }
+
+    return data;
+}
+
+
+/* =========================================
+   SCOREBOARD
+========================================= */
+
+async function loadScoreboard() {
+    try {
+        const data =
+            await api(
+                "/api/public/scoreboard"
+            );
+
+        const scores =
+            Array.isArray(
+                data.scoreboard
+            )
+            ? data.scoreboard
+            : [];
 
         renderPodium(
-            data.scoreboard
-                .slice(0, 3)
+            scores
         );
 
-
-        renderScoreboard(
-            data.scoreboard
+        renderTable(
+            scores
         );
-
 
         document
             .getElementById(
@@ -375,141 +755,164 @@ async function loadScoreboard() {
                     .toLocaleTimeString(
                         "nl-NL",
                         {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            second: "2-digit"
+                            hour:
+                                "2-digit",
+
+                            minute:
+                                "2-digit",
+
+                            second:
+                                "2-digit"
                         }
                     );
 
-
     } catch (error) {
+        document
+            .getElementById(
+                "scoreboardContainer"
+            )
+            .innerHTML = `
+                <div class="error-box">
+                    ${escapeHtml(
+                        error.message
+                    )}
+                </div>
+            `;
 
         document
             .getElementById(
-                "scoreboard"
+                "updated"
             )
-            .innerHTML =
-                `
-                <div class="empty">
-                    Scoreboard kon niet worden geladen.
-                </div>
-                `;
+            .textContent =
+                "Bijwerken mislukt";
     }
 }
 
 
-function renderPodium(teams) {
+/* =========================================
+   PODIUM
+========================================= */
 
-    const podium =
-        document.getElementById(
-            "podium"
-        );
+function renderPodium(
+    scores
+) {
+    for (
+        let position = 1;
+        position <= 3;
+        position++
+    ) {
+        const team =
+            scores[
+                position - 1
+            ];
 
+        document
+            .getElementById(
+                `podiumTeam${position}`
+            )
+            .textContent =
+                team?.team
+                || "-";
 
-    if (!teams.length) {
+        document
+            .getElementById(
+                `podiumScore${position}`
+            )
+            .textContent =
+                team?.score
+                ?? 0;
 
-        podium.innerHTML = "";
-
-        return;
+        document
+            .getElementById(
+                `podiumProgress${position}`
+            )
+            .textContent =
+                team
+                ? (
+                    `${team.completed} / ${team.total}`
+                )
+                : "0 / 10";
     }
-
-
-    podium.innerHTML =
-        teams.map(team => `
-
-            <div class="podium-card">
-
-                <div class="position">
-                    #${team.position}
-                </div>
-
-                <div class="team">
-                    ${escapeHtml(
-                        team.team
-                    )}
-                </div>
-
-                <div class="podium-score">
-                    ${team.score}
-                </div>
-
-                <div class="podium-progress">
-                    ${team.completed}
-                    /
-                    ${team.total}
-                    challenges
-                </div>
-
-            </div>
-
-        `).join("");
 }
 
 
-function renderScoreboard(teams) {
+/* =========================================
+   TABEL
+========================================= */
 
+function renderTable(
+    scores
+) {
     const container =
-        document.getElementById(
-            "scoreboard"
-        );
+        document
+            .getElementById(
+                "scoreboardContainer"
+            );
 
-
-    if (!teams.length) {
-
+    if (!scores.length) {
         container.innerHTML = `
             <div class="empty">
-                Nog geen teams in het scoreboard.
+                Er zijn nog geen resultaten beschikbaar.
             </div>
         `;
 
         return;
     }
 
-
     container.innerHTML = `
-
         <table>
 
             <thead>
 
                 <tr>
+
                     <th>#</th>
-                    <th>Team</th>
-                    <th>Voortgang</th>
-                    <th>Punten</th>
+
+                    <th>
+                        Team
+                    </th>
+
+                    <th>
+                        Voortgang
+                    </th>
+
+                    <th>
+                        Punten
+                    </th>
+
                 </tr>
 
             </thead>
 
             <tbody>
 
-                ${teams.map(team => `
+                ${scores.map(
+                    row => `
+                        <tr>
 
-                    <tr>
+                            <td class="position">
+                                ${row.position}
+                            </td>
 
-                        <td>
-                            ${team.position}
-                        </td>
+                            <td class="team">
+                                ${escapeHtml(
+                                    row.team
+                                )}
+                            </td>
 
-                        <td>
-                            ${escapeHtml(
-                                team.team
-                            )}
-                        </td>
+                            <td class="progress">
+                                ${row.completed}
+                                /
+                                ${row.total}
+                            </td>
 
-                        <td>
-                            ${team.completed}
-                            /
-                            ${team.total}
-                        </td>
+                            <td class="score">
+                                ${row.score}
+                            </td>
 
-                        <td class="score">
-                            ${team.score}
-                        </td>
-
-                    </tr>
-
-                `).join("")}
+                        </tr>
+                    `
+                ).join("")}
 
             </tbody>
 
@@ -518,30 +921,32 @@ function renderScoreboard(teams) {
 }
 
 
-function escapeHtml(value) {
+/* =========================================
+   HELPERS
+========================================= */
 
-    return String(value)
-
+function escapeHtml(
+    value
+) {
+    return String(
+        value ?? ""
+    )
         .replaceAll(
             "&",
             "&amp;"
         )
-
         .replaceAll(
             "<",
             "&lt;"
         )
-
         .replaceAll(
             ">",
             "&gt;"
         )
-
         .replaceAll(
             '"',
             "&quot;"
         )
-
         .replaceAll(
             "'",
             "&#039;"
@@ -549,11 +954,27 @@ function escapeHtml(value) {
 }
 
 
+/* =========================================
+   START
+========================================= */
+
 loadScoreboard();
 
-setInterval(
-    loadScoreboard,
-    10000
+refreshTimer =
+    setInterval(
+        loadScoreboard,
+        10000
+    );
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+        if (refreshTimer) {
+            clearInterval(
+                refreshTimer
+            );
+        }
+    }
 );
 
 </script>

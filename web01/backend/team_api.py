@@ -1,29 +1,59 @@
-from fastapi import APIRouter, HTTPException, Request, Response, Depends
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Request,
+    Response,
+)
 from pydantic import BaseModel
 from sqlalchemy import select
 
+from auth import (
+    create_login_token,
+    read_login_token,
+    verify_password,
+)
+from config import (
+    LOGIN_MAX_AGE_SECONDS,
+    TEAM_COOKIE_NAME,
+)
 from database import SessionLocal
 from models import User
-from auth import (
-    verify_password,
-    create_login_token,
-    read_login_token
+
+
+router = APIRouter(
+    prefix="/team",
+    tags=["team"],
 )
 
 
-router = APIRouter(prefix="/team", tags=["team"])
-
-COOKIE_NAME = "challengelab_team_auth"
-
+# =========================================================
+# Request-modellen
+# =========================================================
 
 class LoginRequest(BaseModel):
     username: str
     password: str
 
 
-def require_team(request: Request):
+# =========================================================
+# Team-authenticatie
+# =========================================================
 
-    token = request.cookies.get(COOKIE_NAME)
+def require_team(
+    request: Request
+) -> dict:
+    """
+    Vereist een geldig ingelogd teamaccount.
+
+    organization_id mag tijdens de overgang nog None zijn.
+    Nieuwe teams worden later via het beheerpanel altijd
+    aan een organisatie gekoppeld.
+    """
+
+    token = request.cookies.get(
+        TEAM_COOKIE_NAME
+    )
 
     if not token:
         raise HTTPException(
@@ -31,7 +61,9 @@ def require_team(request: Request):
             detail="Niet ingelogd"
         )
 
-    token_data = read_login_token(token)
+    token_data = read_login_token(
+        token
+    )
 
     if not token_data:
         raise HTTPException(
@@ -39,12 +71,18 @@ def require_team(request: Request):
             detail="Sessie verlopen"
         )
 
+    if token_data.get("role") != "team":
+        raise HTTPException(
+            status_code=403,
+            detail="Geen teamaccount"
+        )
+
     db = SessionLocal()
 
     try:
         user = db.get(
             User,
-            token_data.get("user_id")
+            token_data["user_id"]
         )
 
         if not user:
@@ -68,34 +106,50 @@ def require_team(request: Request):
         return {
             "id": user.id,
             "username": user.username,
-            "display_name": user.display_name
+            "display_name": user.display_name,
+            "role": user.role,
+            "organization_id": (
+                user.organization_id
+            ),
         }
 
     finally:
         db.close()
 
 
+# =========================================================
+# Login
+# =========================================================
+
 @router.post("/login")
 def login(
     data: LoginRequest,
     response: Response
 ):
+    username = (
+        data.username
+        .strip()
+        .lower()
+    )
 
     db = SessionLocal()
 
     try:
-
         user = db.scalar(
             select(User).where(
-                User.username ==
-                data.username.strip().lower()
+                User.username == username
             )
         )
 
+        # Zelfde foutmelding voor onbekende user
+        # en verkeerd wachtwoord.
         if not user:
             raise HTTPException(
                 status_code=401,
-                detail="Onjuiste gebruikersnaam of wachtwoord"
+                detail=(
+                    "Onjuiste gebruikersnaam "
+                    "of wachtwoord"
+                )
             )
 
         if not user.active:
@@ -116,7 +170,10 @@ def login(
         ):
             raise HTTPException(
                 status_code=401,
-                detail="Onjuiste gebruikersnaam of wachtwoord"
+                detail=(
+                    "Onjuiste gebruikersnaam "
+                    "of wachtwoord"
+                )
             )
 
         token = create_login_token(
@@ -125,12 +182,12 @@ def login(
         )
 
         response.set_cookie(
-            key=COOKIE_NAME,
+            key=TEAM_COOKIE_NAME,
             value=token,
             httponly=True,
-            samesite="lax",
             secure=True,
-            max_age=28800,
+            samesite="lax",
+            max_age=LOGIN_MAX_AGE_SECONDS,
             path="/"
         )
 
@@ -139,7 +196,13 @@ def login(
             "user": {
                 "id": user.id,
                 "username": user.username,
-                "display_name": user.display_name
+                "display_name": (
+                    user.display_name
+                ),
+                "role": user.role,
+                "organization_id": (
+                    user.organization_id
+                ),
             }
         }
 
@@ -147,11 +210,16 @@ def login(
         db.close()
 
 
-@router.post("/logout")
-def logout(response: Response):
+# =========================================================
+# Logout
+# =========================================================
 
+@router.post("/logout")
+def logout(
+    response: Response
+):
     response.delete_cookie(
-        COOKIE_NAME,
+        TEAM_COOKIE_NAME,
         path="/"
     )
 
@@ -159,6 +227,10 @@ def logout(response: Response):
         "status": "logged_out"
     }
 
+
+# =========================================================
+# Huidig team
+# =========================================================
 
 @router.get("/me")
 def me(

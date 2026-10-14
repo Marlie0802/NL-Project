@@ -356,6 +356,8 @@ const params =
 const sessionId =
     params.get("session");
 
+let answerSubmitting = false;
+
 
 async function waitForChallenge(url) {
 
@@ -394,6 +396,12 @@ async function waitForChallenge(url) {
 
 
 async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    answerSubmitting = true;
+
 
     const answer =
         document
@@ -409,6 +417,8 @@ async function checkAnswer() {
 
     if (!sessionId) {
 
+        answerSubmitting = false;
+
         result.className = "error";
 
         result.textContent =
@@ -419,6 +429,8 @@ async function checkAnswer() {
 
 
     if (!answer) {
+
+        answerSubmitting = false;
 
         result.className = "error";
 
@@ -528,5 +540,6 @@ document
     );
 </script>
 
+<script src="/hint-widget.js"></script>
 </body>
 </html>

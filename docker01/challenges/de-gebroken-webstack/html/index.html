@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>De gebroken webstack</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --background: #07100b;
+            --panel: #0d1712;
+            --border: #20392b;
+            --muted: #839087;
+            --warning: #f7c86a;
+            --danger: #ff7d7d;
+        }
+
+        body {
+            margin: 0;
+
+            color: #e9f2ed;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(53,242,154,.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(53,242,154,.025) 1px,
+                    transparent 1px
+                ),
+                var(--background);
+
+            background-size:
+                40px 40px;
+        }
+
+        .container {
+            width: 1180px;
+            max-width: 94%;
+
+            margin:
+                40px auto
+                70px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            color: var(--green);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .subtitle,
+        .muted {
+            color: var(--muted);
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            margin-bottom: 20px;
+
+            padding: 24px;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--panel);
+        }
+
+        .grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(370px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+        .terminal {
+            overflow-x: auto;
+
+            padding: 18px;
+
+            border: 1px solid #193022;
+            border-radius: 8px;
+
+            color: #d8e8df;
+            background: #050b07;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+            line-height: 1.65;
+
+            white-space: pre;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border-bottom:
+                1px solid
+                #223128;
+
+            text-align: left;
+        }
+
+        th {
+            color: var(--green);
+        }
+
+        .warning-box {
+            padding: 16px;
+
+            border-left:
+                3px solid
+                var(--warning);
+
+            color: #e3dcc4;
+
+            background:
+                rgba(
+                    247,
+                    200,
+                    106,
+                    .05
+                );
+        }
+
+        code {
+            color: #b7e8cc;
+        }
+
+        input {
+            width: 460px;
+            max-width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #355443;
+            border-radius: 7px;
+
+            outline: none;
+
+            color: white;
+            background: #07100b;
+        }
+
+        input:focus {
+            border-color: var(--green);
+        }
+
+        button {
+            padding: 12px 18px;
+
+            border: 0;
+            border-radius: 7px;
+
+            color: #04100a;
+
+            font-weight: bold;
+
+            background: var(--green);
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--green-light);
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: var(--green);
+        }
+
+        .error {
+            color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        De gebroken webstack
+    </h1>
+
+    <div class="subtitle">
+        Linux / web / database troubleshooting
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Situatie
+        </h2>
+
+        <p>
+            Na een migratie toont het interne
+            beheersysteem alleen nog:
+        </p>
+
+        <div class="terminal">502 Bad Gateway
+nginx/1.28.0</div>
+
+        <p>
+            De webserver, applicatie en database
+            staan op aparte systemen.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Architectuur
+        </h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Systeem</th>
+                    <th>IP-adres</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>WEB-02</td>
+                    <td>10.60.10.22</td>
+                    <td>NGINX + FastAPI</td>
+                </tr>
+
+                <tr>
+                    <td>DB-02</td>
+                    <td>10.60.20.24</td>
+                    <td>PostgreSQL</td>
+                </tr>
+
+                <tr>
+                    <td>DB-OLD</td>
+                    <td>10.60.20.42</td>
+                    <td>Oude databaseserver</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                NGINX
+            </h2>
+
+            <div class="terminal">$ nginx -t
+
+nginx: configuration file /etc/nginx/nginx.conf
+syntax is ok
+
+nginx: configuration file /etc/nginx/nginx.conf
+test is successful
+
+
+$ grep -A6 location /etc/nginx/sites-enabled/portal
+
+location /api/ {
+    proxy_pass http://127.0.0.1:8000/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}</div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                NGINX errorlog
+            </h2>
+
+            <div class="terminal">2026/10/12 08:24:13 [error] 2148#2148:
+connect() failed (111: Connection refused)
+while connecting to upstream
+
+upstream:
+"http://127.0.0.1:8000/health"</div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Applicatieservice
+        </h2>
+
+        <div class="terminal">$ systemctl status portal-api
+
+● portal-api.service - Internal Portal API
+     Loaded: loaded
+     Active: activating (auto-restart)
+     Result: exit-code
+
+Oct 12 08:24:11 WEB-02 systemd[1]:
+portal-api.service:
+Main process exited,
+code=exited,
+status=1/FAILURE</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Applicatielog
+        </h2>
+
+        <div class="terminal">$ journalctl -u portal-api -n 12
+
+Oct 12 08:24:11 WEB-02 portal-api[3588]:
+Starting Internal Portal API
+
+Oct 12 08:24:11 WEB-02 portal-api[3588]:
+Connecting to PostgreSQL...
+
+Oct 12 08:24:16 WEB-02 portal-api[3588]:
+psycopg2.OperationalError:
+connection to server at "10.60.20.42",
+port 5432 failed:
+Connection timed out
+
+Oct 12 08:24:16 WEB-02 systemd[1]:
+portal-api.service:
+Failed with result 'exit-code'.</div>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                Netwerktest
+            </h2>
+
+            <div class="terminal">$ nc -vz 10.60.20.24 5432
+
+Connection to 10.60.20.24 5432 port [tcp/postgresql] succeeded!
+
+
+$ nc -vz -w2 10.60.20.42 5432
+
+nc: connect to 10.60.20.42 port 5432:
+Connection timed out</div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                Databasecontrole
+            </h2>
+
+            <div class="terminal">DB-02$ systemctl status postgresql
+
+● postgresql.service
+     Active: active (exited)
+
+
+DB-02$ ss -ltn | grep 5432
+
+LISTEN 0 244 10.60.20.24:5432</div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Systemd-configuratie
+        </h2>
+
+        <div class="terminal">$ systemctl cat portal-api
+
+[Service]
+EnvironmentFile=/etc/portal-api.env
+
+WorkingDirectory=/opt/portal
+ExecStart=/opt/portal/venv/bin/uvicorn \
+    main:app \
+    --host 127.0.0.1 \
+    --port 8000
+
+Restart=on-failure</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Environmentbestand
+        </h2>
+
+        <div class="terminal">$ cat /etc/portal-api.env
+
+DB_NAME=portal
+DB_USER=portal
+DB_HOST=10.60.20.42
+DB_PORT=5432
+
+SESSION_TIMEOUT=3600
+LOG_LEVEL=INFO</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Migratienotitie
+        </h2>
+
+        <div class="warning-box">
+
+            <strong>
+                CHG-2026-588
+            </strong>
+
+            <p>
+                PostgreSQL is gemigreerd van
+                <code>DB-OLD</code>
+                naar
+                <code>DB-02</code>.
+            </p>
+
+            <p>
+                Nieuwe database:
+                <strong>10.60.20.24</strong>
+            </p>
+
+            <p>
+                DB-OLD
+                (<code>10.60.20.42</code>)
+                is buiten gebruik.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Opdracht
+        </h2>
+
+        <p>
+            Welke configuratieregel moet worden
+            aangepast om de volledige webstack weer
+            te laten starten?
+        </p>
+
+        <p class="muted">
+            Vul de volledige correcte regel in.
+        </p>
+
+        <input
+            id="answer"
+            placeholder="NAAM=waarde"
+            autocomplete="off"
+        >
+
+        <button
+            id="submitButton"
+            onclick="checkAnswer()"
+        >
+            Controleer
+        </button>
+
+        <div id="result"></div>
+
+    </section>
+
+</div>
+
+
+<script src="/hint-widget.js"></script>
+
+
+<script>
+"use strict";
+
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const sessionId =
+    params.get(
+        "session"
+    );
+
+let answerSubmitting =
+    false;
+
+
+async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    const input =
+        document.getElementById(
+            "answer"
+        );
+
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+    const answer =
+        input.value
+            .trim()
+            .toLowerCase()
+            .replaceAll(
+                " ",
+                ""
+            );
+
+
+    if (!sessionId) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Geen geldige BreachOut-sessie gevonden.";
+
+        return;
+    }
+
+
+    if (!answer) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Vul eerst een antwoord in.";
+
+        return;
+    }
+
+
+    answerSubmitting =
+        true;
+
+    button.disabled =
+        true;
+
+
+    try {
+        const response =
+            await fetch(
+                "/api/session/" +
+                encodeURIComponent(
+                    sessionId
+                ) +
+                "/answer",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            answer
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+
+        if (!data.correct) {
+            answerSubmitting =
+                false;
+
+            button.disabled =
+                false;
+
+            result.className =
+                "error";
+
+            result.textContent =
+                "✗ Niet correct. Volg de fout vanaf NGINX naar de applicatie en daarna naar de database.";
+
+            return;
+        }
+
+
+        if (data.completed) {
+            result.className =
+                "success";
+
+            result.textContent =
+                "✓ Correct! De sessie is voltooid. Je gaat terug naar BreachOut...";
+
+            setTimeout(
+                () => {
+                    window.location.href =
+                        "/";
+                },
+                1600
+            );
+
+            return;
+        }
+
+
+        result.className =
+            "success";
+
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt geladen...";
+
+        await waitForChallenge(
+            data.url
+        );
+
+    } catch (error) {
+        answerSubmitting =
+            false;
+
+        button.disabled =
+            false;
+
+        result.className =
+            "error";
+
+        result.textContent =
+            "Fout: " +
+            error.message;
+    }
+}
+
+
+async function waitForChallenge(
+    url
+) {
+    if (!url) {
+        window.location.href =
+            "/";
+
+        return;
+    }
+
+    for (
+        let attempt = 0;
+        attempt < 20;
+        attempt++
+    ) {
+        try {
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method: "GET",
+                        cache: "no-store"
+                    }
+                );
+
+            if (response.ok) {
+                window.location.href =
+                    url;
+
+                return;
+            }
+
+        } catch {
+            // Volgende container start nog.
+        }
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    500
+                )
+        );
+    }
+
+    window.location.href =
+        url;
+}
+
+
+document
+    .getElementById(
+        "answer"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key === "Enter"
+            ) {
+                event.preventDefault();
+
+                checkAnswer();
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>

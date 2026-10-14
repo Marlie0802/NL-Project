@@ -357,6 +357,8 @@
 const params = new URLSearchParams(window.location.search);
 const sessionId = params.get("session");
 
+let answerSubmitting = false;
+
 
 async function waitForChallenge(url) {
     for (let i = 0; i < 20; i++) {
@@ -380,6 +382,11 @@ async function waitForChallenge(url) {
 
 
 async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    answerSubmitting = true;
     const answer =
         document.getElementById("answer").value;
 
@@ -394,6 +401,8 @@ async function checkAnswer() {
     }
 
     if (!answer) {
+        answerSubmitting = false;
+
         result.className = "error";
         result.textContent =
             "Kies eerst een medewerker.";
@@ -427,6 +436,8 @@ async function checkAnswer() {
         }
 
         if (!data.correct) {
+            answerSubmitting = false;
+
             result.className = "error";
 
             result.textContent =
@@ -455,6 +466,8 @@ async function checkAnswer() {
         waitForChallenge(data.url);
 
     } catch (error) {
+        answerSubmitting = false;
+
         result.className = "error";
 
         result.textContent =
@@ -463,5 +476,6 @@ async function checkAnswer() {
 }
 </script>
 
+<script src="/hint-widget.js"></script>
 </body>
 </html>

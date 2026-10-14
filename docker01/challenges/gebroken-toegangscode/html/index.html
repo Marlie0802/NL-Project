@@ -295,8 +295,15 @@
 const params = new URLSearchParams(window.location.search);
 const sessionId = params.get("session");
 
+let answerSubmitting = false;
+
 
 async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    answerSubmitting = true;
     const answer = document
         .getElementById("answer")
         .value
@@ -315,6 +322,8 @@ async function checkAnswer() {
 
 
     if (!answer) {
+        answerSubmitting = false;
+
         result.className = "error";
         result.textContent =
             "Vul eerst een antwoord in.";
@@ -352,6 +361,8 @@ async function checkAnswer() {
 
 
         if (!data.correct) {
+            answerSubmitting = false;
+
             result.className = "error";
             result.textContent =
                 "✗ Niet correct. Controleer de request-ID en beide codefragmenten.";
@@ -402,6 +413,8 @@ async function checkAnswer() {
 		
 
     } catch (error) {
+        answerSubmitting = false;
+
         result.className = "error";
         result.textContent =
             "Fout: " + error.message;
@@ -421,5 +434,6 @@ document
     );
 </script>
 
+<script src="/hint-widget.js"></script>
 </body>
 </html>

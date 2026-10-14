@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>De verdachte beheerder</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #35f29a;
+            --green-light: #68ffb5;
+            --background: #07100b;
+            --panel: #0d1712;
+            --border: #20392b;
+            --muted: #839087;
+            --warning: #f7c86a;
+            --danger: #ff7d7d;
+        }
+
+        body {
+            margin: 0;
+
+            color: #e9f2ed;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(53,242,154,.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(53,242,154,.025) 1px,
+                    transparent 1px
+                ),
+                var(--background);
+
+            background-size:
+                40px 40px;
+        }
+
+        .container {
+            width: 1180px;
+            max-width: 94%;
+
+            margin:
+                40px auto
+                70px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            color: var(--green);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .subtitle,
+        .muted {
+            color: var(--muted);
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            margin-bottom: 20px;
+
+            padding: 24px;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--panel);
+        }
+
+        .grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(370px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+        .terminal {
+            overflow-x: auto;
+
+            padding: 18px;
+
+            border: 1px solid #193022;
+            border-radius: 8px;
+
+            color: #d8e8df;
+            background: #050b07;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+            line-height: 1.65;
+
+            white-space: pre;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border-bottom:
+                1px solid
+                #223128;
+
+            text-align: left;
+        }
+
+        th {
+            color: var(--green);
+        }
+
+        .warning-box {
+            padding: 16px;
+
+            border-left:
+                3px solid
+                var(--warning);
+
+            color: #e3dcc4;
+
+            background:
+                rgba(
+                    247,
+                    200,
+                    106,
+                    .05
+                );
+        }
+
+        code {
+            color: #b7e8cc;
+        }
+
+        input {
+            width: 430px;
+            max-width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #355443;
+            border-radius: 7px;
+
+            outline: none;
+
+            color: white;
+            background: #07100b;
+        }
+
+        input:focus {
+            border-color: var(--green);
+        }
+
+        button {
+            padding: 12px 18px;
+
+            border: 0;
+            border-radius: 7px;
+
+            color: #04100a;
+
+            font-weight: bold;
+
+            background: var(--green);
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--green-light);
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 16px;
+
+            font-weight: bold;
+        }
+
+        .success {
+            color: var(--green);
+        }
+
+        .error {
+            color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        De verdachte beheerder
+    </h1>
+
+    <div class="subtitle">
+        Security incidentanalyse · CORE-MGMT01
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Situatie
+        </h2>
+
+        <p>
+            Om 09:17 werd op CORE-MGMT01 een
+            firewallregel aangepast waardoor een interne
+            beheerinterface tijdelijk vanaf een extra
+            netwerk bereikbaar werd.
+        </p>
+
+        <p>
+            De regel is inmiddels hersteld, maar de
+            security-afdeling wil weten welk
+            beheeraccount de wijziging heeft uitgevoerd.
+        </p>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Beheerders
+        </h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Account</th>
+                    <th>Naam</th>
+                    <th>Werkstation</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>jvermeer</td>
+                    <td>Jeroen Vermeer</td>
+                    <td>10.70.10.31</td>
+                </tr>
+
+                <tr>
+                    <td>svanloon</td>
+                    <td>Sanne van Loon</td>
+                    <td>10.70.10.44</td>
+                </tr>
+
+                <tr>
+                    <td>mdeboer</td>
+                    <td>Mark de Boer</td>
+                    <td>10.70.10.57</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                SSH-log
+            </h2>
+
+            <div class="terminal">09:02:11 sshd[2210]:
+Accepted publickey for jvermeer
+from 10.70.10.31 port 53188
+
+09:11:48 sshd[2381]:
+Accepted publickey for svanloon
+from 10.70.10.44 port 49820
+
+09:26:09 sshd[2714]:
+Accepted publickey for mdeboer
+from 10.70.10.57 port 55103</div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                Sessie-einden
+            </h2>
+
+            <div class="terminal">09:08:34 sshd[2210]:
+Disconnected from user jvermeer
+10.70.10.31
+
+09:22:06 sshd[2381]:
+Disconnected from user svanloon
+10.70.10.44
+
+09:33:14 sshd[2714]:
+Disconnected from user mdeboer
+10.70.10.57</div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            sudo-log
+        </h2>
+
+        <div class="terminal">09:13:04 CORE-MGMT01 sudo:
+svanloon : TTY=pts/1 ;
+PWD=/home/svanloon ;
+USER=root ;
+COMMAND=/usr/sbin/nft list ruleset
+
+09:16:52 CORE-MGMT01 sudo:
+svanloon : TTY=pts/1 ;
+PWD=/home/svanloon ;
+USER=root ;
+COMMAND=/usr/bin/nano /etc/nftables.conf
+
+09:17:31 CORE-MGMT01 sudo:
+svanloon : TTY=pts/1 ;
+PWD=/home/svanloon ;
+USER=root ;
+COMMAND=/usr/sbin/nft -f /etc/nftables.conf
+
+09:28:20 CORE-MGMT01 sudo:
+mdeboer : TTY=pts/2 ;
+PWD=/home/mdeboer ;
+USER=root ;
+COMMAND=/usr/bin/systemctl status nftables</div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Firewall auditlog
+        </h2>
+
+        <div class="terminal">09:17:31 audit[2451]:
+CONFIG_CHANGE
+table=inet
+chain=management
+action=rule-added
+
+09:17:31 audit[2451]:
+rule="ip saddr 10.70.30.0/24 tcp dport 8443 accept"
+
+09:21:43 audit[2622]:
+CONFIG_CHANGE
+table=inet
+chain=management
+action=rule-removed</div>
+
+    </section>
+
+
+    <div class="grid">
+
+        <section class="panel">
+
+            <h2>
+                Shell history jvermeer
+            </h2>
+
+            <div class="terminal">08:59 systemctl status nginx
+09:01 journalctl -u nginx
+09:05 exit</div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <h2>
+                Shell history svanloon
+            </h2>
+
+            <div class="terminal">09:13 sudo nft list ruleset
+09:15 grep -n management /etc/nftables.conf
+09:16 sudo nano /etc/nftables.conf
+09:17 sudo nft -f /etc/nftables.conf
+09:20 diff /etc/nftables.conf /etc/nftables.conf.bak
+09:21 sudo cp /etc/nftables.conf.bak /etc/nftables.conf
+09:21 sudo nft -f /etc/nftables.conf</div>
+
+        </section>
+
+    </div>
+
+
+    <section class="panel">
+
+        <h2>
+            Change-management
+        </h2>
+
+        <div class="warning-box">
+
+            <strong>
+                Geen geplande wijziging
+            </strong>
+
+            <p>
+                Voor 09:00–10:00 stond geen
+                firewallwijziging geregistreerd.
+            </p>
+
+            <p>
+                Alleen reguliere monitoring was
+                toegestaan.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            Opdracht
+        </h2>
+
+        <p>
+            Welk beheeraccount heeft de ongeplande
+            firewallwijziging uitgevoerd?
+        </p>
+
+        <p class="muted">
+            Vul alleen de gebruikersnaam in.
+        </p>
+
+        <input
+            id="answer"
+            placeholder="bijvoorbeeld: jvermeer"
+            autocomplete="off"
+        >
+
+        <button
+            id="submitButton"
+            onclick="checkAnswer()"
+        >
+            Controleer
+        </button>
+
+        <div id="result"></div>
+
+    </section>
+
+</div>
+
+
+<script src="/hint-widget.js"></script>
+
+
+<script>
+"use strict";
+
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const sessionId =
+    params.get(
+        "session"
+    );
+
+let answerSubmitting =
+    false;
+
+
+async function checkAnswer() {
+    if (answerSubmitting) {
+        return;
+    }
+
+    const input =
+        document.getElementById(
+            "answer"
+        );
+
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+    const answer =
+        input.value
+            .trim()
+            .toLowerCase();
+
+
+    if (!sessionId) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Geen geldige BreachOut-sessie gevonden.";
+
+        return;
+    }
+
+
+    if (!answer) {
+        result.className =
+            "error";
+
+        result.textContent =
+            "Vul eerst een antwoord in.";
+
+        return;
+    }
+
+
+    answerSubmitting =
+        true;
+
+    button.disabled =
+        true;
+
+
+    try {
+        const response =
+            await fetch(
+                "/api/session/" +
+                encodeURIComponent(
+                    sessionId
+                ) +
+                "/answer",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            answer
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "Antwoord kon niet gecontroleerd worden."
+            );
+        }
+
+
+        if (!data.correct) {
+            answerSubmitting =
+                false;
+
+            button.disabled =
+                false;
+
+            result.className =
+                "error";
+
+            result.textContent =
+                "✗ Niet correct. Leg de SSH-sessie, sudo-opdrachten en auditlog op dezelfde tijdlijn.";
+
+            return;
+        }
+
+
+        if (data.completed) {
+            result.className =
+                "success";
+
+            result.textContent =
+                "✓ Correct! De sessie is voltooid. Je gaat terug naar BreachOut...";
+
+            setTimeout(
+                () => {
+                    window.location.href =
+                        "/";
+                },
+                1600
+            );
+
+            return;
+        }
+
+
+        result.className =
+            "success";
+
+        result.textContent =
+            "✓ Correct! Volgende challenge wordt geladen...";
+
+        await waitForChallenge(
+            data.url
+        );
+
+    } catch (error) {
+        answerSubmitting =
+            false;
+
+        button.disabled =
+            false;
+
+        result.className =
+            "error";
+
+        result.textContent =
+            "Fout: " +
+            error.message;
+    }
+}
+
+
+async function waitForChallenge(
+    url
+) {
+    if (!url) {
+        window.location.href =
+            "/";
+
+        return;
+    }
+
+    for (
+        let attempt = 0;
+        attempt < 20;
+        attempt++
+    ) {
+        try {
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method: "GET",
+                        cache: "no-store"
+                    }
+                );
+
+            if (response.ok) {
+                window.location.href =
+                    url;
+
+                return;
+            }
+
+        } catch {
+            // Volgende container start nog.
+        }
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    500
+                )
+        );
+    }
+
+    window.location.href =
+        url;
+}
+
+
+document
+    .getElementById(
+        "answer"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key === "Enter"
+            ) {
+                event.preventDefault();
+
+                checkAnswer();
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>
